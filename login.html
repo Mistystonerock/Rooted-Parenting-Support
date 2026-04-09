@@ -3,82 +3,458 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rooted Parenting | Login</title>
+  <title>Rooted Parenting | Courses</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .course-progress {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: var(--surface-soft);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .lesson-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .lesson-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      color: var(--accent-strong);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .lesson-card h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      color: var(--accent-strong);
+    }
+
+    .lesson-card h3 {
+      margin: 14px 0 8px;
+      font-size: 16px;
+      color: var(--accent-strong);
+    }
+
+    .reflection-box {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .reflection-box label {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .reflection-box textarea,
+    .completion-box input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .reflection-box textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .button-row {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 10px;
+    }
+
+    .lesson-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      color: var(--accent-strong);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    .lesson-status.complete {
+      background: #dde9de;
+    }
+
+    .completion-box {
+      border: 1px solid var(--line);
+      background: linear-gradient(135deg, #fffdf8 0%, #f1eee6 100%);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      display: none;
+      gap: 12px;
+    }
+
+    .completion-box.show {
+      display: grid;
+    }
+
+    @media (max-width: 640px) {
+      .button-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <div>
         <p class="eyebrow">ROOTED PARENTING</p>
-        <h1>Login</h1>
+        <h1>Courses</h1>
       </div>
-      <a class="top-action" href="index.html">Home</a>
+      <button class="top-action" id="logoutBtn" type="button">Logout</button>
     </header>
 
     <main class="content">
       <section class="hero">
-        <h2>Welcome Back</h2>
-        <p>Sign in to save progress, complete courses, and earn your certificate.</p>
+        <h2>Rooted Parenting Foundations</h2>
+        <p>Complete all 10 lessons to earn a certificate of completion.</p>
       </section>
 
-      <section class="section-card">
-        <h2>Sign In</h2>
-        <div class="hero-actions hero-actions--stacked">
-          <input id="email" type="email" placeholder="Email" class="auth-input">
-          <input id="password" type="password" placeholder="Password" class="auth-input">
-          <button class="primary-button" id="loginBtn" type="button">Login</button>
-          <button class="secondary-button" id="signupBtn" type="button">Create Account</button>
-          <p id="auth-message"></p>
+      <section class="course-progress">
+        <h2>Your Progress</h2>
+        <p id="progress-text">0 of 10 lessons completed</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
         </div>
       </section>
+
+      <section class="lesson-list" id="lesson-list"></section>
+
+      <section class="completion-box" id="completion-box">
+        <h2>Congratulations</h2>
+        <p>You completed the Rooted Parenting Foundations course.</p>
+        <label for="parent-name"><strong>Enter your name for the certificate</strong></label>
+        <input id="parent-name" type="text" placeholder="Parent or caregiver name">
+        <button class="primary-button" id="certificate-button" type="button">Create My Certificate</button>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html">Privacy Policy</a> |
+        <a href="terms.html">Terms</a> |
+        <a href="disclaimer.html">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br>
+        Created by Misty Stonerock<br>
+        Community Behavioral Health Worker | Parent Advocate<br>
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
+
+    <nav class="tabbar" aria-label="Primary">
+      <a class="tabbar__item" href="index.html">Home</a>
+      <a class="tabbar__item" href="behaviors.html">Behaviors</a>
+      <a class="tabbar__item" href="learning.html">Learn</a>
+      <a class="tabbar__item is-active" href="courses.html">Courses</a>
+      <a class="tabbar__item" href="tools.html">Tools</a>
+      <a class="tabbar__item" href="worksheets-printable.html">Worksheets</a>
+    </nav>
   </div>
 
   <script>
     const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
     const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
-
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const message = document.getElementById("auth-message");
+    const lessons = [
+      {
+        id: "lesson1",
+        title: "Understanding Behavior as Communication",
+        description: "Behavior often tells us what a child cannot yet say with words.",
+        points: [
+          "Children often show stress through behavior before they can explain it.",
+          "Big reactions may point to fear, overwhelm, shame, or unmet needs.",
+          "Curiosity helps more than labels."
+        ],
+        reflection: "What might my child be feeling or needing underneath this behavior?"
+      },
+      {
+        id: "lesson2",
+        title: "How Trauma Impacts the Brain",
+        description: "Trauma can keep a child’s brain and body on alert.",
+        points: [
+          "Stress can affect memory, focus, and flexibility.",
+          "Survival responses can turn on quickly.",
+          "A calm adult can help the brain feel safer."
+        ],
+        reflection: "What behavior makes more sense when I think about stress instead of choice?"
+      },
+      {
+        id: "lesson3",
+        title: "Regulation Before Discipline",
+        description: "Children learn best when they are calm enough to think.",
+        points: [
+          "Calm first, teach second.",
+          "Safety comes before correction.",
+          "Timing matters during discipline."
+        ],
+        reflection: "What happens when I try to teach while my child is still overwhelmed?"
+      },
+      {
+        id: "lesson4",
+        title: "Connection Before Correction",
+        description: "Children are more open to guidance when they feel understood and safe.",
+        points: [
+          "Connection lowers defensiveness.",
+          "Kindness and limits can work together.",
+          "Repair builds trust."
+        ],
+        reflection: "How does my child respond when I lead with connection first?"
+      },
+      {
+        id: "lesson5",
+        title: "Understanding Triggers",
+        description: "Triggers are reminders that make a child’s body react as if danger is near.",
+        points: [
+          "Triggers can be sounds, transitions, places, or expectations.",
+          "Patterns matter more than isolated incidents.",
+          "Tracking triggers helps with planning."
+        ],
+        reflection: "What situations seem to bring out the strongest reactions in my child?"
+      },
+      {
+        id: "lesson6",
+        title: "Responding to Anger and Defiance",
+        description: "Anger and pushback often reflect overwhelm, powerlessness, or misunderstanding.",
+        points: [
+          "Stay steady and reduce extra words.",
+          "Offer clear choices when possible.",
+          "Reconnect before teaching."
+        ],
+        reflection: "What helps me avoid turning a hard moment into a power struggle?"
+      },
+      {
+        id: "lesson7",
+        title: "Responding to Anxiety and Shutdown",
+        description: "Some children show distress through worry, panic, silence, or withdrawal.",
+        points: [
+          "Not all distress looks loud.",
+          "Some children need less pressure, not more.",
+          "Calm presence helps children feel safer."
+        ],
+        reflection: "How do I usually respond when my child becomes quiet, frozen, or very worried?"
+      },
+      {
+        id: "lesson8",
+        title: "Supporting Children at School",
+        description: "School stress can show up as refusal, anger, shutdown, or avoidance.",
+        points: [
+          "Predictability helps children feel safer.",
+          "School support should be specific and realistic.",
+          "Documentation helps caregivers advocate clearly."
+        ],
+        reflection: "What school support could help my child feel safer and more successful?"
+      },
+      {
+        id: "lesson9",
+        title: "Parent Self Regulation",
+        description: "Parents need support too. Your nervous system affects the moment.",
+        points: [
+          "Small pauses can shift the tone of an interaction.",
+          "Self-regulation is a skill, not perfection.",
+          "Calm adults help children regulate."
+        ],
+        reflection: "What are my early signs that I am getting overwhelmed too?"
+      },
+      {
+        id: "lesson10",
+        title: "Building Long-Term Emotional Safety",
+        description: "Emotional safety is built through repeated moments of calm, repair, and connection.",
+        points: [
+          "Consistency matters more than perfection.",
+          "Repair restores trust.",
+          "Children grow through repeated safe experiences."
+        ],
+        reflection: "What small change would help my child feel more emotionally safe this week?"
+      }
+    ];
 
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
+    const lessonList = document.getElementById("lesson-list");
+    const progressText = document.getElementById("progress-text");
+    const progressFill = document.getElementById("progress-fill");
+    const completionBox = document.getElementById("completion-box");
+    const parentNameInput = document.getElementById("parent-name");
+    const certificateButton = document.getElementById("certificate-button");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-      const { error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-      });
+    let currentUser = null;
+    let progress = {};
+    let reflections = {};
 
-      if (error) {
-        message.textContent = error.message;
+    function storageKey(base) {
+      return `${base}-${currentUser.id}`;
+    }
+
+    function loadUserData() {
+      progress = JSON.parse(localStorage.getItem(storageKey("rp-course-progress")) || "{}");
+      reflections = JSON.parse(localStorage.getItem(storageKey("rp-course-reflections")) || "{}");
+      const savedName = localStorage.getItem(storageKey("rp-certificate-name")) || "";
+      parentNameInput.value = savedName;
+    }
+
+    function saveProgress() {
+      localStorage.setItem(storageKey("rp-course-progress"), JSON.stringify(progress));
+    }
+
+    function saveReflections() {
+      localStorage.setItem(storageKey("rp-course-reflections"), JSON.stringify(reflections));
+    }
+
+    function saveCertificateName() {
+      localStorage.setItem(storageKey("rp-certificate-name"), parentNameInput.value.trim());
+    }
+
+    function updateProgress() {
+      const completedCount = lessons.filter(lesson => progress[lesson.id]).length;
+      const percent = Math.round((completedCount / lessons.length) * 100);
+
+      progressText.textContent = `${completedCount} of ${lessons.length} lessons completed`;
+      progressFill.style.width = `${percent}%`;
+
+      if (completedCount === lessons.length) {
+        completionBox.classList.add("show");
+      } else {
+        completionBox.classList.remove("show");
+      }
+    }
+
+    function renderLessons() {
+      lessonList.innerHTML = lessons.map((lesson, index) => {
+        const complete = !!progress[lesson.id];
+        const savedReflection = reflections[lesson.id] || "";
+
+        return `
+          <article class="lesson-card">
+            <div class="lesson-number">${index + 1}</div>
+            <h2>${lesson.title}</h2>
+            <p>${lesson.description}</p>
+
+            <h3>Key Teaching Points</h3>
+            <ul class="bullet-list">
+              ${lesson.points.map(point => `<li>${point}</li>`).join("")}
+            </ul>
+
+            <div class="reflection-box">
+              <label for="${lesson.id}-reflection">Reflection Check</label>
+              <p>${lesson.reflection}</p>
+              <textarea id="${lesson.id}-reflection" data-lesson="${lesson.id}" placeholder="Write a short response...">${savedReflection}</textarea>
+            </div>
+
+            <div class="button-row">
+              <button class="secondary-button" type="button" onclick="saveLessonReflection('${lesson.id}')">Save Reflection</button>
+              <button class="primary-button" type="button" onclick="markLessonComplete('${lesson.id}')">
+                ${complete ? "Mark Incomplete" : "Mark Complete"}
+              </button>
+            </div>
+
+            <div class="lesson-status ${complete ? "complete" : ""}">
+              ${complete ? "Completed" : "In Progress"}
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      updateProgress();
+    }
+
+    window.saveLessonReflection = function(id) {
+      const textarea = document.getElementById(`${id}-reflection`);
+      reflections[id] = textarea.value.trim();
+      saveReflections();
+      alert("Reflection saved.");
+    };
+
+    window.markLessonComplete = function(id) {
+      const textarea = document.getElementById(`${id}-reflection`);
+      reflections[id] = textarea.value.trim();
+      saveReflections();
+
+      progress[id] = !progress[id];
+      saveProgress();
+      renderLessons();
+    };
+
+    certificateButton.addEventListener("click", () => {
+      const parentName = parentNameInput.value.trim();
+      if (!parentName) {
+        alert("Please enter your name for the certificate.");
         return;
       }
 
-      window.location.href = "index.html";
+      saveCertificateName();
+      localStorage.setItem(storageKey("rp-certificate-date"), new Date().toLocaleDateString());
+      localStorage.setItem(storageKey("rp-certificate-program"), "Rooted Parenting Foundations");
+      window.location.href = "certificate.html";
     });
 
-    document.getElementById("signupBtn").addEventListener("click", async () => {
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
+    logoutBtn.addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = "login.html";
+    });
 
-      const { error } = await supabaseClient.auth.signUp({
-        email,
-        password
-      });
-
-      if (error) {
-        message.textContent = error.message;
+    async function initPage() {
+      const { data } = await supabaseClient.auth.getSession();
+      if (!data.session) {
+        window.location.href = "login.html";
         return;
       }
 
-      message.textContent = "Account created. Check your email if confirmation is enabled.";
-    });
+      currentUser = data.session.user;
+      loadUserData();
+      renderLessons();
+    }
+
+    initPage();
   </script>
 </body>
 </html>
