@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooted Parenting | Login</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Login</h1>
+      </div>
+      <a class="top-action" href="index.html">Home</a>
+    </header>
+
+    <main class="content">
+      <section class="hero">
+        <h2>Welcome Back</h2>
+        <p>Sign in to save progress, complete courses, and earn your certificate.</p>
+      </section>
+
+      <section class="section-card">
+        <h2>Sign In</h2>
+        <div class="hero-actions hero-actions--stacked">
+          <input id="email" type="email" placeholder="Email" class="auth-input">
+          <input id="password" type="password" placeholder="Password" class="auth-input">
+          <button class="primary-button" id="loginBtn" type="button">Login</button>
+          <button class="secondary-button" id="signupBtn" type="button">Create Account</button>
+          <p id="auth-message"></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const message = document.getElementById("auth-message");
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      window.location.href = "index.html";
+    });
+
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      const { error } = await supabaseClient.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      message.textContent = "Account created. Check your email if confirmation is enabled.";
+    });
+  </script>
+</body>
+</html>
