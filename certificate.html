@@ -47,7 +47,7 @@
 
     .certificate-line {
       margin: 18px auto;
-      max-width: 280px;
+      max-width: 320px;
       border-bottom: 2px solid var(--line);
       min-height: 12px;
     }
@@ -76,8 +76,11 @@
         <h3 id="certificate-name">Parent Name</h3>
         <div class="certificate-line"></div>
         <p>for successfully completing</p>
-        <h3 id="certificate-program">Rooted Parenting Foundations</h3>
-        <p>a trauma-informed parenting learning series focused on behavior, regulation, connection, and emotional safety.</p>
+        <h3 id="certificate-program">Rooted Parenting Parent-Child Learning Course</h3>
+        <p>
+          a trauma-informed parenting learning experience focused on behavior,
+          regulation, connection, emotional safety, and parent-child practice.
+        </p>
 
         <div class="certificate-meta">
           <p><strong>Date:</strong> <span id="certificate-date"></span></p>
@@ -115,17 +118,34 @@
       <a class="tabbar__item" href="learning.html">Learn</a>
       <a class="tabbar__item is-active" href="courses.html">Courses</a>
       <a class="tabbar__item" href="tools.html">Tools</a>
+      <a class="tabbar__item" href="worksheets-printable.html">Worksheets</a>
     </nav>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const name = localStorage.getItem("rooted-parenting-certificate-name") || "Parent Name";
-    const date = localStorage.getItem("rooted-parenting-certificate-date") || new Date().toLocaleDateString();
-    const program = localStorage.getItem("rooted-parenting-certificate-program") || "Rooted Parenting Foundations";
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    document.getElementById("certificate-name").textContent = name;
-    document.getElementById("certificate-date").textContent = date;
-    document.getElementById("certificate-program").textContent = program;
+    async function loadCertificate() {
+      const { data } = await supabaseClient.auth.getSession();
+      if (!data.session) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      const user = data.session.user;
+      const name = localStorage.getItem(`rp-certificate-name-${user.id}`) || "Parent Name";
+      const date = localStorage.getItem(`rp-certificate-date-${user.id}`) || new Date().toLocaleDateString();
+      const program = localStorage.getItem(`rp-certificate-program-${user.id}`) || "Rooted Parenting Parent-Child Learning Course";
+
+      document.getElementById("certificate-name").textContent = name;
+      document.getElementById("certificate-date").textContent = date;
+      document.getElementById("certificate-program").textContent = program;
+    }
+
+    loadCertificate();
   </script>
 </body>
 </html>
