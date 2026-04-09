@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting - Behavior Guides</title>
+  <style>
+    :root {
+      --bg: #f6f1ea;
+      --surface: #fffdf9;
+      --surface-soft: #f0efe8;
+      --text: #2f3538;
+      --muted: #6e7478;
+      --accent: #7f8f79;
+      --accent-strong: #5f6f5a;
+      --line: #ddd6ca;
+      --shadow: 0 10px 24px rgba(37, 50, 56, 0.08);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --max: 900px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: linear-gradient(180deg, #f7f4ee 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    }
+
+    body {
+      padding: 20px 16px 36px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: var(--max);
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero,
+    .section,
+    .guide {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 24px 20px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.05;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin-bottom: 10px;
+      color: var(--accent-strong);
+    }
+
+    p, li {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .section {
+      padding: 20px;
+    }
+
+    .jump-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .behavior-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 14px;
+    }
+
+    .behavior-grid button {
+      min-height: 72px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      padding: 14px 16px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .jump-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      min-height: 88px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--surface-soft);
+      border: 1px solid var(--line);
+    }
+
+    .jump-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .guides {
+      display: grid;
+      gap: 18px;
+    }
+
+    .guide {
+      padding: 22px;
+    }
+
+    .guide-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .box {
+      background: var(--surface-soft);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .top-link {
+      display: inline-flex;
+      margin-top: 16px;
+      text-decoration: none;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px 12px 24px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .hero,
+      .section,
+      .guide {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .jump-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <section class="hero">
+      <p class="eyebrow">Rooted Parenting</p>
+      <h1>Rooted Parenting</h1>
+      <p><strong>Trauma-Informed Support for Families</strong></p>
+      <p>Welcome to Rooted Parenting. This app is designed to help parents understand behavior, respond with calm, and build emotional safety at home.</p>
+      <p>Inside this app, you will find:</p>
+      <ul>
+        <li>Behavior guides for hard moments</li>
+        <li>Trauma-informed parenting lessons</li>
+        <li>Parent calm tools</li>
+        <li>Printable worksheets</li>
+      </ul>
+      <p>You do not have to be perfect. Small changes in response can make a big difference over time.</p>
+    </section>
+
+    <section class="section">
+      <h2>Choose a Guide</h2>
+      <div class="behavior-grid">
+        <button onclick="showBehavior('tantrums')">Tantrums</button>
+        <button onclick="showBehavior('defiance')">Defiance</button>
+        <button onclick="showBehavior('anxiety')">Anxiety</button>
+        <button onclick="showBehavior('aggression')">Aggression</button>
+        <button onclick="showBehavior('lying')">Lying</button>
+        <button onclick="showBehavior('shutdown')">Emotional Shutdown</button>
+        <button onclick="showBehavior('school')">School Struggles</button>
+        <button onclick="showBehavior('attention')">Attention Seeking</button>
+      </div>
+      <div class="jump-grid">
+        <a class="jump-card" href="#anger-outbursts"><strong>Anger Outbursts</strong><span>Support during explosive moments.</span></a>
+        <a class="jump-card" href="#anxiety"><strong>Anxiety / Panic</strong><span>Gentle support for worry and fear.</span></a>
+        <a class="jump-card" href="#tantrums-emotional-overload"><strong>Tantrums / Emotional Overload</strong><span>Help when feelings flood the body.</span></a>
+        <a class="jump-card" href="#emotional-shutdown"><strong>Shutdown / Withdrawal</strong><span>Support when a child goes quiet or freezes.</span></a>
+        <a class="jump-card" href="#defiance"><strong>Defiance / Saying No</strong><span>Reduce power struggles and hold calm limits.</span></a>
+        <a class="jump-card" href="#lying"><strong>Lying / Hiding Things</strong><span>Build honesty without shame.</span></a>
+        <a class="jump-card" href="#aggression"><strong>Aggression</strong><span>Prioritize safety and repair.</span></a>
+        <a class="jump-card" href="#disrespectful-language"><strong>Disrespectful Language</strong><span>Respond with calm boundaries.</span></a>
+        <a class="jump-card" href="#school-refusal"><strong>Refusing School</strong><span>Support school stress step by step.</span></a>
+        <a class="jump-card" href="#homework-conflict"><strong>Homework Conflict</strong><span>Lower pressure and build structure.</span></a>
+        <a class="jump-card" href="#attention-seeking"><strong>Attention Seeking</strong><span>Support bids for connection with calm guidance.</span></a>
+      </div>
+    </section>
+
+    <section class="guides">
+      <article class="guide" id="anger-outbursts">
+        <h2>Anger Outbursts</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What it may mean</h3><p>A child may feel overwhelmed, unsafe, or unable to name big feelings. Anger can be the body’s way of showing distress when words are not available yet.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>I can see this feels really big right now.</li><li>You are having a hard time. I am here with you.</li><li>Let’s work on getting your body calm first.</li></ul></div>
+          <div class="box"><h3>What to avoid</h3><ul><li>Calm down right now.</li><li>You are being bad.</li><li>Stop acting crazy.</li></ul></div>
+          <div class="box"><h3>Calming steps</h3><ul><li>Lower your voice and reduce words.</li><li>Move to a quieter space if possible.</li><li>Offer water, breathing, or a sensory tool.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="anxiety">
+        <h2>Anxiety / Worry</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>The child's brain is trying to stay safe. Their body may feel tense or overwhelmed.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"You are safe right now."</li><li>"We can take this one step at a time."</li><li>"I believe in you."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>slow breathing together</li><li>break task into small steps</li><li>offer reassurance</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="tantrums-emotional-overload">
+        <h2>Tantrums / Emotional Overload</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>The child is overwhelmed and does not yet have the skills to regulate emotions. Their nervous system is in distress mode.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"I can see this is really hard right now."</li><li>"You're not in trouble. I'm here to help."</li><li>"We can figure this out together."</li></ul></div>
+          <div class="box"><h3>Avoid saying</h3><ul><li>"Stop crying right now."</li><li>"You're being dramatic."</li><li>"If you don't stop..."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>Stay calm.</li><li>Reduce stimulation.</li><li>Offer presence without pressure.</li><li>Talk after child is calm.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="emotional-shutdown">
+        <h2>Shutdown / Withdrawal</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>Child feels overwhelmed and disconnects as a protection response.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"I'm here when you're ready."</li><li>"You don't have to talk yet."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>reduce pressure</li><li>offer quiet presence</li><li>allow processing time</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="defiance">
+        <h2>Defiance / Not Listening</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>The child may feel powerless, unheard, or overwhelmed. Control can feel like safety.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"Let's figure this out together."</li><li>"You have two choices."</li><li>"I will help you succeed."</li></ul></div>
+          <div class="box"><h3>Avoid saying</h3><ul><li>"Because I said so."</li><li>"You never listen."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>Give simple choices.</li><li>Use calm voice.</li><li>Break task into steps.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="lying">
+        <h2>Lying / Hiding Things</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>Lying often happens when children fear punishment or feel unsafe telling the truth.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"You can tell me the truth. You are safe."</li><li>"Mistakes help us learn."</li></ul></div>
+          <div class="box"><h3>Avoid saying</h3><ul><li>"You're a liar."</li><li>"I can't trust you."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>Reduce shame.</li><li>Praise honesty.</li><li>Focus on problem solving.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="aggression">
+        <h2>Aggression / Hitting</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>The child does not yet have safe ways to express anger or frustration.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"I will not let you hurt others."</li><li>"You are safe. I am here."</li><li>"Let's find a safer way."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>Block unsafe behavior calmly.</li><li>Offer safe alternatives.</li><li>Teach feeling words.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="disrespectful-language">
+        <h2>Disrespectful Language</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What it may mean</h3><p>A child may be overwhelmed, reactive, ashamed, or lacking safe words for frustration, disappointment, or hurt.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>I can help when words are respectful.</li><li>I hear that you are upset.</li><li>You can be mad and still speak safely.</li></ul></div>
+          <div class="box"><h3>What to avoid</h3><ul><li>You are so rude.</li><li>Watch your mouth.</li><li>You are acting like a brat.</li></ul></div>
+          <div class="box"><h3>Calming steps</h3><ul><li>Do not match the child’s tone.</li><li>Use one calm limit and step back from arguing.</li><li>Process the words later when the child is calmer.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="school-refusal">
+        <h2>Refusing School</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>Child may feel unsafe, overwhelmed, or worried about expectations.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"We will figure this out together."</li><li>"You don't have to handle this alone."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>identify stressor</li><li>talk with school supports</li><li>create gradual plan</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="homework-conflict">
+        <h2>Homework Conflict</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What it may mean</h3><p>Homework conflict can reflect stress, frustration, exhaustion, learning difficulty, perfectionism, or a need for more support and structure.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>Homework feels hard right now.</li><li>Let’s start with one small part.</li><li>I will help you make a plan.</li></ul></div>
+          <div class="box"><h3>What to avoid</h3><ul><li>This should be easy.</li><li>You are just being lazy.</li><li>Why do you always make this such a battle?</li></ul></div>
+          <div class="box"><h3>Calming steps</h3><ul><li>Start with one small task instead of the whole assignment.</li><li>Use a timer for work and break cycles.</li><li>Check if hunger, fatigue, or overload are part of the struggle.</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+
+      <article class="guide" id="attention-seeking">
+        <h2>Attention Seeking</h2>
+        <div class="guide-grid">
+          <div class="box"><h3>What is happening</h3><p>Connection need is not being met in a positive way.</p></div>
+          <div class="box"><h3>What to say</h3><ul><li>"I see you."</li><li>"Let's spend time together."</li></ul></div>
+          <div class="box"><h3>Support steps</h3><ul><li>schedule connection time</li><li>notice positive behavior</li><li>reduce negative attention cycles</li></ul></div>
+        </div>
+        <a class="top-link" href="#top">Back to top</a>
+      </article>
+    </section>
+  </main>
+  <script>
+    function showBehavior(key) {
+      const map = {
+        tantrums: "tantrums-emotional-overload",
+        defiance: "defiance",
+        anxiety: "anxiety",
+        aggression: "aggression",
+        lying: "lying",
+        shutdown: "emotional-shutdown",
+        school: "school-refusal",
+        attention: "attention-seeking"
+      };
+
+      const target = document.getElementById(map[key]);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  </script>
+</body>
+</html>
