@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Attendance and Progress Report</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.55in;
+    }
+
+    :root {
+      --ink: #2f3538;
+      --muted: #627076;
+      --accent: #647261;
+      --line: #d8d1c6;
+      --soft: #f5f1ea;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: var(--ink);
+      background: white;
+      line-height: 1.38;
+    }
+    h1, h2 {
+      margin: 0 0 10px;
+      color: var(--accent);
+    }
+    h1 { font-size: 24pt; }
+    h2 {
+      font-size: 16pt;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+    .page {
+      display: grid;
+      gap: 16px;
+    }
+    .hero,
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fffdfa;
+    }
+    .hero {
+      background: linear-gradient(135deg, #fffdf8 0%, #f2eee6 100%);
+    }
+    .line-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .line {
+      border-bottom: 1px solid #abb0ad;
+      min-height: 24px;
+      margin-top: 6px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10pt;
+    }
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 7px;
+      vertical-align: top;
+      text-align: left;
+      min-height: 28px;
+    }
+    .table th {
+      background: var(--soft);
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Rooted Parenting</h1>
+      <p><strong>Attendance and Progress Report</strong></p>
+      <p>For use by facilitators, caseworkers, probation staff, school family programs, and parent education providers.</p>
+    </section>
+
+    <section class="box">
+      <h2>Participant Information</h2>
+      <div class="line-row">
+        <div>
+          <div>Caregiver name</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Child / family identifier</div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="line-row">
+        <div>
+          <div>Referral source</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Facilitator / program</div>
+          <div class="line"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Attendance Log</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Session</th>
+            <th>Date</th>
+            <th>Topic</th>
+            <th>Present / Absent</th>
+            <th>Notes / make-up work</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>6</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>7</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>8</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>9</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>10</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="box">
+      <h2>Observed Progress Areas</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Limited</th>
+            <th>Emerging</th>
+            <th>Consistent</th>
+            <th>Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Understanding behavior as communication</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Use of calm response skills</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Use of structure, routine, and follow-through</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Use of positive reinforcement</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Reduction in reactive or escalating responses</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Completion of home practice or reflection</td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="box">
+      <h2>Summary and Recommendation</h2>
+      <div>Participant engagement summary</div>
+      <div class="line" style="min-height: 44px;"></div>
+      <div>Strengths demonstrated</div>
+      <div class="line" style="min-height: 44px;"></div>
+      <div>Further support recommended</div>
+      <div class="line" style="min-height: 44px;"></div>
+      <div>Completion status: Completed / In progress / Incomplete</div>
+      <div class="line"></div>
+      <div class="line-row">
+        <div>
+          <div>Facilitator signature</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Date</div>
+          <div class="line"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
