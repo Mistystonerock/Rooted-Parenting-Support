@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooted Parenting | Certificate</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    @media print {
+      .topbar,
+      .tabbar,
+      .site-footer,
+      .print-hide {
+        display: none !important;
+      }
+
+      .app-shell {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      body {
+        background: #fff;
+      }
+    }
+
+    .certificate-card {
+      border: 2px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(135deg, #fffdf8 0%, #f1eee6 100%);
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .certificate-card h2 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      color: var(--accent-strong);
+    }
+
+    .certificate-card h3 {
+      margin: 16px 0 10px;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    .certificate-line {
+      margin: 18px auto;
+      max-width: 280px;
+      border-bottom: 2px solid var(--line);
+      min-height: 12px;
+    }
+
+    .certificate-meta {
+      margin-top: 20px;
+      display: grid;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar print-hide">
+      <div>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Certificate</h1>
+      </div>
+      <button class="top-action" onclick="window.print()" type="button">Print</button>
+    </header>
+
+    <main class="content">
+      <section class="certificate-card">
+        <h2>Certificate of Completion</h2>
+        <p>This certificate is proudly presented to</p>
+        <h3 id="certificate-name">Parent Name</h3>
+        <div class="certificate-line"></div>
+        <p>for successfully completing</p>
+        <h3 id="certificate-program">Rooted Parenting Foundations</h3>
+        <p>a trauma-informed parenting learning series focused on behavior, regulation, connection, and emotional safety.</p>
+
+        <div class="certificate-meta">
+          <p><strong>Date:</strong> <span id="certificate-date"></span></p>
+          <p><strong>Issued by:</strong> Rooted Parenting Support Program</p>
+        </div>
+      </section>
+
+      <section class="section-card print-hide">
+        <h2>Next Step</h2>
+        <p>Your certificate is ready. You can print this page or save it as a PDF.</p>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" onclick="window.print()" type="button">Print Certificate</button>
+          <a class="resource-link" href="courses.html">Back to Courses</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer print-hide">
+      <p>
+        <a href="privacy-policy.html">Privacy Policy</a> |
+        <a href="terms.html">Terms</a> |
+        <a href="disclaimer.html">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br>
+        Created by Misty Stonerock<br>
+        Community Behavioral Health Worker | Parent Advocate<br>
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
+
+    <nav class="tabbar print-hide" aria-label="Primary">
+      <a class="tabbar__item" href="index.html">Home</a>
+      <a class="tabbar__item" href="behaviors.html">Behaviors</a>
+      <a class="tabbar__item" href="learning.html">Learn</a>
+      <a class="tabbar__item is-active" href="courses.html">Courses</a>
+      <a class="tabbar__item" href="tools.html">Tools</a>
+    </nav>
+  </div>
+
+  <script>
+    const name = localStorage.getItem("rooted-parenting-certificate-name") || "Parent Name";
+    const date = localStorage.getItem("rooted-parenting-certificate-date") || new Date().toLocaleDateString();
+    const program = localStorage.getItem("rooted-parenting-certificate-program") || "Rooted Parenting Foundations";
+
+    document.getElementById("certificate-name").textContent = name;
+    document.getElementById("certificate-date").textContent = date;
+    document.getElementById("certificate-program").textContent = program;
+  </script>
+</body>
+</html>
