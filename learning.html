@@ -3,8 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learning</title>
+  <title>Rooted Parenting | Learn</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .lesson-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .lesson-card {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .lesson-card h2 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      color: var(--accent-strong);
+    }
+
+    .lesson-card h3 {
+      margin: 14px 0 8px;
+      font-size: 16px;
+      color: var(--accent-strong);
+    }
+
+    .lesson-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: var(--surface-soft);
+      color: var(--accent-strong);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .top-link {
+      display: inline-flex;
+      margin-top: 14px;
+      font-weight: 700;
+      color: var(--accent-strong);
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
   <div class="app-shell">
@@ -16,34 +63,185 @@
       <a class="top-action" href="index.html">Home</a>
     </header>
 
-    <main class="content">
-      <section class="section-card">
-        <h2>Learning Topics</h2>
-        <ul>
-          <li>Understanding behavior</li>
-          <li>Emotional development</li>
-          <li>Trauma informed care</li>
-          <li>Communication skills</li>
-          <li>Building trust</li>
-          <li>Positive discipline</li>
-          <li>Supporting growth</li>
-        </ul>
+    <main class="content" id="top">
+      <section class="hero">
+        <h2>Trauma-Informed Parenting Lessons</h2>
+        <p>
+          These lessons help caregivers understand behavior, respond with calm, and build emotional safety over time.
+        </p>
       </section>
 
-      <footer class="site-footer">
-        <p>
-          Rooted Parenting Support Program<br>
-          Created by Misty Stonerock<br>
-          Community Behavioral Health Worker | Parent Advocate<br>
-          © 2026 Misty Stonerock. All Rights Reserved.
-        </p>
-      </footer>
+      <section class="lesson-list">
+        <article class="lesson-card" id="lesson1">
+          <div class="lesson-number">1</div>
+          <h2>Understanding Behavior as Communication</h2>
+          <p>Behavior often tells us what a child cannot yet say with words.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Children often show stress through behavior before they can explain it.</li>
+            <li>Big reactions may point to fear, overwhelm, shame, or unmet needs.</li>
+            <li>Curiosity helps more than labels.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What might my child be feeling or needing underneath this behavior?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson2">
+          <div class="lesson-number">2</div>
+          <h2>How Trauma Impacts the Brain</h2>
+          <p>Trauma can keep a child’s brain and body on alert, making it harder to think clearly and calm down.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Survival responses can turn on quickly.</li>
+            <li>Stress can affect memory, flexibility, and focus.</li>
+            <li>A calm adult can help the brain feel safer.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What behavior makes more sense when I think about stress instead of willful behavior?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson3">
+          <div class="lesson-number">3</div>
+          <h2>Regulation Before Discipline</h2>
+          <p>Children learn best when their body feels calm enough to think.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Calm first, teach second.</li>
+            <li>Safety comes before correction.</li>
+            <li>Timing matters during discipline.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What happens when I try to teach while my child is still overwhelmed?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson4">
+          <div class="lesson-number">4</div>
+          <h2>Connection Before Correction</h2>
+          <p>Children are more open to guidance when they feel understood and safe.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Connection lowers defensiveness.</li>
+            <li>Kindness and limits can exist together.</li>
+            <li>Repair supports trust after hard moments.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>How does my child respond when I lead with connection first?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson5">
+          <div class="lesson-number">5</div>
+          <h2>Understanding Triggers</h2>
+          <p>Triggers are reminders that make a child’s body react as if danger is near.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Triggers can be sounds, transitions, places, or expectations.</li>
+            <li>Patterns matter more than isolated incidents.</li>
+            <li>Tracking triggers helps with planning and support.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What situations seem to bring out the strongest reactions in my child?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson6">
+          <div class="lesson-number">6</div>
+          <h2>Responding to Anger and Defiance</h2>
+          <p>Anger and pushback often show overwhelm, powerlessness, or misunderstanding.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Stay steady and reduce extra words.</li>
+            <li>Offer clear choices when possible.</li>
+            <li>Reconnect before teaching.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What helps me avoid turning a hard moment into a power struggle?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson7">
+          <div class="lesson-number">7</div>
+          <h2>Responding to Anxiety and Shutdown</h2>
+          <p>Some children show distress through worry, panic, silence, or withdrawal.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Not all distress looks loud.</li>
+            <li>Some children need less pressure, not more.</li>
+            <li>Calm presence can help children feel safer.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>How do I usually respond when my child becomes quiet, frozen, or very worried?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson8">
+          <div class="lesson-number">8</div>
+          <h2>Supporting Children at School</h2>
+          <p>School stress can show up as refusal, stomachaches, anger, or shutdown.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Predictability helps children feel safer.</li>
+            <li>School support works best when it is specific and realistic.</li>
+            <li>Documentation helps caregivers advocate clearly.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What school support could help my child feel safer and more successful?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson9">
+          <div class="lesson-number">9</div>
+          <h2>Parent Self Regulation</h2>
+          <p>Parents need support too. Your nervous system affects the moment.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Small pauses can change the tone of an interaction.</li>
+            <li>Self-regulation is a skill, not perfection.</li>
+            <li>Calm adults support calmer children.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What are my early signs that I am getting overwhelmed too?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+
+        <article class="lesson-card" id="lesson10">
+          <div class="lesson-number">10</div>
+          <h2>Building Long-Term Emotional Safety</h2>
+          <p>Emotional safety is built through many repeated moments of calm, repair, and connection.</p>
+          <h3>Key ideas</h3>
+          <ul class="bullet-list">
+            <li>Consistency matters more than perfection.</li>
+            <li>Repair after conflict helps restore trust.</li>
+            <li>Children grow through repeated safe experiences.</li>
+          </ul>
+          <h3>Reflection</h3>
+          <p>What small change would help my child feel more emotionally safe this week?</p>
+          <a class="top-link" href="#top">Back to top</a>
+        </article>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html">Privacy Policy</a> |
+        <a href="terms.html">Terms</a> |
+        <a href="disclaimer.html">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br>
+        Created by Misty Stonerock<br>
+        Community Behavioral Health Worker | Parent Advocate<br>
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
 
     <nav class="tabbar" aria-label="Primary">
       <a class="tabbar__item" href="index.html">Home</a>
       <a class="tabbar__item" href="behaviors.html">Behaviors</a>
-      <a class="tabbar__item" href="learning.html">Learn</a>
+      <a class="tabbar__item is-active" href="learning.html">Learn</a>
       <a class="tabbar__item" href="tools.html">Tools</a>
       <a class="tabbar__item" href="worksheets-printable.html">Worksheets</a>
     </nav>
