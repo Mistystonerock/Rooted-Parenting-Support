@@ -6,6 +6,26 @@
   <title>Rooted Parenting | Learn</title>
   <link rel="stylesheet" href="styles.css">
   <style>
+    .topic-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .topic-card {
+      border: 1px solid var(--line);
+      background: var(--surface-soft);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .topic-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: var(--accent-strong);
+    }
+
     .lesson-list {
       display: grid;
       gap: 16px;
@@ -51,6 +71,12 @@
       color: var(--accent-strong);
       text-decoration: none;
     }
+
+    @media (max-width: 640px) {
+      .topic-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -65,10 +91,50 @@
 
     <main class="content" id="top">
       <section class="hero">
-        <h2>Trauma-Informed Parenting Lessons</h2>
+        <h2>Learning Topics</h2>
         <p>
-          These lessons help caregivers understand behavior, respond with calm, and build emotional safety over time.
+          Rooted Parenting offers simple trauma-informed lessons to help caregivers understand behavior,
+          support emotional regulation, and build trust over time.
         </p>
+      </section>
+
+      <section class="section-card">
+        <h2>Learning Topics</h2>
+        <div class="topic-grid">
+          <div class="topic-card">
+            <h3>Understanding Behavior</h3>
+            <p>Learn how behavior communicates needs, stress, and emotional overwhelm.</p>
+          </div>
+          <div class="topic-card">
+            <h3>Emotional Development</h3>
+            <p>Understand how children build regulation, coping, and self-expression over time.</p>
+          </div>
+          <div class="topic-card">
+            <h3>Trauma-Informed Care</h3>
+            <p>Use responses that support safety, connection, and healing instead of shame.</p>
+          </div>
+          <div class="topic-card">
+            <h3>Communication Skills</h3>
+            <p>Practice calm words, listening, and supportive responses in hard moments.</p>
+          </div>
+          <div class="topic-card">
+            <h3>Building Trust</h3>
+            <p>Create emotional safety through consistency, repair, and connection.</p>
+          </div>
+          <div class="topic-card">
+            <h3>Positive Discipline</h3>
+            <p>Set limits with calm, respect, and skill-building instead of power struggles.</p>
+          </div>
+          <div class="topic-card">
+            <h3>Supporting Growth</h3>
+            <p>Focus on small changes that build confidence and stronger family relationships.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Rooted Parenting Learning Path</h2>
+        <p>These 10 lessons can be used one at a time or as a full step-by-step learning sequence.</p>
       </section>
 
       <section class="lesson-list">
@@ -82,8 +148,6 @@
             <li>Big reactions may point to fear, overwhelm, shame, or unmet needs.</li>
             <li>Curiosity helps more than labels.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What might my child be feeling or needing underneath this behavior?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -97,8 +161,6 @@
             <li>Stress can affect memory, flexibility, and focus.</li>
             <li>A calm adult can help the brain feel safer.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What behavior makes more sense when I think about stress instead of willful behavior?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -112,8 +174,6 @@
             <li>Safety comes before correction.</li>
             <li>Timing matters during discipline.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What happens when I try to teach while my child is still overwhelmed?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -127,8 +187,6 @@
             <li>Kindness and limits can exist together.</li>
             <li>Repair supports trust after hard moments.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>How does my child respond when I lead with connection first?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -142,8 +200,6 @@
             <li>Patterns matter more than isolated incidents.</li>
             <li>Tracking triggers helps with planning and support.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What situations seem to bring out the strongest reactions in my child?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -157,8 +213,6 @@
             <li>Offer clear choices when possible.</li>
             <li>Reconnect before teaching.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What helps me avoid turning a hard moment into a power struggle?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -172,8 +226,6 @@
             <li>Some children need less pressure, not more.</li>
             <li>Calm presence can help children feel safer.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>How do I usually respond when my child becomes quiet, frozen, or very worried?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -187,8 +239,6 @@
             <li>School support works best when it is specific and realistic.</li>
             <li>Documentation helps caregivers advocate clearly.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What school support could help my child feel safer and more successful?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -202,8 +252,6 @@
             <li>Self-regulation is a skill, not perfection.</li>
             <li>Calm adults support calmer children.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What are my early signs that I am getting overwhelmed too?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
 
@@ -217,8 +265,6 @@
             <li>Repair after conflict helps restore trust.</li>
             <li>Children grow through repeated safe experiences.</li>
           </ul>
-          <h3>Reflection</h3>
-          <p>What small change would help my child feel more emotionally safe this week?</p>
           <a class="top-link" href="#top">Back to top</a>
         </article>
       </section>
