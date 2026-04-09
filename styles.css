@@ -1,75 +1,118 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Learning</title>
-<link rel="stylesheet" href="style.css">
-</head>
+:root {
+  --bg: #f6f1ea;
+  --surface: #fffdf9;
+  --surface-soft: #f0efe8;
+  --surface-strong: #e6e0d6;
+  --text: #2f3538;
+  --muted: #6e7478;
+  --accent: #7f8f79;
+  --accent-strong: #5f6f5a;
+  --line: #ddd6ca;
+  --shadow: 0 8px 24px rgba(37, 50, 56, 0.08);
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+  --max: 430px;
+}
 
-<body>
+* {
+  box-sizing: border-box;
+}
 
-<div class="app-shell">
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Segoe UI", Calibri, Arial, sans-serif;
+  background: linear-gradient(180deg, #f7f4ee 0%, var(--bg) 100%);
+  color: var(--text);
+}
 
-<header class="topbar">
-<div>
-<p class="eyebrow">Rooted Parenting Support</p>
-<h1>Learning</h1>
-</div>
-</header>
+body {
+  display: flex;
+  justify-content: center;
+}
 
+.app-shell {
+  width: 100%;
+  max-width: var(--max);
+  min-height: 100vh;
+  padding: 16px 16px 96px;
+}
 
-<section class="section-card">
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 2px 18px;
+}
 
-<h2>Learning Topics</h2>
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 
-<ul class="bullet-list">
-<li>Understanding behavior</li>
-<li>Emotional development</li>
-<li>Trauma informed care</li>
-<li>Communication skills</li>
-<li>Building trust</li>
-<li>Positive discipline</li>
-<li>Supporting growth</li>
-</ul>
+.content {
+  display: grid;
+  gap: 18px;
+}
 
-</section>
+.section-card {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
 
+.bullet-list {
+  padding-left: 20px;
+  line-height: 1.6;
+  color: var(--muted);
+}
 
-<footer class="site-footer">
-Rooted Parenting Support Program<br>
-Created by Misty Stonerock<br>
-Community Behavioral Health Worker | Parent Advocate<br>
-© 2026 Misty Stonerock. All Rights Reserved.
-</footer>
+.site-footer {
+  margin-top: 24px;
+  padding: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #6b705c;
+  border-top: 1px solid #e5e5e5;
+}
 
+.tabbar {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--max);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 12px;
+  background: #fff;
+  border-top: 1px solid var(--line);
+}
 
-</div>
+.tabbar__item {
+  min-height: 58px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  color: var(--muted);
+}
 
+.tabbar__item.is-active {
+  background: var(--surface-strong);
+  color: var(--accent-strong);
+  font-weight: 700;
+}
 
-<nav class="tabbar">
-
-<a href="index.html">
-<button class="tabbar__item">Home</button>
-</a>
-
-<a href="behaviors.html">
-<button class="tabbar__item">Behaviors</button>
-</a>
-
-<a href="learning.html">
-<button class="tabbar__item is-active">Learn</button>
-</a>
-
-<a href="tools.html">
-<button class="tabbar__item">Tools</button>
-</a>
-
-<a href="worksheets.html">
-<button class="tabbar__item">Worksheets</button>
-</a>
-
-</nav>
-
-
-</body>
-</html>
+.tabbar a {
+  text-decoration: none;
+}
