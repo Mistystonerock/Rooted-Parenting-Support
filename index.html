@@ -1,28 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f4f1eb" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rooted Parenting</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Rooted Parenting</p>
-        <h1 id="screen-title">Home</h1>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Home</h1>
       </div>
-      <button class="top-action" id="home-quick-action" type="button">Help Me Right Now</button>
+      <a class="top-action" href="tools.html">Help Me Right Now</a>
     </header>
 
-    <main class="content" id="app-content" aria-live="polite"></main>
+    <main class="content">
+      <section class="hero">
+        <h2>Rooted Parenting</h2>
+        <p><strong>Trauma-Informed Support for Families</strong></p>
+        <p>
+          Welcome to Rooted Parenting. This app is designed to help parents understand behavior,
+          respond with calm, and build emotional safety at home.
+        </p>
+        <p>Inside this app, you will find:</p>
+        <ul class="bullet-list">
+          <li>Behavior guides for hard moments</li>
+          <li>Trauma-informed parenting lessons</li>
+          <li>Parent calm tools</li>
+          <li>Printable worksheets</li>
+        </ul>
+        <p>
+          You do not have to be perfect. Small changes in response can make a big difference over time.
+        </p>
+      </section>
 
-    <template id="home-resources-template">
+      <section class="section-card">
+        <h2>Start Here if Today Feels Hard</h2>
+        <ul class="bullet-list">
+          <li>Start with safety and a calm body before problem-solving.</li>
+          <li>Choose one behavior guide to understand what your child may be communicating.</li>
+          <li>Use the Tools page when you need grounding prompts or fewer-word scripts.</li>
+          <li>Use Learn and Worksheets to support the next step, not just the hard moment.</li>
+        </ul>
+      </section>
+
+      <section class="section-card">
+        <h2>About Rooted Parenting</h2>
+        <p>
+          Rooted Parenting is a trauma-informed parenting support program designed to help caregivers understand behavior,
+          respond with calm, and build emotional safety at home.
+        </p>
+        <p>
+          The program includes lessons, behavior response guidance, reflection tools, and printable worksheets that support parents in navigating emotional and behavioral challenges.
+        </p>
+        <h3>Program Goals</h3>
+        <ul class="bullet-list">
+          <li>Increase parent confidence</li>
+          <li>Reduce power struggles</li>
+          <li>Support emotional regulation</li>
+          <li>Improve parent-child connection</li>
+          <li>Provide real-time guidance during difficult moments</li>
+        </ul>
+      </section>
+
+      <section class="section-card">
+        <h2>Quick Access</h2>
+        <div class="hero-actions hero-actions--stacked">
+          <a class="resource-link" href="behaviors.html">Behavior Support</a>
+          <a class="resource-link" href="learning.html">Learning Path</a>
+          <a class="resource-link" href="tools.html">Parent Calm Tools</a>
+          <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Printable Worksheets</a>
+        </div>
+      </section>
+
       <section class="section-card">
         <h2>Resources</h2>
-        <p>Open printable and facilitator resources from the Home screen.</p>
+        <p>Open printable and facilitator resources from the home screen.</p>
         <div class="hero-actions hero-actions--stacked">
           <a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Download Parent Workbook</a>
           <a class="resource-link" href="rooted-parenting-facilitator-guide.html" target="_blank" rel="noopener noreferrer">Facilitator Guide</a>
@@ -30,17 +85,29 @@
           <a class="resource-link" href="rooted-parenting-one-page-summary.html" target="_blank" rel="noopener noreferrer">One-Page Program Summary</a>
         </div>
       </section>
-    </template>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html">Privacy Policy</a> |
+        <a href="terms.html">Terms</a> |
+        <a href="disclaimer.html">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br>
+        Created by Misty Stonerock<br>
+        Community Behavioral Health Worker | Parent Advocate<br>
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
 
     <nav class="tabbar" aria-label="Primary">
-      <button class="tabbar__item" data-route="home" type="button">Home</button>
-      <button class="tabbar__item" data-route="behaviors" type="button">Behaviors</button>
-      <button class="tabbar__item" data-route="learning" type="button">Learn</button>
-      <button class="tabbar__item" data-route="tools" type="button">Tools</button>
-      <button class="tabbar__item" data-route="worksheets" type="button">Worksheets</button>
+      <a class="tabbar__item is-active" href="index.html">Home</a>
+      <a class="tabbar__item" href="behaviors.html">Behaviors</a>
+      <a class="tabbar__item" href="learning.html">Learn</a>
+      <a class="tabbar__item" href="tools.html">Tools</a>
+      <a class="tabbar__item" href="worksheets-printable.html">Worksheets</a>
     </nav>
   </div>
-
-  <script src="app.js"></script>
 </body>
 </html>
