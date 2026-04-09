@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Resources</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f7f4ee;
+      color: #2f3538;
+      margin: 0;
+      padding: 24px;
+    }
+    .page {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    h1 {
+      margin-top: 0;
+      color: #637260;
+    }
+    .links {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+    .links a {
+      display: block;
+      text-decoration: none;
+      background: #a3ad8f;
+      color: white;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      text-align: center;
+    }
+    .links a.secondary {
+      background: white;
+      color: #2f3538;
+      border: 1px solid #d8d1c6;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="card">
+      <h1>Rooted Parenting Resources</h1>
+      <p>Printable and professional tools for parents, caregivers, and facilitators.</p>
+
+      <div class="links">
+        <a href="rooted-parenting-workbook.html" target="_blank">Parent Workbook</a>
+        <a href="rooted-parenting-facilitator-guide.html" target="_blank">Facilitator Guide</a>
+        <a href="worksheets-printable.html" target="_blank">Printable Worksheets</a>
+        <a href="rooted-parenting-one-page-summary.html" target="_blank">One Page Summary</a>
+        <a class="secondary" href="index.html">Back to Home</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
