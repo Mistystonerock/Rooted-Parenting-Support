@@ -1078,6 +1078,7 @@ function pathCard(lesson, index, total) {
   `;
 }
 
+// Home screen content, including public resources and court/CPS packet links.
 function renderHome() {
   screenTitle.textContent = "Home";
   appContentRoot.innerHTML = `
@@ -1530,6 +1531,7 @@ function renderTools() {
   `;
 }
 
+// Worksheets screen content, including printable tools and the professional packet.
 function renderWorksheets() {
   screenTitle.textContent = "Worksheets";
   appContentRoot.innerHTML = `
