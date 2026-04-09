@@ -564,3 +564,15 @@ button {
     font-size: 12px;
   }
 }
+.site-footer {
+  margin-top: 24px;
+  padding: 20px;
+  font-size: 14px;
+  text-align: center;
+  color: #6b705c;
+  border-top: 1px solid #e5e5e5;
+}
+
+.tabbar a {
+  text-decoration: none;
+}
