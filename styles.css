@@ -49,6 +49,20 @@ button {
   cursor: pointer;
 }
 
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: #fff;
+  color: var(--text);
+}
+
+textarea {
+  resize: vertical;
+}
+
 .app-shell {
   width: 100%;
   max-width: var(--max);
@@ -154,6 +168,12 @@ button {
 .bullet-list li {
   color: var(--muted);
   line-height: 1.5;
+}
+
+.hero p:last-child,
+.section-card p:last-child,
+.detail-card p:last-child {
+  margin-bottom: 0;
 }
 
 .button-card {
