@@ -58,6 +58,7 @@
       gap: 8px;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -122,10 +123,9 @@
     </nav>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
-    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+    const SUPABASE_URL = "https://ywtedcodxapfiytysevl.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_IfDW6DCXEFx6d9FTEpHRQw_F-fpnk-1";
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     async function loadCertificate() {
@@ -149,3 +149,4 @@
   </script>
 </body>
 </html>
+
