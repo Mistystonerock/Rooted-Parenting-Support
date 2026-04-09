@@ -34,7 +34,9 @@ body {
 }
 
 a,
-button {
+button,
+input,
+textarea {
   font: inherit;
 }
 
@@ -154,12 +156,6 @@ button {
   line-height: 1.5;
 }
 
-.hero p:last-child,
-.section-card p:last-child,
-.detail-card p:last-child {
-  margin-bottom: 0;
-}
-
 .button-card {
   min-height: 112px;
   text-align: left;
@@ -219,6 +215,16 @@ button {
   background: var(--surface);
   color: var(--accent-strong);
   border: 1px solid var(--line);
+}
+
+.auth-input {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0 14px;
+  background: #fff;
+  color: var(--text);
 }
 
 .bullet-list {
@@ -283,6 +289,23 @@ button {
 }
 
 @media (max-width: 640px) {
+  .app-shell {
+    padding: 14px 14px 92px;
+  }
+
+  .topbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar h1 {
+    font-size: 27px;
+  }
+
+  .hero-actions {
+    grid-template-columns: 1fr;
+  }
+
   .tabbar {
     gap: 6px;
     padding-left: 10px;
