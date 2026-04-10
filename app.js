@@ -582,6 +582,103 @@ const fallbackContent = {
       description: "Make a calm plan for your own nervous system during hard moments.",
       href: "worksheets-printable.html"
     }
+  ],
+  courses: [
+    {
+      slug: "foundations-of-safe-and-effective-parenting",
+      title: "Rooted Parenting Foundations",
+      cpsTitle: "Foundations of Safe and Effective Parenting",
+      icon: "FP",
+      description:
+        "A core parent education course focused on understanding child behavior, responding with calm, building emotional safety, and improving parent-child connection.",
+      completionStandard:
+        "Complete all required lessons or sessions, participate in reflection and home practice, and demonstrate engagement with core parenting skills.",
+      certificateName:
+        "Certificate of Completion: Foundations of Safe and Effective Parenting",
+      includes: [
+        "Understanding behavior as communication",
+        "Regulation before discipline",
+        "Connection before correction",
+        "Parent-child practice activities",
+        "Reflection, progress tracking, and certificate completion"
+      ]
+    },
+    {
+      slug: "positive-discipline-structure-and-follow-through",
+      title: "Positive Discipline and Follow-Through",
+      cpsTitle: "Positive Discipline, Structure, and Follow-Through",
+      icon: "PD",
+      description:
+        "A caregiver skill-building course focused on limits, routines, consequences, consistency, and reinforcement to reduce reactive discipline and increase calm follow-through.",
+      completionStandard:
+        "Complete all required lessons or sessions, participate in parent-child practice activities, and show understanding of reinforcement, routines, and safe consequences.",
+      certificateName:
+        "Certificate of Completion: Positive Discipline, Structure, and Follow-Through",
+      includes: [
+        "Healthy reward and reinforcement systems",
+        "Developmentally appropriate consequences",
+        "Routine building and follow-through",
+        "Reducing power struggles",
+        "Home practice for consistency"
+      ]
+    },
+    {
+      slug: "trauma-informed-parenting-and-behavior-support",
+      title: "Trauma-Informed Parenting",
+      cpsTitle: "Trauma-Informed Parenting and Behavior Support",
+      icon: "TI",
+      description:
+        "A course that helps caregivers understand how trauma and chronic stress affect behavior, regulation, attachment, and learning, with a focus on safety and predictability.",
+      completionStandard:
+        "Complete all required lessons or sessions, participate in reflection and skills practice, and demonstrate understanding of trauma-informed parenting principles.",
+      certificateName:
+        "Certificate of Completion: Trauma-Informed Parenting and Behavior Support",
+      includes: [
+        "How trauma affects the brain and behavior",
+        "Predictability, safety, and co-regulation",
+        "Reducing shame-based responses",
+        "Supporting anxious, shut down, or aggressive behavior",
+        "Caregiver reflection and home practice"
+      ]
+    },
+    {
+      slug: "behavior-stabilization-and-parent-response-skills",
+      title: "Behavior Support Basics",
+      cpsTitle: "Behavior Stabilization and Parent Response Skills",
+      icon: "BS",
+      description:
+        "A practical course for caregivers of children with aggression, defiance, anxiety, shutdown, lying, school refusal, and emotional overload.",
+      completionStandard:
+        "Complete all required lessons or sessions, practice at least one assigned behavior-support tool between sessions, and demonstrate engagement with calm response strategies.",
+      certificateName:
+        "Certificate of Completion: Behavior Stabilization and Parent Response Skills",
+      includes: [
+        "Support for defiance, aggression, and shutdown",
+        "Behavior guides for school refusal and anxiety",
+        "Calm scripts and response plans",
+        "Replacement skill teaching",
+        "Documentation and progress review"
+      ]
+    },
+    {
+      slug: "reunification-parenting-skills-and-family-stabilization",
+      title: "Reunification Parenting Support",
+      cpsTitle: "Reunification Parenting Skills and Family Stabilization",
+      icon: "RF",
+      description:
+        "A structured course for caregivers working toward reunification or family stabilization, with emphasis on rebuilding trust, routines, calm structure, and repair.",
+      completionStandard:
+        "Complete all required lessons or sessions, participate in reflection and assigned family practice tasks, and demonstrate engagement with safety, structure, and relationship-building content.",
+      certificateName:
+        "Certificate of Completion: Reunification Parenting Skills and Family Stabilization",
+      includes: [
+        "Rebuilding trust and emotional safety",
+        "Predictable routines and caregiver consistency",
+        "Repair after conflict or separation stress",
+        "Family stabilization planning",
+        "Completion documentation for referring systems"
+      ]
+    }
   ]
 };
 
@@ -1078,6 +1175,21 @@ function pathCard(lesson, index, total) {
   `;
 }
 
+function courseCard(course) {
+  return `
+    <button class="list-card" type="button" data-course="${course.slug}">
+      <div class="card-head">
+        <span class="icon-badge">${course.icon}</span>
+        <div>
+          <strong>${course.title}</strong>
+          <span>${course.cpsTitle}</span>
+          <p>${course.description}</p>
+        </div>
+      </div>
+    </button>
+  `;
+}
+
 // Home screen content, including public resources and court/CPS packet links.
 function renderHome() {
   screenTitle.textContent = "Home";
@@ -1109,6 +1221,14 @@ function renderHome() {
       <button class="button-card" type="button" data-route-link="tools">
         <strong>Tools</strong>
         <span>Short tools to help you slow down, stay grounded, and reconnect.</span>
+      </button>
+      <button class="button-card" type="button" data-route-link="courses">
+        <strong>Courses</strong>
+        <span>Open CPS-friendly course tracks, completion standards, and certificate options.</span>
+      </button>
+      <button class="button-card" type="button" data-route-link="progress">
+        <strong>Progress Tracker</strong>
+        <span>Check completed lessons, next steps, and parenting program documents.</span>
       </button>
       <button class="button-card" type="button" data-route-link="worksheets">
         <strong>Worksheets</strong>
@@ -1154,6 +1274,7 @@ function renderHome() {
         <a class="resource-link" href="rooted-parenting-facilitator-guide.html" target="_blank" rel="noopener noreferrer">Facilitator Guide</a>
         <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Printable Worksheets</a>
         <a class="resource-link" href="rooted-parenting-one-page-summary.html" target="_blank" rel="noopener noreferrer">One-Page Program Summary</a>
+        <button class="resource-link" type="button" data-route-link="progress">Open Progress Tracker</button>
       </div>
     </section>
 
@@ -1161,12 +1282,113 @@ function renderHome() {
       <h2>For Courts and Agencies</h2>
       <p>Use these printable tools to present Rooted Parenting as a structured caregiver intervention for juvenile court, CPS, school family support, diversion, and community-based parent education.</p>
       <div class="hero-actions hero-actions--stacked">
+        <button class="resource-link" type="button" data-route-link="courses">Open Course Catalog</button>
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
         <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Pre/Post Parenting Assessment</a>
         <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
         <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
+      </div>
+    </section>
+  `;
+}
+
+function renderCoursesList() {
+  screenTitle.textContent = "Courses";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Course catalog</h2>
+      <p>These five CPS-friendly course tracks help position Rooted Parenting as a structured parent education program with clear completion standards and certificate options.</p>
+      <div class="pill-row">
+        <span class="pill">${appContent.courses.length} course tracks</span>
+        <span class="pill">CPS-friendly titles</span>
+        <span class="pill">Certificate ready</span>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>How to use the courses</h2>
+      ${bulletList([
+        "Assign a course track based on the family's referral reason or service plan.",
+        "Use the learning path, behavior guides, and worksheets as supporting materials.",
+        "Document progress with the in-app Progress Tracker and printable reports.",
+        "Issue a certificate when the completion standard is met."
+      ])}
+    </section>
+
+    <section class="detail-stack">
+      ${appContent.courses.map(courseCard).join("")}
+    </section>
+  `;
+}
+
+function renderCourseDetail(slug) {
+  const course = appContent.courses.find((item) => item.slug === slug);
+
+  if (!course) {
+    screenTitle.textContent = "Not Found";
+    appContentRoot.innerHTML = `
+      <section class="section-card">
+        <h2>Course not found</h2>
+        <p>Please go back to the course catalog and choose another course.</p>
+        <button class="button-card" type="button" data-route-link="courses">
+          <strong>Back to Courses</strong>
+          <span>Return to the full course catalog.</span>
+        </button>
+      </section>
+    `;
+    return;
+  }
+
+  screenTitle.textContent = course.title;
+  appContentRoot.innerHTML = `
+    <section class="detail-card">
+      <div class="detail-card__header">
+        <span class="behavior-tag">Courses</span>
+        <button class="back-link" type="button" data-route-link="courses">Back</button>
+      </div>
+      <div class="card-head">
+        <span class="icon-badge">${course.icon}</span>
+        <div>
+          <h2>${course.title}</h2>
+          <p><strong>${course.cpsTitle}</strong></p>
+          <p>${course.description}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>What this course includes</h3>
+      ${bulletList(course.includes)}
+    </section>
+
+    <section class="detail-card">
+      <h3>Completion standard</h3>
+      <div class="action-box">
+        <strong>Recommended standard</strong>
+        <p>${course.completionStandard}</p>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Certificate name</h3>
+      <div class="note-box">
+        <p>${course.certificateName}</p>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Recommended app supports</h3>
+      ${bulletList([
+        "Use the Learn section for lesson content and parent reflection.",
+        "Use Behaviors for situation-specific response guidance.",
+        "Use Tools for in-the-moment parent regulation support.",
+        "Use Worksheets and Progress Tracker for documentation and follow-through."
+      ])}
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-route-link="learning">Open Learning Path</button>
+        <button class="secondary-button" type="button" data-route-link="progress">Open Progress Tracker</button>
       </div>
     </section>
   `;
@@ -1520,6 +1742,14 @@ function renderTools() {
       </button>
     </section>
     <section class="section-card">
+      <h2>Track your progress</h2>
+      <p>See completed lessons, next steps, and program documentation in one place.</p>
+      <button class="button-card" type="button" data-route-link="progress">
+        <strong>Open Progress Tracker</strong>
+        <span>Lesson completion, assessment access, and documentation tools.</span>
+      </button>
+    </section>
+    <section class="section-card">
       <h2>Self-regulation reminders</h2>
       ${bulletList([
         "My child is having a hard time, not trying to be hard.",
@@ -1527,6 +1757,93 @@ function renderTools() {
         "Connection helps change happen.",
         "I do not need to solve everything in this moment."
       ])}
+    </section>
+  `;
+}
+
+function renderProgressTracker() {
+  const completedLessons = getCompletedLessons();
+  const totalLessons = appContent.learningPath.length;
+  const completedCount = completedLessons.length;
+  const remainingCount = Math.max(totalLessons - completedCount, 0);
+  const percent = totalLessons ? Math.round((completedCount / totalLessons) * 100) : 0;
+  const nextLessons = appContent.learningPath
+    .filter((lesson) => !completedLessons.includes(lesson.slug))
+    .slice(0, 3);
+
+  screenTitle.textContent = "Progress Tracker";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Your progress</h2>
+      <p>Track completed lessons, see what is left, and keep moving through the Rooted Parenting learning path one step at a time.</p>
+      <div class="pill-row">
+        <span class="pill">${completedCount} completed</span>
+        <span class="pill">${remainingCount} remaining</span>
+        <span class="pill">${percent}% finished</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <div class="detail-progress">
+        <div class="path-meta">
+          <span class="path-step">Course progress</span>
+          <span class="icon-badge">${percent}%</span>
+        </div>
+        <div class="path-progress" aria-hidden="true"><span style="width:${percent}%"></span></div>
+      </div>
+      <p>${completedCount} of ${totalLessons} learning path lessons have been marked complete.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-route-link="learning">Open Learning Path</button>
+        <button class="secondary-button" type="button" data-route-link="courses">Open Course Catalog</button>
+        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Open Pre/Post Assessment</a>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Completed lessons</h3>
+      ${
+        completedCount
+          ? `<div class="pill-row">${completedLessons
+              .map((slug) => {
+                const lesson = appContent.learningPath.find((item) => item.slug === slug);
+                return lesson
+                  ? `<button class="pill" type="button" data-path-lesson="${lesson.slug}">${escapeHtml(lesson.title)}</button>`
+                  : "";
+              })
+              .join("")}</div>`
+          : `<p>No lessons have been marked complete yet. Start with the Learning Path and use the "Mark Complete" button after each lesson.</p>`
+      }
+    </section>
+
+    <section class="detail-card">
+      <h3>Next recommended lessons</h3>
+      ${
+        nextLessons.length
+          ? nextLessons
+              .map(
+                (lesson) => `
+                  <button class="list-card" type="button" data-path-lesson="${lesson.slug}">
+                    <strong>${lesson.title}</strong>
+                    <span>${lesson.explanation}</span>
+                  </button>
+                `
+              )
+              .join("")
+          : `<p>You have completed all current lessons. You can revisit any lesson, use the worksheets, or print the documentation materials below.</p>`
+      }
+    </section>
+
+    <section class="detail-card">
+      <h3>Program documentation</h3>
+      ${bulletList([
+        "Use the pre/post parenting assessment to document parent-reported growth.",
+        "Use the attendance and progress report for court, CPS, school, or agency documentation.",
+        "Use the completion certificate template after the required lessons or sessions are finished."
+      ])}
+      <div class="hero-actions hero-actions--stacked">
+        <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
+        <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
+      </div>
     </section>
   `;
 }
@@ -1542,6 +1859,7 @@ function renderWorksheets() {
       <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Open Printable Worksheet Pages</a>
       <a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Download Parent Workbook</a>
       <a class="resource-link" href="rooted-parenting-facilitator-guide.html" target="_blank" rel="noopener noreferrer">Facilitator Guide</a>
+      <button class="resource-link" type="button" data-route-link="progress">Open Progress Tracker</button>
     </section>
     <section class="section-card">
       <h2>Professional Packet</h2>
@@ -1604,6 +1922,12 @@ function renderRoute() {
     case "lesson":
       renderLearningDetail(slug);
       break;
+    case "courses":
+      renderCoursesList();
+      break;
+    case "course":
+      renderCourseDetail(slug);
+      break;
     case "path":
       renderPathLesson(slug);
       break;
@@ -1612,6 +1936,9 @@ function renderRoute() {
       break;
     case "tools":
       renderTools();
+      break;
+    case "progress":
+      renderProgressTracker();
       break;
     case "worksheets":
       renderWorksheets();
@@ -1695,7 +2022,10 @@ function updateTabState(section) {
   const activeMap = {
     behavior: "behaviors",
     lesson: "learning",
+    courses: "learning",
+    course: "learning",
     path: "learning",
+    progress: "learning",
     onboarding: "home"
   };
   const active = activeMap[section] || section || "home";
@@ -1720,6 +2050,12 @@ document.addEventListener("click", (event) => {
   const learningButton = event.target.closest("[data-learning]");
   if (learningButton) {
     setRoute(`lesson/${learningButton.dataset.learning}`);
+    return;
+  }
+
+  const courseButton = event.target.closest("[data-course]");
+  if (courseButton) {
+    setRoute(`course/${courseButton.dataset.course}`);
     return;
   }
 
@@ -1788,7 +2124,8 @@ async function loadAppContent() {
         ...supplementalBehaviorGuides
       ],
       calmTools: fallbackContent.calmTools,
-      worksheets: fallbackContent.worksheets
+      worksheets: fallbackContent.worksheets,
+      courses: fallbackContent.courses
     };
     appContent.behaviors = appContent.behaviors.map((behavior) => ({
       ...behavior
