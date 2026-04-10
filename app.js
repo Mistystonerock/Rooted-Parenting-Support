@@ -1408,7 +1408,23 @@ const assessmentStorageKey = "rooted-parenting-assessment";
 const worksheetStorageKey = "rooted-parenting-worksheets";
 const dailyHabitTrackerStorageKey = "rooted-parenting-daily-habit-tracker";
 const supervisorPortalStorageKey = "rooted-parenting-supervisor-portal";
+const accessStorageKey = "rooted-parenting-access-state";
+const accessMessageStorageKey = "rooted-parenting-access-message";
 const quizFeedbackState = {};
+const accessCodeDefinitions = {
+  ROOTEDCARE2026: {
+    premiumParent: true,
+    professional: false,
+    message:
+      "Scholarship premium access has been unlocked on this device."
+  },
+  ROOTEDPRO2026: {
+    premiumParent: true,
+    professional: true,
+    message:
+      "Professional access has been unlocked on this device."
+  }
+};
 
 fallbackContent.learningPath[0].sections = [
   {
@@ -1884,6 +1900,129 @@ function setRoute(route) {
   window.location.hash = route;
 }
 
+function normalizeAccessState(state) {
+  const nextState = state || {};
+  return {
+    premiumParent: !!nextState.premiumParent,
+    professional: !!nextState.professional
+  };
+}
+
+function getAccessState() {
+  try {
+    const raw = window.localStorage.getItem(accessStorageKey);
+    return normalizeAccessState(raw ? JSON.parse(raw) : {});
+  } catch (error) {
+    return normalizeAccessState({});
+  }
+}
+
+function saveAccessState(state) {
+  window.localStorage.setItem(accessStorageKey, JSON.stringify(normalizeAccessState(state)));
+}
+
+function hasProfessionalAccess() {
+  return getAccessState().professional;
+}
+
+function hasPremiumAccess() {
+  const access = getAccessState();
+  return access.premiumParent || access.professional;
+}
+
+function getAccessLabel() {
+  const access = getAccessState();
+  if (access.professional) return "Professional Access";
+  if (access.premiumParent) return "Premium Parent Access";
+  return "Free Access";
+}
+
+function applyAccessFromQuery() {
+  const url = new URL(window.location.href);
+  const accessParam = url.searchParams.get("access");
+  if (!accessParam) return;
+
+  const nextState = getAccessState();
+  if (accessParam === "premium-parent" || accessParam === "lifetime-parent") {
+    nextState.premiumParent = true;
+  }
+  if (accessParam === "professional") {
+    nextState.professional = true;
+    nextState.premiumParent = true;
+  }
+  saveAccessState(nextState);
+
+  url.searchParams.delete("access");
+  window.history.replaceState({}, document.title, url.toString());
+}
+
+function getAccessMessage() {
+  return window.localStorage.getItem(accessMessageStorageKey) || "";
+}
+
+function setAccessMessage(message) {
+  if (!message) {
+    window.localStorage.removeItem(accessMessageStorageKey);
+    return;
+  }
+
+  window.localStorage.setItem(accessMessageStorageKey, message);
+}
+
+function redeemAccessCode(rawCode) {
+  const code = String(rawCode || "").trim().toUpperCase();
+  const unlock = accessCodeDefinitions[code];
+
+  if (!unlock) {
+    setAccessMessage("That access code was not recognized.");
+    return false;
+  }
+
+  const nextState = getAccessState();
+  nextState.premiumParent = unlock.premiumParent || nextState.premiumParent;
+  nextState.professional = unlock.professional || nextState.professional;
+  saveAccessState(nextState);
+  setAccessMessage(unlock.message);
+  return true;
+}
+
+function isFreeLearningLesson(index) {
+  return index < 3;
+}
+
+function renderPremiumUpgradeCard(options = {}) {
+  const title = options.title || "Premium Feature";
+  const text =
+    options.text ||
+    "This part of Rooted Parenting is part of the premium parent program.";
+  return `
+    <section class="section-card">
+      <h2>${title}</h2>
+      <p>${text}</p>
+      <div class="hero-actions hero-actions--stacked">
+        <a class="primary-button" href="https://buy.stripe.com/aFa28r2Ti79A1KO67R4ko00" target="_blank" rel="noopener noreferrer">Start 3-Day Free Trial</a>
+        <a class="secondary-button" href="https://buy.stripe.com/cNi28r2TieC2cps3ZJ4ko01" target="_blank" rel="noopener noreferrer">Get Lifetime Access</a>
+      </div>
+    </section>
+  `;
+}
+
+function renderProfessionalUpgradeCard(options = {}) {
+  const title = options.title || "Professional Feature";
+  const text =
+    options.text ||
+    "This section is reserved for professional and agency access.";
+  return `
+    <section class="section-card">
+      <h2>${title}</h2>
+      <p>${text}</p>
+      <div class="hero-actions hero-actions--stacked">
+        <a class="primary-button" href="https://buy.stripe.com/14A28reC065w1KOcwf4ko02" target="_blank" rel="noopener noreferrer">Get Professional Access</a>
+      </div>
+    </section>
+  `;
+}
+
 function getCompletedLessons() {
   try {
     const raw = window.localStorage.getItem(completionStorageKey);
@@ -2211,8 +2350,9 @@ function topicCard(page) {
 function pathCard(lesson, index, total) {
   const percent = Math.round(((index + 1) / total) * 100);
   const completed = isLessonComplete(lesson.slug);
+  const unlocked = hasPremiumAccess() || isFreeLearningLesson(index);
   return `
-    <button class="path-card" type="button" data-path-lesson="${lesson.slug}">
+    <button class="path-card" type="button" ${unlocked ? `data-path-lesson="${lesson.slug}"` : 'data-route-link="home"'} >
       <div class="path-meta">
         <span class="path-step">Lesson ${index + 1} of ${total}</span>
         <div class="path-progress" aria-hidden="true"><span style="width:${percent}%"></span></div>
@@ -2224,6 +2364,7 @@ function pathCard(lesson, index, total) {
           <p>${lesson.explanation}</p>
           <div class="pill-row">
             <span class="status-pill ${completed ? "is-complete" : ""}">${completed ? "Completed" : "Not completed"}</span>
+            <span class="status-pill ${unlocked ? "is-complete" : ""}">${unlocked ? "Available" : "Premium"}</span>
           </div>
         </div>
       </div>
@@ -2249,6 +2390,8 @@ function courseCard(course) {
 // Home screen content, including public resources and court/CPS packet links.
 function renderHome() {
   const assignedCourse = getAssignedCourse();
+  const accessState = getAccessState();
+  const accessMessage = getAccessMessage();
   screenTitle.textContent = "Home";
   appContentRoot.innerHTML = `
     <section class="hero">
@@ -2283,17 +2426,23 @@ function renderHome() {
         <strong>Courses</strong>
         <span>Open CPS-friendly course tracks, completion standards, and certificate options.</span>
       </button>
-      <button class="button-card" type="button" data-route-link="supervisor">
-        <strong>Supervisor Portal</strong>
-        <span>View assigned tracks, weekly summaries, and CPS-friendly progress snapshots.</span>
-      </button>
-      <button class="button-card" type="button" data-route-link="progress">
+      ${
+        hasProfessionalAccess()
+          ? `
+            <button class="button-card" type="button" data-route-link="supervisor">
+              <strong>Supervisor Portal</strong>
+              <span>View assigned tracks, weekly summaries, and CPS-friendly progress snapshots.</span>
+            </button>
+          `
+          : ""
+      }
+      <button class="button-card" type="button" data-route-link="${hasPremiumAccess() ? "progress" : "home"}">
         <strong>Progress Tracker</strong>
-        <span>Check completed lessons, next steps, and parenting program documents.</span>
+        <span>${hasPremiumAccess() ? "Check completed lessons, next steps, and parenting program documents." : "Premium feature for lesson progress, workbook tools, and certificate tracking."}</span>
       </button>
-      <button class="button-card" type="button" data-route-link="worksheets">
+      <button class="button-card" type="button" data-route-link="${hasPremiumAccess() ? "worksheets" : "home"}">
         <strong>Worksheets</strong>
-        <span>Printable pages for reflection, planning, and support.</span>
+        <span>${hasPremiumAccess() ? "Fillable pages for reflection, planning, and support." : "Premium feature for fillable worksheets and saved parenting forms."}</span>
       </button>
       <button class="button-card" type="button" data-route-link="school">
         <strong>School Support</strong>
@@ -2323,7 +2472,11 @@ function renderHome() {
             <p>${assignedCourse.description}</p>
             <div class="hero-actions hero-actions--stacked">
               <button class="primary-button" type="button" data-course="${assignedCourse.slug}">Open Assigned Track</button>
-              <button class="secondary-button" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+              ${
+                hasProfessionalAccess()
+                  ? '<button class="secondary-button" type="button" data-route-link="supervisor">Open Supervisor Portal</button>'
+                  : ""
+              }
             </div>
           </section>
         `
@@ -2345,16 +2498,54 @@ function renderHome() {
     </section>
 
     <section class="section-card">
+      <h2>Your Access</h2>
+      <p><strong>${getAccessLabel()}</strong></p>
+      <p>${
+        accessState.professional
+          ? "Professional tools, staff portal access, and premium parent content are available on this device."
+          : accessState.premiumParent
+            ? "Premium parent content is unlocked on this device, including the 21-day program, workbook, trackers, and assessments."
+            : "You are currently using the free version. Premium sections will show upgrade buttons when you reach them."
+      }</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Access or scholarship code</span>
+          <input id="access-code-input" type="text" placeholder="Enter an access code" />
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="secondary-button" type="button" data-redeem-access-code="true">Apply Access Code</button>
+        </div>
+      </div>
+      ${
+        accessMessage
+          ? `
+            <div class="note-box">
+              <p>${escapeHtml(accessMessage)}</p>
+            </div>
+          `
+          : ""
+      }
+    </section>
+
+    <section class="section-card">
       <h2>Resources</h2>
       <p>Open printable and facilitator resources from the Home screen.</p>
       <div class="hero-actions hero-actions--stacked">
         <a class="resource-link" href="parent-login.html" target="_blank" rel="noopener noreferrer">Parent Sign In</a>
         <a class="resource-link" href="parent-setup.html" target="_blank" rel="noopener noreferrer">Family Setup</a>
-        <a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Download Parent Workbook</a>
+        ${
+          hasPremiumAccess()
+            ? `<a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Open Parent Workbook</a>`
+            : `<a class="resource-link" href="https://buy.stripe.com/aFa28r2Ti79A1KO67R4ko00" target="_blank" rel="noopener noreferrer">Upgrade for Full Workbook</a>`
+        }
         <a class="resource-link" href="rooted-parenting-facilitator-guide.html" target="_blank" rel="noopener noreferrer">Facilitator Guide</a>
         <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Printable Worksheets</a>
         <a class="resource-link" href="rooted-parenting-one-page-summary.html" target="_blank" rel="noopener noreferrer">One-Page Program Summary</a>
-        <button class="resource-link" type="button" data-route-link="progress">Open Progress Tracker</button>
+        ${
+          hasPremiumAccess()
+            ? `<button class="resource-link" type="button" data-route-link="progress">Open Progress Tracker</button>`
+            : `<a class="resource-link" href="https://buy.stripe.com/aFa28r2Ti79A1KO67R4ko00" target="_blank" rel="noopener noreferrer">Upgrade for Progress Tracker</a>`
+        }
       </div>
     </section>
 
@@ -2396,6 +2587,10 @@ function renderHome() {
           <a class="primary-button" href="https://buy.stripe.com/14A28reC065w1KOcwf4ko02" target="_blank" rel="noopener noreferrer">Get Professional Access</a>
         </div>
       </div>
+      <div class="note-box">
+        <strong>Need help with access?</strong>
+        <p>You can offer scholarship or sponsored access codes to parents who cannot afford premium access.</p>
+      </div>
     </section>
 
     <section class="section-card">
@@ -2403,10 +2598,22 @@ function renderHome() {
       <p>Use these printable tools to present Rooted Parenting as a structured caregiver intervention for juvenile court, CPS, school family support, diversion, and community-based parent education.</p>
       <div class="hero-actions hero-actions--stacked">
         <button class="resource-link" type="button" data-route-link="courses">Open Course Catalog</button>
-        <button class="resource-link" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
         <a class="resource-link" href="parent-login.html" target="_blank" rel="noopener noreferrer">Parent Login and Family Setup</a>
-        <a class="resource-link" href="staff-login.html" target="_blank" rel="noopener noreferrer">Supabase Staff Login</a>
-        <a class="resource-link" href="staff-portal.html" target="_blank" rel="noopener noreferrer">Read-Only CPS Portal</a>
+        ${
+          hasProfessionalAccess()
+            ? `
+              <button class="resource-link" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+              <a class="resource-link" href="staff-login.html" target="_blank" rel="noopener noreferrer">Supabase Staff Login</a>
+              <a class="resource-link" href="staff-portal.html" target="_blank" rel="noopener noreferrer">Read-Only CPS Portal</a>
+            `
+            : `
+              <div class="note-box">
+                <strong>Professional tools</strong>
+                <p>Staff portal, assigned tracks, and oversight tools are included with professional access.</p>
+                <a class="primary-button" href="https://buy.stripe.com/14A28reC065w1KOcwf4ko02" target="_blank" rel="noopener noreferrer">Get Professional Access</a>
+              </div>
+            `
+        }
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
@@ -2614,6 +2821,16 @@ function renderLearningList() {
         <h2>21-Day Learning Path</h2>
       </div>
       <p>Follow these 21 daily sessions in order for a step-by-step parenting habit-building sequence.</p>
+      ${
+        hasPremiumAccess()
+          ? ""
+          : `
+            <div class="note-box">
+              <strong>Free preview</strong>
+              <p>The first 3 learning path lessons are included in free access. Upgrade to unlock the full 21-day program.</p>
+            </div>
+          `
+      }
       <div class="note-box">
         <strong>3-week structure</strong>
         ${bulletList([
@@ -2695,6 +2912,7 @@ function renderLearningDetail(slug) {
 
 function renderPathLesson(slug) {
   const lesson = appContent.learningPath.find((item) => item.slug === slug);
+  const index = appContent.learningPath.findIndex((item) => item.slug === slug);
 
   if (!lesson) {
     screenTitle.textContent = "Not Found";
@@ -2711,7 +2929,20 @@ function renderPathLesson(slug) {
     return;
   }
 
-  const index = appContent.learningPath.findIndex((item) => item.slug === slug);
+  if (!hasPremiumAccess() && !isFreeLearningLesson(index)) {
+    screenTitle.textContent = lesson.title;
+    appContentRoot.innerHTML = `
+      ${renderPremiumUpgradeCard({
+        title: `${lesson.title} is Premium`,
+        text: "Free users can preview the first 3 lessons. Upgrade to unlock the full 21-day learning path, progress tracker, workbook, assessments, and certificate."
+      })}
+      <section class="section-card">
+        <button class="secondary-button" type="button" data-route-link="learning">Back to Learning Path</button>
+      </section>
+    `;
+    return;
+  }
+
   const total = appContent.learningPath.length;
   const percent = Math.round(((index + 1) / total) * 100);
   const feedback = quizFeedbackState[lesson.slug];
@@ -3013,6 +3244,15 @@ function renderTools() {
 }
 
 function renderProgressTracker() {
+  if (!hasPremiumAccess()) {
+    screenTitle.textContent = "Progress Tracker";
+    appContentRoot.innerHTML = renderPremiumUpgradeCard({
+      title: "Progress Tracker is Premium",
+      text: "The full progress tracker, workbook tools, daily logs, discipline tracker, and certificate path are included with premium parent access."
+    });
+    return;
+  }
+
   const completedLessons = getCompletedLessons();
   const trackerEntries = getParentTrackerEntries();
   const clientProfile = getClientProfile();
@@ -3533,6 +3773,15 @@ function renderProgressTracker() {
 }
 
 function renderAssessment() {
+  if (!hasPremiumAccess()) {
+    screenTitle.textContent = "Assessment";
+    appContentRoot.innerHTML = renderPremiumUpgradeCard({
+      title: "Pre/Post Assessment is Premium",
+      text: "The fillable pre/post assessment is included with premium parent access along with the full 21-day program, workbook, trackers, and certificate."
+    });
+    return;
+  }
+
   const assessment = getAssessmentData();
   const ratingLabels = [
     "I understand that behavior may communicate stress, fear, or unmet needs.",
@@ -3616,6 +3865,15 @@ function renderAssessment() {
 }
 
 function renderSupervisorPortal() {
+  if (!hasProfessionalAccess()) {
+    screenTitle.textContent = "Supervisor Portal";
+    appContentRoot.innerHTML = renderProfessionalUpgradeCard({
+      title: "Supervisor Portal is Professional",
+      text: "Staff portal access, assigned-track oversight, weekly summaries, and agency-facing review tools are reserved for professional access."
+    });
+    return;
+  }
+
   const clientProfile = getClientProfile();
   const supervisorData = getSupervisorPortalData();
   const dailyHabitEntries = getDailyHabitEntries();
@@ -3714,6 +3972,20 @@ function renderSupervisorPortal() {
 
 // Worksheets screen content, including printable tools and the professional packet.
 function renderWorksheets() {
+  if (!hasPremiumAccess()) {
+    screenTitle.textContent = "Worksheets";
+    appContentRoot.innerHTML = `
+      ${renderPremiumUpgradeCard({
+        title: "Fillable Worksheets are Premium",
+        text: "Free users can explore the app and preview learning content. Upgrade to unlock fillable worksheets, workbook tools, and saved parenting forms."
+      })}
+      <section class="section-card">
+        <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Open Printable Worksheet Preview</a>
+      </section>
+    `;
+    return;
+  }
+
   const worksheets = getWorksheetEntries();
   screenTitle.textContent = "Worksheets";
   appContentRoot.innerHTML = `
@@ -4165,6 +4437,14 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const redeemAccessCodeButton = event.target.closest("[data-redeem-access-code]");
+  if (redeemAccessCodeButton) {
+    const codeValue = document.getElementById("access-code-input")?.value || "";
+    redeemAccessCode(codeValue);
+    renderRoute();
+    return;
+  }
+
   const supervisorProfileButton = event.target.closest("[data-save-supervisor-profile]");
   if (supervisorProfileButton) {
     saveSupervisorPortalData({
@@ -4257,6 +4537,8 @@ topAction.addEventListener("click", () => {
 window.addEventListener("hashchange", renderRoute);
 
 async function loadAppContent() {
+  applyAccessFromQuery();
+
   try {
     const response = await fetch("parenting-support-app-content.json");
     if (!response.ok) {
