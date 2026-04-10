@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting | Staff Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Staff Portal</h1>
+      </div>
+      <button class="top-action" id="staff-signout" type="button">Sign Out</button>
+    </header>
+
+    <main class="content" id="portal-root">
+      <section class="hero">
+        <h2>Loading read-only client view</h2>
+        <p>Please wait while the portal checks staff access and loads assigned families.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> |
+        <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms</a> |
+        <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br />
+        Created by Misty Stonerock<br />
+        Community Behavioral Health Worker | Parent Advocate<br />
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      window.ROOTED_SUPABASE_URL,
+      window.ROOTED_SUPABASE_ANON_KEY
+    );
+
+    const portalRoot = document.getElementById("portal-root");
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function getWeekLabel(dayNumber) {
+      if (dayNumber >= 1 && dayNumber <= 7) return "Week 1: Safety and Regulation";
+      if (dayNumber >= 8 && dayNumber <= 14) return "Week 2: Connection and Follow-Through";
+      if (dayNumber >= 15 && dayNumber <= 21) return "Week 3: Habit Building and Long-Term Change";
+      return "Unassigned Week";
+    }
+
+    function buildWeeklySummaries(logs) {
+      const weeks = {
+        "Week 1: Safety and Regulation": [],
+        "Week 2: Connection and Follow-Through": [],
+        "Week 3: Habit Building and Long-Term Change": []
+      };
+
+      logs.forEach((log) => {
+        const label = getWeekLabel(Number(log.day_number || 0));
+        if (weeks[label]) {
+          weeks[label].push(log);
+        }
+      });
+
+      return Object.entries(weeks).map(([label, entries]) => ({
+        label,
+        count: entries.length,
+        learned: entries.map((entry) => entry.learned).filter(Boolean).slice(0, 2),
+        strengths: entries
+          .map((entry) => entry.connection_used || entry.reward_used || entry.follow_through)
+          .filter(Boolean)
+          .slice(0, 2),
+        nextFocus: entries.map((entry) => entry.tomorrow_focus).filter(Boolean).slice(0, 2)
+      }));
+    }
+
+    async function requireStaffSession() {
+      const { data } = await supabaseClient.auth.getSession();
+      if (!data.session) {
+        window.location.href = "staff-login.html";
+        return null;
+      }
+
+      const { data: profile, error } = await supabaseClient
+        .from("profiles")
+        .select("role, full_name, agency_name")
+        .eq("user_id", data.session.user.id)
+        .maybeSingle();
+
+      if (error || !profile || !["staff", "admin"].includes(profile.role)) {
+        await supabaseClient.auth.signOut();
+        window.location.href = "staff-login.html";
+        return null;
+      }
+
+      return {
+        session: data.session,
+        profile
+      };
+    }
+
+    async function loadAssignedFamilies(staffUserId) {
+      const { data: assignments, error: assignmentError } = await supabaseClient
+        .from("staff_family_assignments")
+        .select("family_id")
+        .eq("staff_user_id", staffUserId);
+
+      if (assignmentError) {
+        throw assignmentError;
+      }
+
+      const familyIds = (assignments || []).map((item) => item.family_id);
+      if (!familyIds.length) {
+        return { families: [], children: [], logs: [], completions: [], assessments: [] };
+      }
+
+      const [{ data: families }, { data: children }, { data: logs }, { data: completions }, { data: assessments }] =
+        await Promise.all([
+          supabaseClient.from("families").select("*").in("id", familyIds),
+          supabaseClient.from("family_children").select("*").in("family_id", familyIds),
+          supabaseClient.from("daily_logs").select("*").in("family_id", familyIds).order("log_date", { ascending: false }),
+          supabaseClient.from("completion_records").select("*").in("family_id", familyIds),
+          supabaseClient.from("assessment_submissions").select("*").in("family_id", familyIds).order("created_at", { ascending: false })
+        ]);
+
+      return {
+        families: families || [],
+        children: children || [],
+        logs: logs || [],
+        completions: completions || [],
+        assessments: assessments || []
+      };
+    }
+
+    function renderPortal(staffProfile, dataset) {
+      const familyCards = dataset.families.map((family) => {
+        const childNames = dataset.children
+          .filter((child) => child.family_id === family.id)
+          .map((child) => child.child_name);
+        const logs = dataset.logs.filter((log) => log.family_id === family.id);
+        const summaries = buildWeeklySummaries(logs);
+        const completion = dataset.completions.find((item) => item.family_id === family.id);
+        const latestAssessment = dataset.assessments.find((item) => item.family_id === family.id);
+
+        return `
+          <section class="detail-card">
+            <h3>${escapeHtml(family.caregiver_name || "Caregiver not entered")}</h3>
+            <p><strong>Primary client:</strong> ${escapeHtml(family.primary_client_name || "Not entered")}</p>
+            <p><strong>Children:</strong> ${escapeHtml(childNames.join(", ") || "Not entered")}</p>
+            <p><strong>Assigned track:</strong> ${escapeHtml(family.assigned_course_slug || "Not assigned")}</p>
+            <p><strong>Case note:</strong> ${escapeHtml(family.case_note || "Not entered")}</p>
+            <p><strong>Certificate status:</strong> ${completion?.certificate_unlocked ? "Unlocked" : "In progress"}</p>
+            <p><strong>Completed sessions:</strong> ${completion?.completed_sessions || 0} of 21</p>
+            <p><strong>Latest assessment:</strong> ${escapeHtml(latestAssessment?.assessment_type || "No assessment saved")}</p>
+            <div class="note-box">
+              <strong>Weekly summary reports</strong>
+              ${summaries
+                .map(
+                  (summary) => `
+                    <div class="summary-entry">
+                      <p><strong>${summary.label}</strong></p>
+                      <p><strong>Check-ins:</strong> ${summary.count}</p>
+                      <p><strong>Learned:</strong> ${escapeHtml(summary.learned.join(" | ") || "No notes yet")}</p>
+                      <p><strong>Strengths:</strong> ${escapeHtml(summary.strengths.join(" | ") || "No strengths noted yet")}</p>
+                      <p><strong>Next focus:</strong> ${escapeHtml(summary.nextFocus.join(" | ") || "No next-step note yet")}</p>
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          </section>
+        `;
+      });
+
+      portalRoot.innerHTML = `
+        <section class="hero">
+          <h2>Welcome, ${escapeHtml(staffProfile.full_name || "Staff user")}</h2>
+          <p><strong>Agency:</strong> ${escapeHtml(staffProfile.agency_name || "Not entered")}</p>
+          <p>This portal is read-only by design. Staff should review assigned family progress, weekly summaries, attendance, assessment status, and certificate status here without editing client-entered records.</p>
+        </section>
+
+        <section class="section-card">
+          <h2>Portal Snapshot</h2>
+          <div class="pill-row">
+            <span class="pill">${dataset.families.length} assigned families</span>
+            <span class="pill">${dataset.logs.length} daily logs</span>
+            <span class="pill">${dataset.completions.filter((item) => item.certificate_unlocked).length} certificates unlocked</span>
+          </div>
+        </section>
+
+        ${
+          familyCards.length
+            ? familyCards.join("")
+            : `
+              <section class="section-card">
+                <h2>No assigned families yet</h2>
+                <p>This staff account is active, but there are no family assignments yet in the portal tables.</p>
+              </section>
+            `
+        }
+      `;
+    }
+
+    async function initPortal() {
+      try {
+        const access = await requireStaffSession();
+        if (!access) return;
+        const dataset = await loadAssignedFamilies(access.session.user.id);
+        renderPortal(access.profile, dataset);
+      } catch (error) {
+        portalRoot.innerHTML = `
+          <section class="section-card">
+            <h2>Portal Error</h2>
+            <p>${escapeHtml(error.message)}</p>
+            <p>Make sure the Supabase tables and policies from the SQL schema have been created.</p>
+          </section>
+        `;
+      }
+    }
+
+    document.getElementById("staff-signout").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = "staff-login.html";
+    });
+
+    initPortal();
+  </script>
+</body>
+</html>

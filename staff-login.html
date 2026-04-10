@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting | Staff Login</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Staff Login</h1>
+      </div>
+      <a class="top-action" href="index.html">Home</a>
+    </header>
+
+    <main class="content">
+      <section class="hero">
+        <h2>Read-Only CPS and Court Portal</h2>
+        <p>Staff can sign in here to view assigned client progress, weekly summaries, attendance, and certificate status. This page is meant for supervisors, CPS workers, courts, and facilitators.</p>
+      </section>
+
+      <section class="section-card">
+        <h2>Staff Sign In</h2>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>Email</span>
+            <input id="staff-email" type="email" placeholder="staff@email.com" />
+          </label>
+          <label class="tracker-field">
+            <span>Password</span>
+            <input id="staff-password" type="password" placeholder="Password" />
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" id="staff-login-button">Sign In to Staff Portal</button>
+          </div>
+          <div class="note-box" id="staff-login-message">
+            <p>Only staff profiles with the role `staff` or `admin` should be able to continue into the read-only portal.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Setup Note</h2>
+        <p>This login expects the Supabase staff tables and row-level security policies to be created first. Use the SQL file included with the project to set up the portal schema.</p>
+        <div class="hero-actions hero-actions--stacked">
+          <a class="resource-link" href="supabase-cps-portal-schema.sql" target="_blank" rel="noopener noreferrer">Open Supabase SQL Schema</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> |
+        <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms</a> |
+        <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br />
+        Created by Misty Stonerock<br />
+        Community Behavioral Health Worker | Parent Advocate<br />
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      window.ROOTED_SUPABASE_URL,
+      window.ROOTED_SUPABASE_ANON_KEY
+    );
+
+    const messageBox = document.getElementById("staff-login-message");
+
+    async function verifyStaffAccess(userId) {
+      const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("role, full_name, agency_name")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      return data && (data.role === "staff" || data.role === "admin") ? data : null;
+    }
+
+    document.getElementById("staff-login-button").addEventListener("click", async () => {
+      const email = document.getElementById("staff-email").value.trim();
+      const password = document.getElementById("staff-password").value;
+
+      if (!email || !password) {
+        messageBox.innerHTML = "<p>Please enter both email and password.</p>";
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Signing in...</p>";
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        messageBox.innerHTML = `<p>${error.message}</p>`;
+        return;
+      }
+
+      try {
+        const staffProfile = await verifyStaffAccess(data.user.id);
+        if (!staffProfile) {
+          await supabaseClient.auth.signOut();
+          messageBox.innerHTML = "<p>This account is not marked as staff or admin in the portal profile table.</p>";
+          return;
+        }
+
+        window.location.href = "staff-portal.html";
+      } catch (accessError) {
+        messageBox.innerHTML = `<p>${accessError.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

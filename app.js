@@ -2362,12 +2362,15 @@ function renderHome() {
       <div class="hero-actions hero-actions--stacked">
         <button class="resource-link" type="button" data-route-link="courses">Open Course Catalog</button>
         <button class="resource-link" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+        <a class="resource-link" href="staff-login.html" target="_blank" rel="noopener noreferrer">Supabase Staff Login</a>
+        <a class="resource-link" href="staff-portal.html" target="_blank" rel="noopener noreferrer">Read-Only CPS Portal</a>
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
         <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Pre/Post Parenting Assessment</a>
         <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
         <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
+        <a class="resource-link" href="supabase-cps-portal-schema.sql" target="_blank" rel="noopener noreferrer">Supabase Staff Portal SQL</a>
       </div>
     </section>
   `;
