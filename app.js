@@ -2348,6 +2348,8 @@ function renderHome() {
       <h2>Resources</h2>
       <p>Open printable and facilitator resources from the Home screen.</p>
       <div class="hero-actions hero-actions--stacked">
+        <a class="resource-link" href="parent-login.html" target="_blank" rel="noopener noreferrer">Parent Sign In</a>
+        <a class="resource-link" href="parent-setup.html" target="_blank" rel="noopener noreferrer">Family Setup</a>
         <a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Download Parent Workbook</a>
         <a class="resource-link" href="rooted-parenting-facilitator-guide.html" target="_blank" rel="noopener noreferrer">Facilitator Guide</a>
         <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Printable Worksheets</a>
@@ -2362,6 +2364,7 @@ function renderHome() {
       <div class="hero-actions hero-actions--stacked">
         <button class="resource-link" type="button" data-route-link="courses">Open Course Catalog</button>
         <button class="resource-link" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+        <a class="resource-link" href="parent-login.html" target="_blank" rel="noopener noreferrer">Parent Login and Family Setup</a>
         <a class="resource-link" href="staff-login.html" target="_blank" rel="noopener noreferrer">Supabase Staff Login</a>
         <a class="resource-link" href="staff-portal.html" target="_blank" rel="noopener noreferrer">Read-Only CPS Portal</a>
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
