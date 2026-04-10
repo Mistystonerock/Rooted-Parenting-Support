@@ -1407,6 +1407,7 @@ const attendanceTrackerStorageKey = "rooted-parenting-attendance-tracker";
 const assessmentStorageKey = "rooted-parenting-assessment";
 const worksheetStorageKey = "rooted-parenting-worksheets";
 const dailyHabitTrackerStorageKey = "rooted-parenting-daily-habit-tracker";
+const supervisorPortalStorageKey = "rooted-parenting-supervisor-portal";
 const quizFeedbackState = {};
 
 fallbackContent.learningPath[0].sections = [
@@ -1931,6 +1932,7 @@ function normalizeClientProfile(profile) {
     clientName: nextProfile.clientName || children[0] || "",
     caregiverName: nextProfile.caregiverName || "",
     caseNote: nextProfile.caseNote || "",
+    assignedCourse: nextProfile.assignedCourse || "",
     children: children.length ? children : [""]
   };
 }
@@ -1949,6 +1951,26 @@ function saveClientProfile(profile) {
     clientProfileStorageKey,
     JSON.stringify(normalizeClientProfile(profile))
   );
+}
+
+function getSupervisorPortalData() {
+  try {
+    const raw = window.localStorage.getItem(supervisorPortalStorageKey);
+    return raw
+      ? JSON.parse(raw)
+      : { supervisorName: "", agencyName: "", accessNote: "" };
+  } catch (error) {
+    return { supervisorName: "", agencyName: "", accessNote: "" };
+  }
+}
+
+function saveSupervisorPortalData(data) {
+  window.localStorage.setItem(supervisorPortalStorageKey, JSON.stringify(data));
+}
+
+function getAssignedCourse() {
+  const profile = getClientProfile();
+  return appContent.courses.find((course) => course.slug === profile.assignedCourse) || null;
 }
 
 function getAttendanceEntries() {
@@ -1979,6 +2001,43 @@ function saveDailyHabitEntry(entry) {
   const entries = getDailyHabitEntries();
   const next = [entry, ...entries].slice(0, 30);
   window.localStorage.setItem(dailyHabitTrackerStorageKey, JSON.stringify(next));
+}
+
+function getWeekLabelFromSessionTitle(sessionTitle) {
+  const match = typeof sessionTitle === "string" ? sessionTitle.match(/Day (\d+)/) : null;
+  const dayNumber = match ? Number(match[1]) : 0;
+  if (dayNumber >= 1 && dayNumber <= 7) {
+    return "Week 1: Safety and Regulation";
+  }
+  if (dayNumber >= 8 && dayNumber <= 14) {
+    return "Week 2: Connection and Follow-Through";
+  }
+  if (dayNumber >= 15 && dayNumber <= 21) {
+    return "Week 3: Habit Building and Long-Term Change";
+  }
+  return "Unassigned Week";
+}
+
+function buildWeeklySummaryReports(entries) {
+  const weekOrder = [
+    "Week 1: Safety and Regulation",
+    "Week 2: Connection and Follow-Through",
+    "Week 3: Habit Building and Long-Term Change"
+  ];
+
+  return weekOrder.map((weekLabel) => {
+    const weekEntries = entries.filter((entry) => getWeekLabelFromSessionTitle(entry.sessionTitle) === weekLabel);
+    return {
+      weekLabel,
+      entryCount: weekEntries.length,
+      sessions: weekEntries.map((entry) => entry.sessionTitle).filter(Boolean),
+      learned: weekEntries.map((entry) => entry.learned).filter(Boolean),
+      strengths: weekEntries
+        .map((entry) => entry.connectionUsed || entry.rewardUsed || entry.followThrough)
+        .filter(Boolean),
+      nextFocus: weekEntries.map((entry) => entry.tomorrowFocus).filter(Boolean)
+    };
+  });
 }
 
 function getAssessmentData() {
@@ -2189,6 +2248,7 @@ function courseCard(course) {
 
 // Home screen content, including public resources and court/CPS packet links.
 function renderHome() {
+  const assignedCourse = getAssignedCourse();
   screenTitle.textContent = "Home";
   appContentRoot.innerHTML = `
     <section class="hero">
@@ -2223,6 +2283,10 @@ function renderHome() {
         <strong>Courses</strong>
         <span>Open CPS-friendly course tracks, completion standards, and certificate options.</span>
       </button>
+      <button class="button-card" type="button" data-route-link="supervisor">
+        <strong>Supervisor Portal</strong>
+        <span>View assigned tracks, weekly summaries, and CPS-friendly progress snapshots.</span>
+      </button>
       <button class="button-card" type="button" data-route-link="progress">
         <strong>Progress Tracker</strong>
         <span>Check completed lessons, next steps, and parenting program documents.</span>
@@ -2248,6 +2312,23 @@ function renderHome() {
         <li>Use Learn and Worksheets to support the next step, not just the hard moment.</li>
       </ul>
     </section>
+
+    ${
+      assignedCourse
+        ? `
+          <section class="section-card">
+            <h2>Assigned course track</h2>
+            <p><strong>${assignedCourse.title}</strong></p>
+            <p>${assignedCourse.cpsTitle}</p>
+            <p>${assignedCourse.description}</p>
+            <div class="hero-actions hero-actions--stacked">
+              <button class="primary-button" type="button" data-course="${assignedCourse.slug}">Open Assigned Track</button>
+              <button class="secondary-button" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+            </div>
+          </section>
+        `
+        : ""
+    }
 
     <section class="section-card">
       <h2>About Rooted Parenting</h2>
@@ -2280,6 +2361,7 @@ function renderHome() {
       <p>Use these printable tools to present Rooted Parenting as a structured caregiver intervention for juvenile court, CPS, school family support, diversion, and community-based parent education.</p>
       <div class="hero-actions hero-actions--stacked">
         <button class="resource-link" type="button" data-route-link="courses">Open Course Catalog</button>
+        <button class="resource-link" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
@@ -2292,6 +2374,7 @@ function renderHome() {
 }
 
 function renderCoursesList() {
+  const assignedCourse = getAssignedCourse();
   screenTitle.textContent = "Courses";
   appContentRoot.innerHTML = `
     <section class="hero">
@@ -2313,6 +2396,22 @@ function renderCoursesList() {
         "Issue a certificate when the completion standard is met."
       ])}
     </section>
+
+    ${
+      assignedCourse
+        ? `
+          <section class="section-card">
+            <h2>Currently assigned track</h2>
+            <p><strong>${assignedCourse.title}</strong></p>
+            <p>${assignedCourse.cpsTitle}</p>
+            <div class="hero-actions hero-actions--stacked">
+              <button class="primary-button" type="button" data-course="${assignedCourse.slug}">Open Assigned Track</button>
+              <button class="secondary-button" type="button" data-route-link="progress">Open Progress Tracker</button>
+            </div>
+          </section>
+        `
+        : ""
+    }
 
     <section class="detail-stack">
       ${appContent.courses.map(courseCard).join("")}
@@ -2386,6 +2485,15 @@ function renderCourseDetail(slug) {
         "Session 2: Skill-building and practice",
         "Session 3: Reflection, follow-through, and planning"
       ])}
+    </section>
+
+    <section class="detail-card">
+      <h3>Assigned track use</h3>
+      <p>This track can be assigned in the app for a specific family so the parent and supervisor materials stay focused on the referral reason.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-assign-course="${course.slug}">Assign This Track to Current Family</button>
+        <button class="secondary-button" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+      </div>
     </section>
 
     <section class="detail-card">
@@ -2865,6 +2973,7 @@ function renderProgressTracker() {
   const attendanceEntries = getAttendanceEntries();
   const dailyHabitEntries = getDailyHabitEntries();
   const disciplineEntries = getDisciplineEntries();
+  const assignedCourse = getAssignedCourse();
   const totalLessons = appContent.learningPath.length;
   const completedCount = completedLessons.length;
   const remainingCount = Math.max(totalLessons - completedCount, 0);
@@ -2884,6 +2993,23 @@ function renderProgressTracker() {
         <span class="pill">${percent}% finished</span>
       </div>
     </section>
+
+    ${
+      assignedCourse
+        ? `
+          <section class="detail-card">
+            <h3>Assigned course track</h3>
+            <p><strong>${assignedCourse.title}</strong></p>
+            <p>${assignedCourse.cpsTitle}</p>
+            <p>${assignedCourse.description}</p>
+            <div class="hero-actions hero-actions--stacked">
+              <button class="primary-button" type="button" data-course="${assignedCourse.slug}">Open Assigned Track</button>
+              <button class="secondary-button" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
+            </div>
+          </section>
+        `
+        : ""
+    }
 
     <section class="detail-card">
       <h3>Client and caregiver profile</h3>
@@ -2910,6 +3036,19 @@ function renderProgressTracker() {
           </div>
           <button class="secondary-button" type="button" data-add-child-profile="true">Add Another Child</button>
         </div>
+        <label class="tracker-field">
+          <span>Assigned course track</span>
+          <select id="assigned-course">
+            <option value="">Choose assigned track</option>
+            ${appContent.courses
+              .map(
+                (course) => `
+                  <option value="${escapeHtml(course.slug)}" ${clientProfile.assignedCourse === course.slug ? "selected" : ""}>${escapeHtml(course.title)}</option>
+                `
+              )
+              .join("")}
+          </select>
+        </label>
         <label class="tracker-field">
           <span>Case note or service note</span>
           <textarea id="case-note" rows="3" placeholder="Example: CPS referral, family support, diversion, reunification support">${escapeHtml(clientProfile.caseNote || "")}</textarea>
@@ -3239,6 +3378,9 @@ function renderProgressTracker() {
           ? clientProfile.children.filter(Boolean).join(", ")
           : "Not entered"
       )}</p>
+      <p><strong>Assigned course track:</strong> ${escapeHtml(
+        appContent.courses.find((course) => course.slug === clientProfile.assignedCourse)?.title || "Not assigned"
+      )}</p>
       <p><strong>Case note:</strong> ${escapeHtml(clientProfile.caseNote || "Not entered")}</p>
       <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
       <p><strong>Course progress:</strong> ${completedCount} of ${totalLessons} lessons completed (${percent}%)</p>
@@ -3427,6 +3569,103 @@ function renderAssessment() {
   `;
 }
 
+function renderSupervisorPortal() {
+  const clientProfile = getClientProfile();
+  const supervisorData = getSupervisorPortalData();
+  const dailyHabitEntries = getDailyHabitEntries();
+  const attendanceEntries = getAttendanceEntries();
+  const completedLessons = getCompletedLessons();
+  const totalLessons = appContent.learningPath.length;
+  const weeklyReports = buildWeeklySummaryReports(dailyHabitEntries);
+  const assignedCourse = appContent.courses.find((course) => course.slug === clientProfile.assignedCourse);
+
+  screenTitle.textContent = "Supervisor Portal";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Supervisor Portal</h2>
+      <p>This is a local prototype view for CPS, courts, and facilitators to review assigned tracks, daily check-ins, and weekly summaries. A real read-only staff login would be the next secure backend step.</p>
+      <div class="pill-row">
+        <span class="pill">Local prototype</span>
+        <span class="pill">${completedLessons.length} of ${totalLessons} sessions complete</span>
+        <span class="pill">${weeklyReports.filter((week) => week.entryCount > 0).length} weekly summaries active</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Supervisor access profile</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Supervisor or worker name</span>
+          <input id="supervisor-name" type="text" value="${escapeHtml(supervisorData.supervisorName || "")}" placeholder="Supervisor or worker name" />
+        </label>
+        <label class="tracker-field">
+          <span>Agency or court</span>
+          <input id="agency-name" type="text" value="${escapeHtml(supervisorData.agencyName || "")}" placeholder="Agency, court, or program name" />
+        </label>
+        <label class="tracker-field">
+          <span>Access note</span>
+          <textarea id="supervisor-access-note" rows="3" placeholder="Example: Read-only CPS supervisor review for progress and completion.">${escapeHtml(supervisorData.accessNote || "")}</textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-supervisor-profile="true">Save Supervisor Portal Profile</button>
+          <button class="secondary-button" type="button" data-print-progress="true">Print Supervisor Summary</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Assigned family and track</h3>
+      <p><strong>Primary client:</strong> ${escapeHtml(clientProfile.clientName || "Not entered")}</p>
+      <p><strong>Caregiver:</strong> ${escapeHtml(clientProfile.caregiverName || "Not entered")}</p>
+      <p><strong>Children on case:</strong> ${escapeHtml(clientProfile.children.filter(Boolean).join(", ") || "Not entered")}</p>
+      <p><strong>Assigned track:</strong> ${escapeHtml(assignedCourse ? assignedCourse.title : "Not assigned")}</p>
+      <p><strong>CPS-friendly title:</strong> ${escapeHtml(assignedCourse ? assignedCourse.cpsTitle : "Not assigned")}</p>
+      <p><strong>Completion standard:</strong> ${escapeHtml(assignedCourse ? assignedCourse.completionStandard : "Assign a track to show the completion standard here.")}</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-route-link="progress">Open Progress Tracker</button>
+        <button class="secondary-button" type="button" data-route-link="courses">Open Course Catalog</button>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Weekly summary reports</h3>
+      <p>These summaries are built from the parent’s saved daily check-ins so supervisors can see progress week by week.</p>
+      ${weeklyReports
+        .map(
+          (week) => `
+            <div class="tracker-entry">
+              <strong>${week.weekLabel}</strong>
+              <p><strong>Daily check-ins saved:</strong> ${week.entryCount}</p>
+              <p><strong>Sessions touched:</strong> ${escapeHtml(week.sessions.slice(0, 4).join(", ") || "None yet")}</p>
+              <p><strong>What was learned:</strong> ${escapeHtml(week.learned.slice(0, 2).join(" | ") || "No weekly learning notes yet")}</p>
+              <p><strong>Observed strengths:</strong> ${escapeHtml(week.strengths.slice(0, 2).join(" | ") || "No strengths recorded yet")}</p>
+              <p><strong>Next focus:</strong> ${escapeHtml(week.nextFocus.slice(0, 2).join(" | ") || "No next-focus notes yet")}</p>
+            </div>
+          `
+        )
+        .join("")}
+    </section>
+
+    <section class="detail-card">
+      <h3>What CPS will care about most</h3>
+      ${bulletList([
+        "Whether the parent is actually engaging with the assigned track on a daily basis.",
+        "Whether progress is being documented in a way that can be reviewed later.",
+        "Whether the parent is using calmer structure, positive reinforcement, and safer follow-through.",
+        "Whether the assigned track matches the referral reason, service plan, or court expectation.",
+        "Whether the parent completed the full program and earned the certificate."
+      ])}
+    </section>
+
+    <section class="detail-card">
+      <h3>Attendance and review snapshot</h3>
+      <p><strong>Attendance entries saved:</strong> ${attendanceEntries.length}</p>
+      <p><strong>Program completion:</strong> ${completedLessons.length} of ${totalLessons} sessions</p>
+      <p><strong>Certificate status:</strong> ${completedLessons.length === totalLessons && totalLessons > 0 ? "Unlocked" : "Locked until all 21 days are complete"}</p>
+    </section>
+  `;
+}
+
 // Worksheets screen content, including printable tools and the professional packet.
 function renderWorksheets() {
   const worksheets = getWorksheetEntries();
@@ -3589,6 +3828,9 @@ function renderRoute() {
     case "progress":
       renderProgressTracker();
       break;
+    case "supervisor":
+      renderSupervisorPortal();
+      break;
     case "worksheets":
       renderWorksheets();
       break;
@@ -3675,6 +3917,7 @@ function updateTabState(section) {
     course: "learning",
     path: "learning",
     progress: "learning",
+    supervisor: "home",
     onboarding: "home"
   };
   const active = activeMap[section] || section || "home";
@@ -3830,6 +4073,7 @@ document.addEventListener("click", (event) => {
     const clientName = document.getElementById("client-name")?.value.trim() || "";
     const caregiverName = document.getElementById("caregiver-name")?.value.trim() || "";
     const caseNote = document.getElementById("case-note")?.value.trim() || "";
+    const assignedCourse = document.getElementById("assigned-course")?.value || "";
     const children = Array.from(document.querySelectorAll(".child-name-input"))
       .map((input) => input.value.trim())
       .filter(Boolean);
@@ -3838,6 +4082,7 @@ document.addEventListener("click", (event) => {
       clientName,
       caregiverName,
       caseNote,
+      assignedCourse,
       children: children.length ? children : [clientName].filter(Boolean)
     });
     renderRoute();
@@ -3856,7 +4101,30 @@ document.addEventListener("click", (event) => {
       clientName,
       caregiverName,
       caseNote,
+      assignedCourse: document.getElementById("assigned-course")?.value || "",
       children: [...children, ""]
+    });
+    renderRoute();
+    return;
+  }
+
+  const assignCourseButton = event.target.closest("[data-assign-course]");
+  if (assignCourseButton) {
+    const currentProfile = getClientProfile();
+    saveClientProfile({
+      ...currentProfile,
+      assignedCourse: assignCourseButton.dataset.assignCourse
+    });
+    setRoute("supervisor");
+    return;
+  }
+
+  const supervisorProfileButton = event.target.closest("[data-save-supervisor-profile]");
+  if (supervisorProfileButton) {
+    saveSupervisorPortalData({
+      supervisorName: document.getElementById("supervisor-name")?.value.trim() || "",
+      agencyName: document.getElementById("agency-name")?.value.trim() || "",
+      accessNote: document.getElementById("supervisor-access-note")?.value.trim() || ""
     });
     renderRoute();
     return;
