@@ -911,6 +911,8 @@ const topAction = document.getElementById("home-quick-action");
 const tabButtons = Array.from(document.querySelectorAll(".tabbar__item"));
 const completionStorageKey = "rooted-parenting-completed-lessons";
 const onboardingStorageKey = "rooted-parenting-onboarding-complete";
+const parentTrackerStorageKey = "rooted-parenting-parent-tracker";
+const quizFeedbackState = {};
 
 fallbackContent.learningPath[0].sections = [
   {
@@ -1050,10 +1052,219 @@ fallbackContent.learningPath[5].reflectionQuestions = [
   "When my child is angry, what helps me stay calm and clear?"
 ];
 
+fallbackContent.learningPath[6].sections = [
+  {
+    heading: "What anxiety and shutdown can look like",
+    points: [
+      "Some children show distress through worry, stomachaches, avoidance, silence, or freezing.",
+      "Shutdown often means the child's body is overwhelmed, not that the child does not care.",
+      "Pressure can make anxiety or shutdown worse."
+    ]
+  },
+  {
+    heading: "How parents can respond",
+    points: [
+      "Lower the number of questions when a child looks flooded.",
+      "Offer one small next step instead of a long conversation.",
+      "Use calm presence and extra time so the child can come back online."
+    ]
+  }
+];
+fallbackContent.learningPath[6].reflectionQuestions = [
+  "How do I usually react when my child gets quiet, frozen, or very worried?",
+  "What changes when I lower pressure and offer one small next step?"
+];
+
+fallbackContent.learningPath[7].sections = [
+  {
+    heading: "Why school stress matters",
+    points: [
+      "School stress can affect behavior before, during, and after the school day.",
+      "Children may show school stress through refusal, headaches, shutdown, anger, or exhaustion.",
+      "Small, specific supports often work better than broad promises."
+    ]
+  },
+  {
+    heading: "Practical school support ideas",
+    points: [
+      "Identify the hardest part of the day and start there.",
+      "Ask for one realistic support, such as a check-in adult or softer transition.",
+      "Document patterns so you can advocate clearly and calmly."
+    ]
+  }
+];
+fallbackContent.learningPath[7].reflectionQuestions = [
+  "What part of school seems hardest for my child right now?",
+  "What one school support could make the day feel more manageable?"
+];
+
+fallbackContent.learningPath[8].sections = [
+  {
+    heading: "Why parent regulation matters",
+    points: [
+      "Children borrow calm from adults, so your tone and pace matter.",
+      "You do not have to be perfect to make a positive difference.",
+      "Small pauses can prevent a moment from getting bigger."
+    ]
+  },
+  {
+    heading: "What self-regulation can look like",
+    points: [
+      "Taking one breath before you answer.",
+      "Using a short script instead of reacting quickly.",
+      "Noticing your own warning signs before the conflict grows."
+    ]
+  }
+];
+fallbackContent.learningPath[8].reflectionQuestions = [
+  "What are my earliest signs that I am getting overwhelmed too?",
+  "What is one grounding tool I can practice before I need it?"
+];
+
+fallbackContent.learningPath[9].sections = [
+  {
+    heading: "How emotional safety grows",
+    points: [
+      "Emotional safety is built through repeated moments of steadiness, repair, and predictability.",
+      "Children learn trust when adults come back after hard moments.",
+      "Consistency matters more than one perfect response."
+    ]
+  },
+  {
+    heading: "What families can build over time",
+    points: [
+      "Predictable routines that reduce stress.",
+      "Repair conversations after conflict.",
+      "Small rituals of connection that help children feel secure."
+    ]
+  }
+];
+fallbackContent.learningPath[9].reflectionQuestions = [
+  "What small change would help my child feel more emotionally safe this week?",
+  "Where can I build more predictability or repair into daily life?"
+];
+
 fallbackContent.learningPath.forEach((lesson) => {
   if (!lesson.reflectionQuestions) {
     lesson.reflectionQuestions = lesson.reflectionPrompt ? [lesson.reflectionPrompt] : [];
   }
+});
+
+const lessonQuizData = [
+  {
+    question: "What is the main idea of this lesson?",
+    options: [
+      "Behavior often communicates stress, feelings, or unmet needs.",
+      "Most hard behavior should be handled with longer lectures.",
+      "Children act out mainly to manipulate adults."
+    ],
+    answerIndex: 0,
+    feedback:
+      "Yes. This lesson teaches that behavior often points to distress, overwhelm, or a need under the surface."
+  },
+  {
+    question: "What does trauma often do to a child's brain and body?",
+    options: [
+      "It always causes the same behavior in every child.",
+      "It can keep the brain and body on alert and make calming harder.",
+      "It only affects children during emergencies."
+    ],
+    answerIndex: 1,
+    feedback:
+      "Correct. Trauma and chronic stress can keep children on alert and make learning, flexibility, and calming harder."
+  },
+  {
+    question: "When is discipline most effective?",
+    options: [
+      "When a child is calm enough to think and learn.",
+      "At the peak of a meltdown.",
+      "Only after a parent raises their voice."
+    ],
+    answerIndex: 0,
+    feedback:
+      "Correct. This lesson teaches calm first, then teaching and correction once the child can take it in."
+  },
+  {
+    question: "What is the key message of connection before correction?",
+    options: [
+      "Connection means there should be no limits.",
+      "Children hear correction better after they feel safe and understood.",
+      "Correction should always come before reassurance."
+    ],
+    answerIndex: 1,
+    feedback:
+      "Right. Connection lowers threat and helps children become more open to guidance."
+  },
+  {
+    question: "Why do triggers matter?",
+    options: [
+      "They help parents notice patterns and prepare with more understanding.",
+      "They should be ignored so children toughen up.",
+      "They only matter if the child talks about them directly."
+    ],
+    answerIndex: 0,
+    feedback:
+      "Correct. Noticing triggers helps parents plan ahead and respond with more support and less surprise."
+  },
+  {
+    question: "What usually helps more with anger and defiance?",
+    options: [
+      "Power struggles and repeated arguing.",
+      "Calm limits, clear choices, and fewer words.",
+      "Immediate punishment before listening."
+    ],
+    answerIndex: 1,
+    feedback:
+      "Correct. The goal is calm structure, not escalating the conflict."
+  },
+  {
+    question: "What often helps a child in anxiety or shutdown?",
+    options: [
+      "More pressure to explain themselves quickly.",
+      "Less pressure, more calm presence, and one small next step.",
+      "Ignoring the distress completely."
+    ],
+    answerIndex: 1,
+    feedback:
+      "Yes. Gentle support, space, and one manageable next step often help more than pressure."
+  },
+  {
+    question: "What is most useful when supporting a child at school?",
+    options: [
+      "Specific, realistic supports and clear communication.",
+      "Assuming the school will figure it out without input.",
+      "Waiting until the problem gets much worse."
+    ],
+    answerIndex: 0,
+    feedback:
+      "Correct. Small, specific school supports and documentation usually work better than vague plans."
+  },
+  {
+    question: "Why does parent self-regulation matter?",
+    options: [
+      "Because a caregiver's nervous system affects the tone of the moment.",
+      "Because parents should never feel stressed.",
+      "Because children only calm down if adults stay silent."
+    ],
+    answerIndex: 0,
+    feedback:
+      "Correct. Your body, pace, and tone can either calm or intensify a hard moment."
+  },
+  {
+    question: "How is long-term emotional safety built?",
+    options: [
+      "Through one perfect parenting response.",
+      "Through repeated moments of predictability, repair, and care.",
+      "By avoiding all conflict forever."
+    ],
+    answerIndex: 1,
+    feedback:
+      "Correct. Emotional safety grows through many small, repeated experiences of safety and repair."
+  }
+];
+
+fallbackContent.learningPath.forEach((lesson, index) => {
+  lesson.quiz = lessonQuizData[index];
 });
 
 function getRoute() {
@@ -1084,6 +1295,54 @@ function toggleLessonComplete(slug) {
     ? completed.filter((item) => item !== slug)
     : [...completed, slug];
   window.localStorage.setItem(completionStorageKey, JSON.stringify(next));
+}
+
+function getParentTrackerEntries() {
+  try {
+    const raw = window.localStorage.getItem(parentTrackerStorageKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveParentTrackerEntry(entry) {
+  const entries = getParentTrackerEntries();
+  const next = [entry, ...entries].slice(0, 12);
+  window.localStorage.setItem(parentTrackerStorageKey, JSON.stringify(next));
+}
+
+function checkLessonQuiz(slug) {
+  const lesson = appContent.learningPath.find((item) => item.slug === slug);
+  if (!lesson || !lesson.quiz) {
+    return;
+  }
+
+  const selected = document.querySelector(`input[name="quiz-${slug}"]:checked`);
+  if (!selected) {
+    quizFeedbackState[slug] = {
+      isCorrect: false,
+      message: "Choose one answer before checking your quiz."
+    };
+    renderRoute();
+    return;
+  }
+
+  const selectedIndex = Number(selected.value);
+  const isCorrect = selectedIndex === lesson.quiz.answerIndex;
+
+  quizFeedbackState[slug] = {
+    isCorrect,
+    message: isCorrect
+      ? `${lesson.quiz.feedback} This lesson is now marked complete.`
+      : "Not quite yet. Review the lesson and try again."
+  };
+
+  if (isCorrect && !isLessonComplete(slug)) {
+    toggleLessonComplete(slug);
+  }
+
+  renderRoute();
 }
 
 function hasCompletedOnboarding() {
@@ -1515,6 +1774,7 @@ function renderPathLesson(slug) {
   const index = appContent.learningPath.findIndex((item) => item.slug === slug);
   const total = appContent.learningPath.length;
   const percent = Math.round(((index + 1) / total) * 100);
+  const feedback = quizFeedbackState[lesson.slug];
 
   screenTitle.textContent = lesson.title;
   appContentRoot.innerHTML = `
@@ -1534,11 +1794,8 @@ function renderPathLesson(slug) {
       <p>${lesson.explanation}</p>
       <div class="completion-row">
         <span class="status-pill ${isLessonComplete(lesson.slug) ? "is-complete" : ""}">
-          ${isLessonComplete(lesson.slug) ? "Lesson completed" : "Lesson in progress"}
+          ${isLessonComplete(lesson.slug) ? "Lesson completed" : "Quiz not passed yet"}
         </span>
-        <button class="secondary-button" type="button" data-complete-lesson="${lesson.slug}">
-          ${isLessonComplete(lesson.slug) ? "Mark Incomplete" : "Mark Complete"}
-        </button>
       </div>
     </section>
     ${
@@ -1577,6 +1834,43 @@ function renderPathLesson(slug) {
         ${bulletList(lesson.reflectionQuestions)}
       </div>
     </section>
+    ${
+      lesson.quiz
+        ? `
+          <section class="detail-card">
+            <h3>Lesson quiz</h3>
+            <p>${lesson.quiz.question}</p>
+            <div class="detail-stack">
+              ${lesson.quiz.options
+                .map(
+                  (option, optionIndex) => `
+                    <label class="list-card">
+                      <input type="radio" name="quiz-${lesson.slug}" value="${optionIndex}" ${isLessonComplete(lesson.slug) && optionIndex === lesson.quiz.answerIndex ? "checked" : ""} />
+                      <span>${option}</span>
+                    </label>
+                  `
+                )
+                .join("")}
+            </div>
+            <div class="hero-actions hero-actions--stacked">
+              <button class="primary-button" type="button" data-check-quiz="${lesson.slug}">
+                ${isLessonComplete(lesson.slug) ? "Retake Quiz" : "Check Quiz"}
+              </button>
+            </div>
+            ${
+              feedback
+                ? `
+                  <div class="${feedback.isCorrect ? "action-box" : "note-box"}">
+                    <strong>${feedback.isCorrect ? "Quiz passed" : "Try again"}</strong>
+                    <p>${feedback.message}</p>
+                  </div>
+                `
+                : ""
+            }
+          </section>
+        `
+        : ""
+    }
   `;
 }
 
@@ -1763,6 +2057,7 @@ function renderTools() {
 
 function renderProgressTracker() {
   const completedLessons = getCompletedLessons();
+  const trackerEntries = getParentTrackerEntries();
   const totalLessons = appContent.learningPath.length;
   const completedCount = completedLessons.length;
   const remainingCount = Math.max(totalLessons - completedCount, 0);
@@ -1796,6 +2091,11 @@ function renderProgressTracker() {
         <button class="primary-button" type="button" data-route-link="learning">Open Learning Path</button>
         <button class="secondary-button" type="button" data-route-link="courses">Open Course Catalog</button>
         <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Open Pre/Post Assessment</a>
+        ${
+          completedCount === totalLessons && totalLessons > 0
+            ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Download Completion Certificate</a>`
+            : ""
+        }
       </div>
     </section>
 
@@ -1840,10 +2140,70 @@ function renderProgressTracker() {
         "Use the attendance and progress report for court, CPS, school, or agency documentation.",
         "Use the completion certificate template after the required lessons or sessions are finished."
       ])}
+      ${
+        completedCount === totalLessons && totalLessons > 0
+          ? `<p>You have completed all current lessons. Your certificate is ready to download.</p>`
+          : `<p>Finish all lessons to unlock the completion certificate inside the tracker.</p>`
+      }
       <div class="hero-actions hero-actions--stacked">
         <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
-        <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
+        ${
+          completedCount === totalLessons && totalLessons > 0
+            ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Download Completion Certificate</a>`
+            : ""
+        }
       </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Positive follow-through and rewards tracker</h3>
+      <p>Use this tracker to record small things the child completed, what positive reinforcement you used, and what calm follow-through or consequence happened if needed. This saves in the app on this device.</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Date</span>
+          <input id="tracker-date" type="date" />
+        </label>
+        <label class="tracker-field">
+          <span>Small thing the child completed</span>
+          <input id="tracker-task" type="text" placeholder="Example: finished homework, used calm words, cleaned up toys" />
+        </label>
+        <label class="tracker-field">
+          <span>Positive reward or praise used</span>
+          <input id="tracker-reward" type="text" placeholder="Example: praise, extra time together, sticker, choice time" />
+        </label>
+        <label class="tracker-field">
+          <span>Calm consequence or follow-through</span>
+          <input id="tracker-consequence" type="text" placeholder="Example: redo task, brief reset, loss of one privilege, repair step" />
+        </label>
+        <label class="tracker-field">
+          <span>What worked or what you noticed</span>
+          <textarea id="tracker-notes" rows="3" placeholder="Write what helped, what did not help, or what you want to repeat."></textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-parent-tracker="true">Save Tracker Entry</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved tracker entries</h3>
+      ${
+        trackerEntries.length
+          ? trackerEntries
+              .map(
+                (entry) => `
+                  <div class="tracker-entry">
+                    <strong>${escapeHtml(entry.date || "No date")}</strong>
+                    <p><strong>Completed:</strong> ${escapeHtml(entry.task || "Not entered")}</p>
+                    <p><strong>Reward:</strong> ${escapeHtml(entry.reward || "Not entered")}</p>
+                    <p><strong>Calm follow-through:</strong> ${escapeHtml(entry.consequence || "Not entered")}</p>
+                    <p><strong>Notes:</strong> ${escapeHtml(entry.notes || "None entered")}</p>
+                  </div>
+                `
+              )
+              .join("")
+          : `<p>No tracker entries saved yet. Add one above to start tracking positive reinforcement and calm follow-through.</p>`
+      }
     </section>
   `;
 }
@@ -2062,6 +2422,36 @@ document.addEventListener("click", (event) => {
   const pathButton = event.target.closest("[data-path-lesson]");
   if (pathButton) {
     setRoute(`path/${pathButton.dataset.pathLesson}`);
+    return;
+  }
+
+  const quizButton = event.target.closest("[data-check-quiz]");
+  if (quizButton) {
+    checkLessonQuiz(quizButton.dataset.checkQuiz);
+    return;
+  }
+
+  const trackerSaveButton = event.target.closest("[data-save-parent-tracker]");
+  if (trackerSaveButton) {
+    const dateValue = document.getElementById("tracker-date")?.value || "";
+    const taskValue = document.getElementById("tracker-task")?.value.trim() || "";
+    const rewardValue = document.getElementById("tracker-reward")?.value.trim() || "";
+    const consequenceValue = document.getElementById("tracker-consequence")?.value.trim() || "";
+    const notesValue = document.getElementById("tracker-notes")?.value.trim() || "";
+
+    if (!taskValue) {
+      window.alert("Please enter what the child completed before saving the tracker entry.");
+      return;
+    }
+
+    saveParentTrackerEntry({
+      date: dateValue || new Date().toISOString().slice(0, 10),
+      task: taskValue,
+      reward: rewardValue,
+      consequence: consequenceValue,
+      notes: notesValue
+    });
+    renderRoute();
     return;
   }
 
