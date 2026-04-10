@@ -2615,6 +2615,7 @@ function renderHome() {
             `
         }
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
+        <a class="resource-link" href="rooted-parenting-release-of-information.html" target="_blank" rel="noopener noreferrer">Release of Information</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
         <a class="resource-link" href="rooted-parenting-pre-post-assessment.html">Pre/Post Parenting Assessment</a>
@@ -4000,6 +4001,7 @@ function renderWorksheets() {
       <p>These printable materials help present Rooted Parenting as a referral-ready parent education program for juvenile courts, CPS, schools, and family service agencies.</p>
       <div class="hero-actions hero-actions--stacked">
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
+        <a class="resource-link" href="rooted-parenting-release-of-information.html" target="_blank" rel="noopener noreferrer">Release of Information</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
         <a class="resource-link" href="rooted-parenting-pre-post-assessment.html">Pre/Post Parenting Assessment</a>

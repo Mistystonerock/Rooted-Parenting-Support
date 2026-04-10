@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Release of Information</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.55in;
+    }
+
+    :root {
+      --ink: #2f3538;
+      --muted: #627076;
+      --accent: #647261;
+      --line: #d8d1c6;
+      --soft: #f5f1ea;
+      --surface: #fffdfa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--surface);
+      line-height: 1.4;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 10px;
+      color: var(--accent);
+    }
+
+    h1 { font-size: 24pt; }
+
+    h2 {
+      font-size: 16pt;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
+
+    h3 { font-size: 12pt; }
+
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    li { margin: 0 0 6px; }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(255, 253, 250, 0.95);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--accent);
+      min-height: 42px;
+      padding: 0 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .status {
+      text-align: center;
+      color: var(--muted);
+      font-size: 10pt;
+      padding: 8px 0 0;
+    }
+
+    .page {
+      display: grid;
+      gap: 16px;
+      padding: 10px 0 24px;
+    }
+
+    .hero,
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fffdfa;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fffdf8 0%, #f2eee6 100%);
+    }
+
+    .line-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #abb0ad;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    .signature-row {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 14px;
+    }
+
+    .soft-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: var(--soft);
+    }
+
+    .small {
+      font-size: 10pt;
+      color: var(--muted);
+    }
+
+    @media print {
+      .controls,
+      .status {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button class="btn" type="button" onclick="goBack()">Back</button>
+    <button class="btn btn--primary" type="button" onclick="window.print()">Print or Save PDF</button>
+    <button class="btn" type="button" onclick="clearForm()">Clear Form</button>
+  </div>
+  <div class="status">This form saves on this device automatically while you type.</div>
+
+  <main class="page">
+    <section class="hero">
+      <h1>Rooted Parenting</h1>
+      <p><strong>Release of Information</strong></p>
+      <p>Use this form to authorize the exchange of information related to parent education, attendance, progress, assessment status, and completion between Rooted Parenting and the people or agencies listed below.</p>
+    </section>
+
+    <section class="box">
+      <h2>Parent / Family Information</h2>
+      <div class="field-grid">
+        <div class="line-row">
+          <div class="field">
+            <label for="caregiver-name">Parent / caregiver name</label>
+            <input id="caregiver-name" name="caregiverName" type="text" />
+          </div>
+          <div class="field">
+            <label for="date-of-birth">Date of birth</label>
+            <input id="date-of-birth" name="dateOfBirth" type="date" />
+          </div>
+        </div>
+        <div class="line-row">
+          <div class="field">
+            <label for="child-name">Child / client name</label>
+            <input id="child-name" name="childName" type="text" />
+          </div>
+          <div class="field">
+            <label for="family-id">Child / family identifier</label>
+            <input id="family-id" name="familyIdentifier" type="text" />
+          </div>
+        </div>
+        <div class="line-row">
+          <div class="field">
+            <label for="phone-number">Phone number</label>
+            <input id="phone-number" name="phoneNumber" type="text" />
+          </div>
+          <div class="field">
+            <label for="email-address">Email address</label>
+            <input id="email-address" name="emailAddress" type="email" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Information Release Authorization</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label for="program-name">Program releasing information</label>
+          <input id="program-name" name="programName" type="text" value="Rooted Parenting Support Program" />
+        </div>
+        <div class="field">
+          <label for="release-to">Person, agency, court, school, or provider receiving information</label>
+          <textarea id="release-to" name="releaseTo" placeholder="Enter the name of the worker, court, school, CPS office, provider, or agency receiving the information."></textarea>
+        </div>
+        <div class="field">
+          <label for="release-from">Person, agency, court, school, or provider allowed to share information back with Rooted Parenting</label>
+          <textarea id="release-from" name="releaseFrom" placeholder="Enter the name of the worker, court, school, CPS office, provider, or agency allowed to share information back."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Type of Information That May Be Shared</h2>
+      <div class="soft-box">
+        <p class="small">Check or list the information that may be shared:</p>
+        <div class="field-grid">
+          <div class="field">
+            <label for="attendance-info">Attendance and participation information</label>
+            <input id="attendance-info" name="attendanceInfo" type="text" placeholder="Example: session attendance, missed sessions, make-up work" />
+          </div>
+          <div class="field">
+            <label for="progress-info">Progress and weekly summary information</label>
+            <input id="progress-info" name="progressInfo" type="text" placeholder="Example: daily logs, weekly summaries, completed days" />
+          </div>
+          <div class="field">
+            <label for="assessment-info">Assessment information</label>
+            <input id="assessment-info" name="assessmentInfo" type="text" placeholder="Example: pre/post assessment completion status" />
+          </div>
+          <div class="field">
+            <label for="certificate-info">Completion and certificate information</label>
+            <input id="certificate-info" name="certificateInfo" type="text" placeholder="Example: certificate status, final completion date" />
+          </div>
+          <div class="field">
+            <label for="other-info">Other information authorized for release</label>
+            <textarea id="other-info" name="otherInfo" placeholder="List any other limited information that may be shared."></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Purpose of This Release</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label for="purpose">Purpose</label>
+          <textarea id="purpose" name="purpose" placeholder="Example: CPS case review, court-ordered parent education, reunification support, school collaboration, behavioral health coordination."></textarea>
+        </div>
+        <div class="line-row">
+          <div class="field">
+            <label for="effective-date">Effective date</label>
+            <input id="effective-date" name="effectiveDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="expiration-date">Expiration date</label>
+            <input id="expiration-date" name="expirationDate" type="date" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Parent / Caregiver Acknowledgment</h2>
+      <div class="soft-box">
+        <ul>
+          <li>I understand that this authorization is voluntary.</li>
+          <li>I understand that I may revoke this authorization in writing, except to the extent action has already been taken based on it.</li>
+          <li>I understand this release is limited to the information described above.</li>
+          <li>I understand this authorization will expire on the date listed above unless revoked earlier in writing.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Signatures</h2>
+      <div class="field-grid">
+        <div class="signature-row">
+          <div class="field">
+            <label for="caregiver-signature">Parent / caregiver signature</label>
+            <input id="caregiver-signature" name="caregiverSignature" type="text" />
+          </div>
+          <div class="field">
+            <label for="caregiver-signature-date">Date</label>
+            <input id="caregiver-signature-date" name="caregiverSignatureDate" type="date" />
+          </div>
+        </div>
+        <div class="signature-row">
+          <div class="field">
+            <label for="witness-signature">Witness / staff signature</label>
+            <input id="witness-signature" name="witnessSignature" type="text" />
+          </div>
+          <div class="field">
+            <label for="witness-signature-date">Date</label>
+            <input id="witness-signature-date" name="witnessSignatureDate" type="date" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const storageKey = "rooted-parenting-form-release-of-information";
+    const fields = Array.from(document.querySelectorAll("input, textarea, select"));
+
+    function loadForm() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      fields.forEach((field) => {
+        if (Object.prototype.hasOwnProperty.call(saved, field.name)) {
+          field.value = saved[field.name];
+        }
+      });
+    }
+
+    function saveForm() {
+      const payload = {};
+      fields.forEach((field) => {
+        payload[field.name] = field.value;
+      });
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    }
+
+    function clearForm() {
+      fields.forEach((field) => {
+        field.value = "";
+      });
+      localStorage.removeItem(storageKey);
+    }
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = "index.html";
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("input", saveForm);
+      field.addEventListener("change", saveForm);
+    });
+
+    loadForm();
+  </script>
+</body>
+</html>
