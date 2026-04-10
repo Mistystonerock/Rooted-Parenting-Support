@@ -2369,6 +2369,36 @@ function renderHome() {
     </section>
 
     <section class="section-card">
+      <h2>Choose Your Access</h2>
+      <p>Rooted Parenting offers free support tools for families, with affordable premium options for full course access, workbook tools, trackers, and professional features.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <div class="detail-card">
+          <h3>Free Access</h3>
+          <p><strong>$0</strong></p>
+          <p>Includes basic parenting support tools, sample lessons, selected worksheets, and general behavior guidance.</p>
+        </div>
+        <div class="detail-card">
+          <h3>Premium Parent Access</h3>
+          <p><strong>3-day free trial, then $4.99 / month</strong></p>
+          <p>Includes the full 21-day parenting program, workbook, progress tracker, assessments, certificate completion, and saved family tools.</p>
+          <a class="primary-button" href="https://buy.stripe.com/aFa28r2Ti79A1KO67R4ko00" target="_blank" rel="noopener noreferrer">Start 3-Day Free Trial</a>
+        </div>
+        <div class="detail-card">
+          <h3>Lifetime Parent Access</h3>
+          <p><strong>$59.99 one time</strong></p>
+          <p>One-time payment for full parent access, including the 21-day program, workbook, trackers, assessments, and certificate tools.</p>
+          <a class="primary-button" href="https://buy.stripe.com/cNi28r2TieC2cps3ZJ4ko01" target="_blank" rel="noopener noreferrer">Get Lifetime Access</a>
+        </div>
+        <div class="detail-card">
+          <h3>Professional / Agency Access</h3>
+          <p><strong>$79.99</strong></p>
+          <p>Includes staff portal, assigned tracks, weekly reports, attendance and progress review, and documentation tools for providers and agencies.</p>
+          <a class="primary-button" href="https://buy.stripe.com/14A28reC065w1KOcwf4ko02" target="_blank" rel="noopener noreferrer">Get Professional Access</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
       <h2>For Courts and Agencies</h2>
       <p>Use these printable tools to present Rooted Parenting as a structured caregiver intervention for juvenile court, CPS, school family support, diversion, and community-based parent education.</p>
       <div class="hero-actions hero-actions--stacked">
