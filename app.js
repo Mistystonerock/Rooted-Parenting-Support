@@ -912,6 +912,7 @@ const tabButtons = Array.from(document.querySelectorAll(".tabbar__item"));
 const completionStorageKey = "rooted-parenting-completed-lessons";
 const onboardingStorageKey = "rooted-parenting-onboarding-complete";
 const parentTrackerStorageKey = "rooted-parenting-parent-tracker";
+const clientProfileStorageKey = "rooted-parenting-client-profile";
 const quizFeedbackState = {};
 
 fallbackContent.learningPath[0].sections = [
@@ -1310,6 +1311,19 @@ function saveParentTrackerEntry(entry) {
   const entries = getParentTrackerEntries();
   const next = [entry, ...entries].slice(0, 12);
   window.localStorage.setItem(parentTrackerStorageKey, JSON.stringify(next));
+}
+
+function getClientProfile() {
+  try {
+    const raw = window.localStorage.getItem(clientProfileStorageKey);
+    return raw ? JSON.parse(raw) : { clientName: "", caregiverName: "", caseNote: "" };
+  } catch (error) {
+    return { clientName: "", caregiverName: "", caseNote: "" };
+  }
+}
+
+function saveClientProfile(profile) {
+  window.localStorage.setItem(clientProfileStorageKey, JSON.stringify(profile));
 }
 
 function checkLessonQuiz(slug) {
@@ -1775,6 +1789,8 @@ function renderPathLesson(slug) {
   const total = appContent.learningPath.length;
   const percent = Math.round(((index + 1) / total) * 100);
   const feedback = quizFeedbackState[lesson.slug];
+  const previousLesson = index > 0 ? appContent.learningPath[index - 1] : null;
+  const nextLesson = index < total - 1 ? appContent.learningPath[index + 1] : null;
 
   screenTitle.textContent = lesson.title;
   appContentRoot.innerHTML = `
@@ -1871,6 +1887,21 @@ function renderPathLesson(slug) {
         `
         : ""
     }
+    <section class="detail-card">
+      <h3>Keep going</h3>
+      <div class="hero-actions hero-actions--stacked">
+        ${
+          previousLesson
+            ? `<button class="secondary-button" type="button" data-path-lesson="${previousLesson.slug}">Previous Lesson</button>`
+            : `<button class="secondary-button" type="button" data-route-link="learning">Back to Learning Path</button>`
+        }
+        ${
+          nextLesson
+            ? `<button class="primary-button" type="button" data-path-lesson="${nextLesson.slug}">Next Lesson</button>`
+            : `<button class="primary-button" type="button" data-route-link="progress">Go to Progress Tracker</button>`
+        }
+      </div>
+    </section>
   `;
 }
 
@@ -2058,6 +2089,7 @@ function renderTools() {
 function renderProgressTracker() {
   const completedLessons = getCompletedLessons();
   const trackerEntries = getParentTrackerEntries();
+  const clientProfile = getClientProfile();
   const totalLessons = appContent.learningPath.length;
   const completedCount = completedLessons.length;
   const remainingCount = Math.max(totalLessons - completedCount, 0);
@@ -2075,6 +2107,28 @@ function renderProgressTracker() {
         <span class="pill">${completedCount} completed</span>
         <span class="pill">${remainingCount} remaining</span>
         <span class="pill">${percent}% finished</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Client and caregiver profile</h3>
+      <p>Save the client and caregiver name here so the printable summary is tied to the right family. This saves in the app on this device.</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Client name</span>
+          <input id="client-name" type="text" value="${escapeHtml(clientProfile.clientName || "")}" placeholder="Child or client name" />
+        </label>
+        <label class="tracker-field">
+          <span>Caregiver name</span>
+          <input id="caregiver-name" type="text" value="${escapeHtml(clientProfile.caregiverName || "")}" placeholder="Parent or caregiver name" />
+        </label>
+        <label class="tracker-field">
+          <span>Case note or service note</span>
+          <textarea id="case-note" rows="3" placeholder="Example: CPS referral, family support, diversion, reunification support">${escapeHtml(clientProfile.caseNote || "")}</textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-client-profile="true">Save Client Profile</button>
+        </div>
       </div>
     </section>
 
@@ -2204,6 +2258,53 @@ function renderProgressTracker() {
               .join("")
           : `<p>No tracker entries saved yet. Add one above to start tracking positive reinforcement and calm follow-through.</p>`
       }
+    </section>
+
+    <section class="detail-card print-summary" id="progress-summary">
+      <div class="detail-card__header">
+        <h3>Printable progress summary</h3>
+        <button class="secondary-button no-print" type="button" data-print-progress="true">Print Summary</button>
+      </div>
+      <p><strong>Client name:</strong> ${escapeHtml(clientProfile.clientName || "Not entered")}</p>
+      <p><strong>Caregiver name:</strong> ${escapeHtml(clientProfile.caregiverName || "Not entered")}</p>
+      <p><strong>Case note:</strong> ${escapeHtml(clientProfile.caseNote || "Not entered")}</p>
+      <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+      <p><strong>Course progress:</strong> ${completedCount} of ${totalLessons} lessons completed (${percent}%)</p>
+      <p><strong>Certificate status:</strong> ${completedCount === totalLessons && totalLessons > 0 ? "Eligible for certificate" : "Certificate not yet unlocked"}</p>
+      <div class="note-box">
+        <strong>Completed lessons</strong>
+        ${
+          completedCount
+            ? bulletList(
+                completedLessons
+                  .map((slug) => appContent.learningPath.find((item) => item.slug === slug))
+                  .filter(Boolean)
+                  .map((lesson) => lesson.title)
+              )
+            : "<p>No lessons completed yet.</p>"
+        }
+      </div>
+      <div class="note-box">
+        <strong>Recent parenting tracker entries</strong>
+        ${
+          trackerEntries.length
+            ? trackerEntries
+                .slice(0, 5)
+                .map(
+                  (entry) => `
+                    <div class="summary-entry">
+                      <p><strong>${escapeHtml(entry.date || "No date")}</strong></p>
+                      <p><strong>Completed:</strong> ${escapeHtml(entry.task || "Not entered")}</p>
+                      <p><strong>Reward:</strong> ${escapeHtml(entry.reward || "Not entered")}</p>
+                      <p><strong>Follow-through:</strong> ${escapeHtml(entry.consequence || "Not entered")}</p>
+                      <p><strong>Notes:</strong> ${escapeHtml(entry.notes || "None entered")}</p>
+                    </div>
+                  `
+                )
+                .join("")
+            : "<p>No parenting tracker entries saved yet.</p>"
+        }
+      </div>
     </section>
   `;
 }
@@ -2452,6 +2553,27 @@ document.addEventListener("click", (event) => {
       notes: notesValue
     });
     renderRoute();
+    return;
+  }
+
+  const clientProfileButton = event.target.closest("[data-save-client-profile]");
+  if (clientProfileButton) {
+    const clientName = document.getElementById("client-name")?.value.trim() || "";
+    const caregiverName = document.getElementById("caregiver-name")?.value.trim() || "";
+    const caseNote = document.getElementById("case-note")?.value.trim() || "";
+
+    saveClientProfile({
+      clientName,
+      caregiverName,
+      caseNote
+    });
+    renderRoute();
+    return;
+  }
+
+  const printProgressButton = event.target.closest("[data-print-progress]");
+  if (printProgressButton) {
+    window.print();
     return;
   }
 
