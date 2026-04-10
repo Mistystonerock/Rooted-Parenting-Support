@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Completion Certificate</title>
+  <style>
+    @page {
+      size: Letter landscape;
+      margin: 0.55in;
+    }
+
+    :root {
+      --ink: #2f3538;
+      --muted: #627076;
+      --accent: #647261;
+      --line: #d8d1c6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      background: white;
+      color: var(--ink);
+    }
+
+    .certificate {
+      min-height: calc(100vh - 1.1in);
+      border: 2px solid var(--line);
+      border-radius: 26px;
+      background: linear-gradient(135deg, #fffdf8 0%, #f2eee6 100%);
+      padding: 0.7in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    h1, h2 {
+      margin: 0 0 12px;
+      color: var(--accent);
+    }
+
+    h1 { font-size: 30pt; }
+    h2 { font-size: 24pt; }
+
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13pt;
+      line-height: 1.4;
+    }
+
+    .name-line {
+      max-width: 4.8in;
+      margin: 18px auto 10px;
+      border-bottom: 2px solid #aab0ad;
+      min-height: 30px;
+    }
+
+    .meta {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .label {
+      font-size: 10.5pt;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+  <main class="certificate">
+    <h1>Certificate of Completion</h1>
+    <p>This certifies that</p>
+    <div class="name-line"></div>
+    <p>has successfully completed the</p>
+    <h2>Rooted Parenting Parent-Child Learning Course</h2>
+    <p>including caregiver skill-building, home practice, and trauma-informed parenting education focused on regulation, structure, reinforcement, and emotional safety.</p>
+    <p>Program length: 10 sessions / lessons</p>
+
+    <div class="meta">
+      <div>
+        <div class="label">Date</div>
+        <div class="name-line" style="max-width: 2.4in;"></div>
+      </div>
+      <div>
+        <div class="label">Facilitator / Program Representative</div>
+        <div class="name-line" style="max-width: 2.8in;"></div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

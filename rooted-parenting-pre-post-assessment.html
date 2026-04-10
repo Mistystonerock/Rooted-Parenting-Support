@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Pre Post Assessment</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.6in;
+    }
+
+    :root {
+      --ink: #2f3538;
+      --muted: #627076;
+      --accent: #647261;
+      --line: #d8d1c6;
+      --soft: #f5f1ea;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: var(--ink);
+      background: white;
+      line-height: 1.4;
+    }
+    h1, h2 {
+      margin: 0 0 10px;
+      color: var(--accent);
+    }
+    h1 { font-size: 24pt; }
+    h2 {
+      font-size: 16pt;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+    .page {
+      display: grid;
+      gap: 16px;
+    }
+    .hero,
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      background: #fffdfa;
+    }
+    .hero {
+      background: linear-gradient(135deg, #fffdf8 0%, #f2eee6 100%);
+    }
+    .line-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .line {
+      border-bottom: 1px solid #abb0ad;
+      min-height: 24px;
+      margin-top: 6px;
+    }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5pt;
+    }
+    .table th,
+    .table td {
+      border: 1px solid var(--line);
+      padding: 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .table th {
+      background: var(--soft);
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Rooted Parenting</h1>
+      <p><strong>Pre/Post Parenting Assessment</strong></p>
+      <p>Use this form at intake and again at completion to document caregiver self-report progress.</p>
+    </section>
+
+    <section class="box">
+      <h2>Participant Information</h2>
+      <div class="line-row">
+        <div>
+          <div>Caregiver name</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Date</div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="line-row">
+        <div>
+          <div>Referral source</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Facilitator</div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div>
+        <div>Mark one: Pre-assessment / Post-assessment</div>
+        <div class="line"></div>
+      </div>
+    </section>
+
+    <section class="box">
+      <h2>Rating Scale</h2>
+      <p>Rate each statement from 1 to 5.</p>
+      <p>1 = strongly disagree, 2 = disagree, 3 = not sure / sometimes, 4 = agree, 5 = strongly agree</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Statement</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>I understand that behavior may communicate stress, fear, or unmet needs.</td><td></td></tr>
+          <tr><td>I can usually notice when my child is becoming overwhelmed.</td><td></td></tr>
+          <tr><td>I know ways to calm myself before responding to hard behavior.</td><td></td></tr>
+          <tr><td>I use consequences in a calm, predictable, and non-harmful way.</td><td></td></tr>
+          <tr><td>I use praise, encouragement, or reinforcement to build desired behavior.</td><td></td></tr>
+          <tr><td>I feel more confident setting limits without escalating conflict.</td><td></td></tr>
+          <tr><td>I understand how routines and structure can reduce behavior problems.</td><td></td></tr>
+          <tr><td>I feel better able to repair with my child after difficult moments.</td><td></td></tr>
+          <tr><td>I feel more prepared to work with schools or helpers around my child’s needs.</td><td></td></tr>
+          <tr><td>I believe I have practical parenting tools I can continue using.</td><td></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="box">
+      <h2>Short Reflection</h2>
+      <div>What is one parenting strength you see in yourself right now?</div>
+      <div class="line" style="min-height: 44px;"></div>
+      <div>What is one parenting area you want to strengthen?</div>
+      <div class="line" style="min-height: 44px;"></div>
+      <div>What is one change you have noticed in your child or family since starting the program?</div>
+      <div class="line" style="min-height: 54px;"></div>
+    </section>
+  </main>
+</body>
+</html>

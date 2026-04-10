@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rooted Parenting Court and CPS Referral Packet</title>
   <style>
-    @page { size: Letter; margin: 0.6in; }
+    @page {
+      size: Letter;
+      margin: 0.6in;
+    }
+
     :root {
       --ink: #2f3538;
       --muted: #627076;
@@ -13,7 +17,9 @@
       --line: #d8d1c6;
       --soft: #f5f1ea;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Calibri, Arial, sans-serif;
@@ -21,15 +27,41 @@
       background: #fffdfa;
       line-height: 1.42;
     }
-    .page { display: grid; gap: 16px; page-break-after: always; padding: 0.04in 0; }
+
+    .page {
+      display: grid;
+      gap: 16px;
+      page-break-after: always;
+      padding: 0.04in 0;
+    }
+
     .page:last-child { page-break-after: auto; }
-    h1, h2, h3 { margin: 0 0 10px; color: var(--accent); }
+
+    h1, h2, h3 {
+      margin: 0 0 10px;
+      color: var(--accent);
+    }
+
     h1 { font-size: 27pt; }
-    h2 { font-size: 18pt; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+    h2 {
+      font-size: 18pt;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
     h3 { font-size: 12pt; }
-    p { margin: 0 0 10px; color: var(--muted); }
-    ul { margin: 8px 0 0 18px; padding: 0; }
+
+    p {
+      margin: 0 0 10px;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
     li { margin: 0 0 6px; }
+
     .hero {
       min-height: 8.8in;
       border: 1px solid var(--line);
@@ -41,31 +73,64 @@
       justify-content: center;
       text-align: center;
     }
+
     .subtitle {
       color: var(--muted);
       font-size: 13.5pt;
       margin-bottom: 16px;
       font-weight: 700;
     }
-    .card, .field-box {
+
+    .card,
+    .field-box {
       border: 1px solid var(--line);
       border-radius: 16px;
       padding: 14px;
       background: var(--soft);
       break-inside: avoid;
     }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .line { border-bottom: 1px solid #a6aaa8; min-height: 24px; margin-top: 6px; }
-    .line-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .small { font-size: 10pt; color: var(--muted); }
-    .table { width: 100%; border-collapse: collapse; font-size: 10.5pt; }
-    .table th, .table td {
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .line {
+      border-bottom: 1px solid #a6aaa8;
+      min-height: 24px;
+      margin-top: 6px;
+    }
+
+    .line-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .small {
+      font-size: 10pt;
+      color: var(--muted);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5pt;
+    }
+
+    .table th,
+    .table td {
       border: 1px solid var(--line);
       padding: 8px;
       vertical-align: top;
       text-align: left;
     }
-    .table th { background: var(--soft); color: var(--accent); }
+
+    .table th {
+      background: var(--soft);
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -143,19 +208,43 @@
     <div class="field-box">
       <h3>Referral form</h3>
       <div class="line-row">
-        <div><div>Caregiver name</div><div class="line"></div></div>
-        <div><div>Child name(s)</div><div class="line"></div></div>
+        <div>
+          <div>Caregiver name</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Child name(s)</div>
+          <div class="line"></div>
+        </div>
       </div>
       <div class="line-row">
-        <div><div>Referral source / agency</div><div class="line"></div></div>
-        <div><div>Caseworker / probation / staff name</div><div class="line"></div></div>
+        <div>
+          <div>Referral source / agency</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Caseworker / probation / staff name</div>
+          <div class="line"></div>
+        </div>
       </div>
       <div class="line-row">
-        <div><div>Phone / email</div><div class="line"></div></div>
-        <div><div>Date of referral</div><div class="line"></div></div>
+        <div>
+          <div>Phone / email</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Date of referral</div>
+          <div class="line"></div>
+        </div>
       </div>
-      <div><div>Reason for referral</div><div class="line" style="min-height: 54px;"></div></div>
-      <div><div>Current concerns / safety factors / service plan goals</div><div class="line" style="min-height: 72px;"></div></div>
+      <div>
+        <div>Reason for referral</div>
+        <div class="line" style="min-height: 54px;"></div>
+      </div>
+      <div>
+        <div>Current concerns / safety factors / service plan goals</div>
+        <div class="line" style="min-height: 72px;"></div>
+      </div>
     </div>
   </section>
 
@@ -169,11 +258,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td>Session length</td><td>45 to 60 minutes per session</td></tr>
-        <tr><td>Program length</td><td>10 sessions or lessons</td></tr>
-        <tr><td>Practice expectations</td><td>Caregiver completes reflection and at least one parent-child practice activity between sessions when assigned</td></tr>
-        <tr><td>Documentation</td><td>Attendance, progress notes, and completion status may be tracked by the facilitator or referring program</td></tr>
-        <tr><td>Completion recommendation</td><td>Attend all required sessions or complete equivalent make-up work, participate in reflection, and demonstrate engagement with core parenting skills</td></tr>
+        <tr>
+          <td>Session length</td>
+          <td>45 to 60 minutes per session</td>
+        </tr>
+        <tr>
+          <td>Program length</td>
+          <td>10 sessions or lessons</td>
+        </tr>
+        <tr>
+          <td>Practice expectations</td>
+          <td>Caregiver completes reflection and at least one parent-child practice activity between sessions when assigned</td>
+        </tr>
+        <tr>
+          <td>Documentation</td>
+          <td>Attendance, progress notes, and completion status may be tracked by the facilitator or referring program</td>
+        </tr>
+        <tr>
+          <td>Completion recommendation</td>
+          <td>Attend all required sessions or complete equivalent make-up work, participate in reflection, and demonstrate engagement with core parenting skills</td>
+        </tr>
       </tbody>
     </table>
 
@@ -193,20 +297,47 @@
     <h2>Referral Agreement</h2>
     <div class="field-box">
       <p class="small">This section may be used by agencies, CPS units, probation, diversion programs, or community providers to document participation expectations.</p>
-      <div><div>Participant understands referral purpose and expectations</div><div class="line"></div></div>
-      <div><div>Attendance expectations explained</div><div class="line"></div></div>
-      <div><div>Communication and reporting expectations explained</div><div class="line"></div></div>
-      <div class="line-row">
-        <div><div>Participant signature</div><div class="line"></div></div>
-        <div><div>Date</div><div class="line"></div></div>
+      <div>
+        <div>Participant understands referral purpose and expectations</div>
+        <div class="line"></div>
+      </div>
+      <div>
+        <div>Attendance expectations explained</div>
+        <div class="line"></div>
+      </div>
+      <div>
+        <div>Communication and reporting expectations explained</div>
+        <div class="line"></div>
       </div>
       <div class="line-row">
-        <div><div>Referring worker signature</div><div class="line"></div></div>
-        <div><div>Date</div><div class="line"></div></div>
+        <div>
+          <div>Participant signature</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Date</div>
+          <div class="line"></div>
+        </div>
       </div>
       <div class="line-row">
-        <div><div>Facilitator / program representative</div><div class="line"></div></div>
-        <div><div>Date</div><div class="line"></div></div>
+        <div>
+          <div>Referring worker signature</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Date</div>
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="line-row">
+        <div>
+          <div>Facilitator / program representative</div>
+          <div class="line"></div>
+        </div>
+        <div>
+          <div>Date</div>
+          <div class="line"></div>
+        </div>
       </div>
     </div>
   </section>
