@@ -15,6 +15,7 @@
       --muted: #627076;
       --accent: #647261;
       --line: #d8d1c6;
+      --soft: #f5f1ea;
     }
 
     * { box-sizing: border-box; }
@@ -24,6 +25,53 @@
       font-family: "Segoe UI", Calibri, Arial, sans-serif;
       background: white;
       color: var(--ink);
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(255, 253, 250, 0.95);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--accent);
+      min-height: 42px;
+      padding: 0 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      max-width: 920px;
+      margin: 10px auto 0;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--soft);
+      padding: 12px 16px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 10.5pt;
     }
 
     .certificate {
@@ -53,11 +101,45 @@
       line-height: 1.4;
     }
 
-    .name-line {
+    .line-field {
+      display: grid;
+      gap: 4px;
       max-width: 4.8in;
       margin: 18px auto 10px;
+    }
+
+    .line-field input {
+      border: 0;
       border-bottom: 2px solid #aab0ad;
-      min-height: 30px;
+      background: transparent;
+      text-align: center;
+      padding: 8px;
+      font: inherit;
+      font-size: 18pt;
+      color: var(--ink);
+    }
+
+    .line-field input[readonly] {
+      opacity: 0.75;
+    }
+
+    .line-field--small {
+      max-width: 2.8in;
+      margin: 0 auto;
+    }
+
+    .line-field--small input {
+      font-size: 12pt;
+    }
+
+    .course-field {
+      max-width: 5.6in;
+    }
+
+    .course-field input {
+      font-size: 19pt;
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .meta {
@@ -74,28 +156,168 @@
       text-transform: uppercase;
       letter-spacing: 0.06em;
     }
+
+    @media print {
+      .controls,
+      .status {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="controls">
+    <button class="btn btn--primary" id="print-button" type="button" onclick="window.print()">Print or Save PDF</button>
+    <button class="btn" type="button" onclick="clearForm()">Clear Form</button>
+  </div>
+  <div class="status" id="certificate-status">Checking lesson completion...</div>
+
   <main class="certificate">
     <h1>Certificate of Completion</h1>
     <p>This certifies that</p>
-    <div class="name-line"></div>
+    <div class="line-field">
+      <input aria-label="Participant name" id="participant-name" name="participantName" type="text" />
+    </div>
     <p>has successfully completed the</p>
-    <h2>Rooted Parenting Parent-Child Learning Course</h2>
+    <div class="line-field course-field">
+      <input aria-label="Course name" id="course-name" name="courseName" type="text" value="Rooted Parenting 21-Day Parenting Habit Program" />
+    </div>
     <p>including caregiver skill-building, home practice, and trauma-informed parenting education focused on regulation, structure, reinforcement, and emotional safety.</p>
-    <p>Program length: 10 sessions / lessons</p>
+    <p>
+      Program length:
+      <input
+        aria-label="Program length"
+        id="program-length"
+        name="programLength"
+        type="text"
+        value="21 daily sessions"
+        style="border:0;border-bottom:1px solid #aab0ad;background:transparent;text-align:center;max-width:2.4in;font:inherit;color:inherit;"
+      />
+    </p>
 
     <div class="meta">
       <div>
         <div class="label">Date</div>
-        <div class="name-line" style="max-width: 2.4in;"></div>
+        <div class="line-field line-field--small">
+          <input aria-label="Date" id="certificate-date" name="date" type="date" />
+        </div>
       </div>
       <div>
         <div class="label">Facilitator / Program Representative</div>
-        <div class="name-line" style="max-width: 2.8in;"></div>
+        <div class="line-field line-field--small">
+          <input aria-label="Facilitator or program representative" id="facilitator" name="facilitator" type="text" />
+        </div>
       </div>
     </div>
   </main>
+
+  <script>
+    const storageKey = "rooted-parenting-form-rooted-parenting-completion-certificate";
+    const completionStorageKey = "rooted-parenting-completed-lessons";
+    const clientProfileStorageKey = "rooted-parenting-client-profile";
+    const requiredLessons = 21;
+    const fields = Array.from(document.querySelectorAll("input"));
+    const participantNameField = document.getElementById("participant-name");
+    const courseNameField = document.getElementById("course-name");
+    const programLengthField = document.getElementById("program-length");
+    const dateField = document.getElementById("certificate-date");
+    const statusBox = document.getElementById("certificate-status");
+    const printButton = document.getElementById("print-button");
+
+    function getCompletedLessons() {
+      try {
+        const raw = localStorage.getItem(completionStorageKey);
+        return raw ? JSON.parse(raw) : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function getClientProfile() {
+      try {
+        const raw = localStorage.getItem(clientProfileStorageKey);
+        return raw ? JSON.parse(raw) : {};
+      } catch (error) {
+        return {};
+      }
+    }
+
+    function isUnlocked() {
+      return getCompletedLessons().length >= requiredLessons;
+    }
+
+    function defaultParticipantName(profile) {
+      return profile.caregiverName || profile.clientName || "";
+    }
+
+    function loadForm() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      const profile = getClientProfile();
+      const unlocked = isUnlocked();
+
+      fields.forEach((field) => {
+        if (Object.prototype.hasOwnProperty.call(saved, field.name)) {
+          field.value = saved[field.name];
+        }
+      });
+
+      if (!participantNameField.value) {
+        participantNameField.value = defaultParticipantName(profile);
+      }
+
+      if (!dateField.value) {
+        dateField.value = new Date().toISOString().slice(0, 10);
+      }
+
+      if (!courseNameField.value) {
+        courseNameField.value = "Rooted Parenting 21-Day Parenting Habit Program";
+      }
+
+      if (!programLengthField.value) {
+        programLengthField.value = "21 daily sessions";
+      }
+
+      fields.forEach((field) => {
+        field.readOnly = !unlocked;
+        if (field.type === "date") {
+          field.disabled = !unlocked;
+        }
+      });
+
+      printButton.disabled = !unlocked;
+      statusBox.textContent = unlocked
+        ? "Certificate unlocked. The caregiver name has been filled in from the saved profile, and you can edit or print it now."
+        : "Certificate is locked until all 21 daily sessions are completed in the app. Once completed, this page will auto-fill the caregiver name and unlock for printing.";
+
+      saveForm();
+    }
+
+    function saveForm() {
+      const payload = {};
+      fields.forEach((field) => {
+        payload[field.name] = field.value;
+      });
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    }
+
+    function clearForm() {
+      const unlocked = isUnlocked();
+      const profile = getClientProfile();
+
+      participantNameField.value = defaultParticipantName(profile);
+      courseNameField.value = "Rooted Parenting 21-Day Parenting Habit Program";
+      programLengthField.value = "21 daily sessions";
+      dateField.value = unlocked ? new Date().toISOString().slice(0, 10) : "";
+      document.getElementById("facilitator").value = "";
+      saveForm();
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("input", saveForm);
+      field.addEventListener("change", saveForm);
+    });
+
+    loadForm();
+  </script>
 </body>
 </html>

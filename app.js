@@ -684,6 +684,496 @@ const fallbackContent = {
 
 let appContent = fallbackContent;
 
+const learningTopicLookLikeMap = {
+  "what-is-trauma": [
+    "A parent may think, 'This is just bad behavior,' until they notice the child melts down every time voices get louder in the house.",
+    "A child may seem fine one minute and then panic the next when something reminds them of a past scary experience.",
+    "What looks like overreacting may actually be a body remembering stress faster than the child can explain it."
+  ],
+  "how-trauma-affects-behavior": [
+    "You ask your child to put shoes on, and instead of a small complaint you get yelling, refusal, or hiding under a blanket.",
+    "A child who looked calm at breakfast may suddenly cry, freeze, or get aggressive when it is time to leave the house.",
+    "What looks oppositional on the outside may actually be a stress response on the inside."
+  ],
+  "regulation-before-discipline": [
+    "Instead of saying five things at once, a parent might kneel down and say, 'You are safe. We are calming first.'",
+    "If a child is screaming, the parent might move the sibling to safety, lower their own voice, and wait to talk about consequences until later.",
+    "The teaching still happens, but it happens after the child's body can listen again."
+  ],
+  "connection-before-correction": [
+    "Connection before correction might sound like, 'I know you are upset. I'm staying with you. We will talk about the rule in a minute.'",
+    "A parent might offer a calm touch, sit nearby, or soften their face before bringing up what needs to change.",
+    "Correction still happens, but the child hears it after feeling safe enough to come out of defense."
+  ],
+  "understanding-triggers": [
+    "A parent may start noticing that every bath night turns into a fight, which points to a pattern instead of random bad behavior.",
+    "A child may react strongly to one adult's tone of voice but not another's.",
+    "When triggers are noticed early, parents can plan ahead instead of only reacting after the explosion."
+  ],
+  "building-emotional-safety": [
+    "A child starts making fewer excuses at bedtime because the routine feels predictable instead of tense.",
+    "After a hard morning, the parent comes back later to say, 'We both had a hard time. We can start over.'",
+    "The child learns that mistakes do not automatically mean yelling, shame, or disconnection."
+  ],
+  "co-regulation": [
+    "A parent notices their child borrowing their calm voice and slower breathing after a few minutes of staying close.",
+    "Instead of demanding eye contact, the parent sits nearby and keeps the moment simple and steady.",
+    "The child may not calm instantly, but repeated calm support teaches their brain what safety feels like."
+  ]
+};
+
+const coreLearningPathTemplates = fallbackContent.learningPath.map((lesson) => ({
+  ...lesson,
+  bullets: [...lesson.bullets],
+  examples: [...lesson.examples]
+}));
+
+const twentyOneDayPlan = [
+  {
+    day: 1,
+    templateIndex: 0,
+    title: "Observe Before Reacting",
+    focus: "Start the program by noticing what behavior may be communicating before you correct it.",
+    practice: "Pause during one hard moment and ask yourself what need, feeling, or stress might be underneath the behavior.",
+    example: "Instead of saying 'Stop it right now,' a parent might first notice that the child is tired, embarrassed, or overloaded.",
+    reportPrompt: "What did your child’s behavior seem to communicate today?",
+    quiz: {
+      question: "What is the main goal of Day 1?",
+      options: [
+        "Notice what behavior may be communicating",
+        "Use a bigger punishment right away",
+        "Ignore the child's feelings"
+      ],
+      answerIndex: 0,
+      feedback: "You are building the habit of observing before reacting."
+    }
+  },
+  {
+    day: 2,
+    templateIndex: 0,
+    title: "Notice Body Signs Earlier",
+    focus: "Catch hard moments earlier by noticing body signs before the full blow-up happens.",
+    practice: "Write down one early sign that your child is getting stressed, such as pacing, whining, louder voice, or shutting down.",
+    example: "A parent notices their child starts stomping and grabbing toys harder before yelling starts.",
+    reportPrompt: "What early stress signal did you notice today?",
+    quiz: {
+      question: "Why do early body signs matter?",
+      options: [
+        "They help you step in sooner with support",
+        "They prove the child is being manipulative",
+        "They mean nothing unless behavior gets worse"
+      ],
+      answerIndex: 0,
+      feedback: "Early signs help parents respond sooner and more calmly."
+    }
+  },
+  {
+    day: 3,
+    templateIndex: 1,
+    title: "Stress Brain Versus Thinking Brain",
+    focus: "Learn how a stressed brain changes listening, memory, flexibility, and impulse control.",
+    practice: "Pick one hard part of the day and remind yourself that stress can shrink a child’s ability to think clearly in that moment.",
+    example: "A child forgets directions or seems irrational during stress because their brain is in protection mode.",
+    reportPrompt: "When did you see stress get in the way of thinking today?",
+    quiz: {
+      question: "When a child is highly stressed, what often becomes harder?",
+      options: [
+        "Listening and problem-solving",
+        "Needing support",
+        "Having a nervous system"
+      ],
+      answerIndex: 0,
+      feedback: "Stress can make it much harder for children to think and respond well."
+    }
+  },
+  {
+    day: 4,
+    templateIndex: 2,
+    title: "Calm First, Teach Second",
+    focus: "Build the habit of calming the moment before trying to explain, discipline, or lecture.",
+    practice: "Use one short calming sentence today, like 'We will calm first' or 'I will help you get your body settled.'",
+    example: "Instead of a lecture during crying or yelling, a parent lowers their voice and waits to teach until later.",
+    reportPrompt: "How did the moment change when you calmed first?",
+    quiz: {
+      question: "What comes first in this program during a meltdown?",
+      options: [
+        "Regulation and safety",
+        "A long explanation",
+        "Arguing about the rule"
+      ],
+      answerIndex: 0,
+      feedback: "Safety and regulation come first so the child can learn later."
+    }
+  },
+  {
+    day: 5,
+    templateIndex: 2,
+    title: "When the Brain Cannot Hear Yelling",
+    focus: "Understand that when a child is highly upset, their brain may not be able to take in yelling, logic, or correction.",
+    practice: "Replace one raised-voice moment with a slower, softer sentence and fewer words.",
+    example: "A child who is sobbing or raging is often not able to process a long explanation at that time.",
+    reportPrompt: "What happened when you used fewer words today?",
+    quiz: {
+      question: "Why is yelling usually not effective when a child is highly upset?",
+      options: [
+        "The child's stressed brain often cannot take it in",
+        "Children always obey when adults are quiet",
+        "Yelling is only a problem at school"
+      ],
+      answerIndex: 0,
+      feedback: "When the brain is flooded, yelling adds threat instead of understanding."
+    }
+  },
+  {
+    day: 6,
+    templateIndex: 3,
+    title: "Connection Before Correction",
+    focus: "Practice connecting first so the child feels safer and more able to hear guidance.",
+    practice: "Use one connecting phrase before a correction today, such as 'I know this is hard' or 'I’m here with you.'",
+    example: "A parent says, 'I know you are upset. I’m staying with you,' before talking about what needs to happen next.",
+    reportPrompt: "What did connection before correction look like today?",
+    quiz: {
+      question: "Connection before correction means:",
+      options: [
+        "The child feels understood before you teach",
+        "You remove all limits",
+        "You ignore the behavior completely"
+      ],
+      answerIndex: 0,
+      feedback: "Connection lowers threat so correction has a better chance of being heard."
+    }
+  },
+  {
+    day: 7,
+    templateIndex: 3,
+    title: "Repair After a Hard Moment",
+    focus: "Build the habit of coming back after conflict to reconnect, repair, and reset.",
+    practice: "After one hard moment, return later and say one repair sentence such as 'We both had a hard time. Let’s start over.'",
+    example: "The parent returns after everyone is calm and reconnects instead of acting like the rupture never happened.",
+    reportPrompt: "How did repair change the tone after a hard moment?",
+    quiz: {
+      question: "What does repair teach children?",
+      options: [
+        "Relationships can recover after conflict",
+        "Hard moments should never be discussed",
+        "Only children need to apologize"
+      ],
+      answerIndex: 0,
+      feedback: "Repair teaches safety, accountability, and reconnection."
+    }
+  },
+  {
+    day: 8,
+    templateIndex: 4,
+    title: "Track Triggers and Patterns",
+    focus: "Notice when hard moments are linked to routines, sounds, transitions, people, or timing.",
+    practice: "Write down one repeated trigger pattern today and what happened right before the behavior.",
+    example: "A parent realizes the worst moments happen during rushed transitions, not randomly.",
+    reportPrompt: "What trigger or pattern stood out today?",
+    quiz: {
+      question: "Why track triggers?",
+      options: [
+        "It helps parents plan ahead and respond sooner",
+        "It proves the child is choosing trouble",
+        "It replaces the need for routines"
+      ],
+      answerIndex: 0,
+      feedback: "Patterns help parents prepare instead of only reacting."
+    }
+  },
+  {
+    day: 9,
+    templateIndex: 5,
+    title: "Create Emotional Safety Through Routine",
+    focus: "Use routines, steady responses, and predictable limits to help the home feel safer.",
+    practice: "Choose one part of the day to make more predictable with the same steps and calmer tone.",
+    example: "Bedtime or after-school routines often become easier when children know what comes next.",
+    reportPrompt: "Which routine felt more stable today?",
+    quiz: {
+      question: "What helps build emotional safety over time?",
+      options: [
+        "Predictable routines and calm repair",
+        "Changing rules every day",
+        "Only correcting after something goes wrong"
+      ],
+      answerIndex: 0,
+      feedback: "Consistency and repair help children feel safer over time."
+    }
+  },
+  {
+    day: 10,
+    templateIndex: 6,
+    title: "Co-Regulation in Real Time",
+    focus: "Use your own body, tone, and presence to help your child borrow calm when stressed.",
+    practice: "Sit nearby, slow your breathing, and use fewer words during one hard moment today.",
+    example: "A parent keeps their voice low and steady so the child has something calm to organize around.",
+    reportPrompt: "How did your calm presence affect your child today?",
+    quiz: {
+      question: "Co-regulation means:",
+      options: [
+        "A calm adult helps a child borrow steadiness",
+        "The child must calm alone before getting support",
+        "The parent talks nonstop until the child stops"
+      ],
+      answerIndex: 0,
+      feedback: "Children build self-regulation through repeated experiences of co-regulation."
+    }
+  },
+  {
+    day: 11,
+    templateIndex: 7,
+    title: "Support School Stress",
+    focus: "Look at school behavior as a support issue, not only a discipline issue.",
+    practice: "Notice one school-related stress point and identify one support that might make it feel smaller.",
+    example: "A check-in adult, visual routine, or softer morning start can reduce school stress.",
+    reportPrompt: "What school stressor or support did you notice today?",
+    quiz: {
+      question: "A helpful first step for school stress is to:",
+      options: [
+        "Identify one specific support need",
+        "Assume the child is just lazy",
+        "Wait until things get much worse"
+      ],
+      answerIndex: 0,
+      feedback: "Specific school supports are usually more effective than general pressure."
+    }
+  },
+  {
+    day: 12,
+    templateIndex: 8,
+    title: "Regulate Yourself First",
+    focus: "Practice noticing your own early signs so you can respond instead of react.",
+    practice: "Use one grounding tool before responding to a hard behavior today, even if it is just one breath and a shoulder drop.",
+    example: "A parent notices their chest tightening and pauses before speaking.",
+    reportPrompt: "What did you notice in your own body today?",
+    quiz: {
+      question: "Why does parent self-regulation matter?",
+      options: [
+        "Your nervous system shapes the whole moment",
+        "Only children need calming support",
+        "It removes the need for limits"
+      ],
+      answerIndex: 0,
+      feedback: "When parents regulate first, they are more likely to use the skills they want to teach."
+    }
+  },
+  {
+    day: 13,
+    templateIndex: 8,
+    title: "Use a Calm Parenting Script",
+    focus: "Build a repeatable short script for hard moments so stress does not choose your words.",
+    practice: "Try one script today, such as 'You are safe. I will help you. We will talk after calm.'",
+    example: "Using the same short phrase helps the adult stay steady and the child know what to expect.",
+    reportPrompt: "Which short script helped you stay steadier today?",
+    quiz: {
+      question: "Why use a short script during hard moments?",
+      options: [
+        "It keeps the message calm and clear",
+        "It makes consequences unnecessary",
+        "It guarantees instant compliance"
+      ],
+      answerIndex: 0,
+      feedback: "Short scripts reduce pressure and help the parent stay consistent."
+    }
+  },
+  {
+    day: 14,
+    templateIndex: 5,
+    title: "Reinforce the Small Wins",
+    focus: "Build the habit of noticing and reinforcing small steps, not only big successes.",
+    practice: "Praise one small effort today, such as calming faster, following one direction, or trying again.",
+    example: "Instead of waiting for a perfect day, the parent notices one small healthy choice and reinforces it.",
+    reportPrompt: "What small win did you reinforce today?",
+    quiz: {
+      question: "Positive reinforcement works best when it focuses on:",
+      options: [
+        "Specific small efforts and successes",
+        "Only perfect behavior",
+        "Nothing unless the whole day was good"
+      ],
+      answerIndex: 0,
+      feedback: "Small wins are how new habits and safer behavior grow."
+    }
+  },
+  {
+    day: 15,
+    templateIndex: 5,
+    title: "Calm Consequences and Follow-Through",
+    focus: "Use consequences as calm teaching tools instead of threat-based reactions.",
+    practice: "Choose one calm follow-through step today, such as a redo, brief reset, repair, or temporary loss of a privilege.",
+    example: "The parent stays steady, follows through once, and avoids turning the consequence into a second argument.",
+    reportPrompt: "What calm consequence or follow-through did you use today?",
+    quiz: {
+      question: "A healthy consequence should be:",
+      options: [
+        "Calm, predictable, and connected to the behavior",
+        "Big enough to scare the child",
+        "Different every time"
+      ],
+      answerIndex: 0,
+      feedback: "Calm, predictable follow-through teaches more than reactive punishment."
+    }
+  },
+  {
+    day: 16,
+    templateIndex: 6,
+    title: "Support Anxiety Without Adding Pressure",
+    focus: "Reduce overwhelm by using gentle support, smaller steps, and less verbal pressure.",
+    practice: "When your child looks worried or shuts down, offer one simple next step instead of many questions.",
+    example: "A parent says, 'Let’s just do the first step together,' instead of pushing for a full explanation right away.",
+    reportPrompt: "How did lowering pressure help today?",
+    quiz: {
+      question: "When a child is anxious or shut down, what often helps most?",
+      options: [
+        "Smaller steps and less pressure",
+        "More demands to explain immediately",
+        "A louder tone so they listen"
+      ],
+      answerIndex: 0,
+      feedback: "Less pressure often helps a stressed child come back online."
+    }
+  },
+  {
+    day: 17,
+    templateIndex: 7,
+    title: "Partner With School or Services",
+    focus: "Use calm documentation and clear communication to support the child across settings.",
+    practice: "Write down one concern, one pattern, and one support request for school, CPS, or another helper.",
+    example: "A parent speaks in specific observations and support needs instead of only describing crisis moments.",
+    reportPrompt: "What support request or pattern did you document today?",
+    quiz: {
+      question: "What makes parent advocacy stronger?",
+      options: [
+        "Specific observations and realistic support requests",
+        "Only describing how frustrated everyone feels",
+        "Waiting for others to guess what is needed"
+      ],
+      answerIndex: 0,
+      feedback: "Clear patterns and support requests make advocacy stronger."
+    }
+  },
+  {
+    day: 18,
+    templateIndex: 9,
+    title: "Build a Safer Daily Rhythm",
+    focus: "Strengthen one daily family routine so the home feels more predictable and less reactive.",
+    practice: "Pick one daily ritual, such as bedtime, after-school, or dinner, and make it more predictable today.",
+    example: "A short, consistent routine can reduce stress more than repeated warnings or lectures.",
+    reportPrompt: "What routine did you strengthen today?",
+    quiz: {
+      question: "Why do daily routines matter in this program?",
+      options: [
+        "They help build long-term emotional safety",
+        "They replace all other parenting tools",
+        "They only matter for young children"
+      ],
+      answerIndex: 0,
+      feedback: "Predictable routines help habits and emotional safety grow over time."
+    }
+  },
+  {
+    day: 19,
+    templateIndex: 9,
+    title: "Practice Accountability and Redos",
+    focus: "Teach accountability through repair, redos, and calmer next steps instead of shame.",
+    practice: "Use one redo or repair step today, such as trying respectful words again, fixing a mess, or repairing with a sibling.",
+    example: "The child is guided to redo the behavior safely instead of only being shamed for it.",
+    reportPrompt: "What redo, repair, or accountability step happened today?",
+    quiz: {
+      question: "A redo is helpful because it:",
+      options: [
+        "Gives the child a chance to practice the better behavior",
+        "Lets the child avoid all responsibility",
+        "Only works if the parent is angry"
+      ],
+      answerIndex: 0,
+      feedback: "Redos teach the replacement skill, not just the mistake."
+    }
+  },
+  {
+    day: 20,
+    templateIndex: 8,
+    title: "Keep the New Parenting Habit Going",
+    focus: "Review the parenting habits that are starting to work and choose the ones you want to keep repeating.",
+    practice: "List the top three tools that helped most during this program and use at least one of them intentionally today.",
+    example: "A parent notices that fewer words, earlier praise, and calmer follow-through are changing the tone at home.",
+    reportPrompt: "Which new parenting habit do you most want to keep?",
+    quiz: {
+      question: "Why review what is working before the end of the program?",
+      options: [
+        "So the new habits are more likely to continue",
+        "Because the program is only about paperwork",
+        "So you can start over from zero"
+      ],
+      answerIndex: 0,
+      feedback: "Naming what works helps new habits stick."
+    }
+  },
+  {
+    day: 21,
+    templateIndex: 9,
+    title: "Final Reflection and Completion",
+    focus: "Reflect on growth across the 21 days and name the parenting habits you are carrying forward.",
+    practice: "Complete your final reflection, review your daily logs, and note one commitment for the next 30 days.",
+    example: "A parent looks back and sees more than perfection or failure; they notice patterns of growth, repair, and steadier follow-through.",
+    reportPrompt: "What has changed most in your parenting over these 21 days?",
+    quiz: {
+      question: "What unlocks the certificate in this program?",
+      options: [
+        "Completing all 21 daily sessions",
+        "Only filling out the final page",
+        "Opening the certificate link early"
+      ],
+      answerIndex: 0,
+      feedback: "Finishing the full 21-day program is what unlocks the certificate."
+    }
+  }
+];
+
+function build21DayLearningPath(templates) {
+  return twentyOneDayPlan.map((plan) => {
+    const template = templates[plan.templateIndex];
+    const lookLikeExamples = learningTopicLookLikeMap[template.slug] || [];
+    return {
+      ...template,
+      slug: `day-${plan.day}-${template.slug}`,
+      title: `Day ${plan.day}: ${plan.title}`,
+      dayNumber: plan.day,
+      explanation: `${template.explanation} ${plan.focus}`,
+      actionStep: plan.practice,
+      reflectionPrompt: plan.reportPrompt,
+      reflectionQuestions: [
+        plan.reportPrompt,
+        `What parenting habit did I practice on Day ${plan.day}?`,
+        "What do I want to repeat tomorrow?"
+      ],
+      bullets: [...template.bullets, `Daily habit focus: ${plan.focus}`],
+      examples: [...template.examples, plan.example],
+      sections: [
+        {
+          heading: "Today's learning focus",
+          points: [plan.focus, template.bullets[0], template.bullets[1]]
+        },
+        {
+          heading: "What this looks like today",
+          points: [plan.example, ...(lookLikeExamples.slice(0, 2))]
+        },
+        {
+          heading: "Daily parenting habit practice",
+          points: [
+            plan.practice,
+            "Use the daily tracker to record what happened, what you tried, and what you learned.",
+            "Small repeated changes are what help new habits grow over time."
+          ]
+        }
+      ],
+      quiz: plan.quiz
+    };
+  });
+}
+
+fallbackContent.learningPath = build21DayLearningPath(coreLearningPathTemplates);
+
 const supplementalBehaviorGuides = [
   {
     slug: "emotional-meltdown",
@@ -916,6 +1406,7 @@ const clientProfileStorageKey = "rooted-parenting-client-profile";
 const attendanceTrackerStorageKey = "rooted-parenting-attendance-tracker";
 const assessmentStorageKey = "rooted-parenting-assessment";
 const worksheetStorageKey = "rooted-parenting-worksheets";
+const dailyHabitTrackerStorageKey = "rooted-parenting-daily-habit-tracker";
 const quizFeedbackState = {};
 
 fallbackContent.learningPath[0].sections = [
@@ -1446,17 +1937,36 @@ function saveParentTrackerEntry(entry) {
   window.localStorage.setItem(parentTrackerStorageKey, JSON.stringify(next));
 }
 
+function normalizeClientProfile(profile) {
+  const nextProfile = profile || {};
+  const children = Array.isArray(nextProfile.children)
+    ? nextProfile.children.filter(Boolean)
+    : nextProfile.clientName
+      ? [nextProfile.clientName]
+      : [""];
+
+  return {
+    clientName: nextProfile.clientName || children[0] || "",
+    caregiverName: nextProfile.caregiverName || "",
+    caseNote: nextProfile.caseNote || "",
+    children: children.length ? children : [""]
+  };
+}
+
 function getClientProfile() {
   try {
     const raw = window.localStorage.getItem(clientProfileStorageKey);
-    return raw ? JSON.parse(raw) : { clientName: "", caregiverName: "", caseNote: "" };
+    return normalizeClientProfile(raw ? JSON.parse(raw) : null);
   } catch (error) {
-    return { clientName: "", caregiverName: "", caseNote: "" };
+    return normalizeClientProfile(null);
   }
 }
 
 function saveClientProfile(profile) {
-  window.localStorage.setItem(clientProfileStorageKey, JSON.stringify(profile));
+  window.localStorage.setItem(
+    clientProfileStorageKey,
+    JSON.stringify(normalizeClientProfile(profile))
+  );
 }
 
 function getAttendanceEntries() {
@@ -1472,6 +1982,21 @@ function saveAttendanceEntry(entry) {
   const entries = getAttendanceEntries();
   const next = [entry, ...entries].slice(0, 20);
   window.localStorage.setItem(attendanceTrackerStorageKey, JSON.stringify(next));
+}
+
+function getDailyHabitEntries() {
+  try {
+    const raw = window.localStorage.getItem(dailyHabitTrackerStorageKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveDailyHabitEntry(entry) {
+  const entries = getDailyHabitEntries();
+  const next = [entry, ...entries].slice(0, 30);
+  window.localStorage.setItem(dailyHabitTrackerStorageKey, JSON.stringify(next));
 }
 
 function getAssessmentData() {
@@ -1950,9 +2475,9 @@ function renderLearningList() {
     </section>
     <section class="section-card">
       <div class="section-card__header">
-        <h2>Learning Path</h2>
+        <h2>21-Day Learning Path</h2>
       </div>
-      <p>Follow these 10 lessons in order for a step-by-step parent learning sequence.</p>
+      <p>Follow these 21 daily sessions in order for a step-by-step parenting habit-building sequence.</p>
       <div class="pill-row">
         <span class="status-pill is-complete">${completedCount} of ${totalCount} lessons completed</span>
       </div>
@@ -1965,6 +2490,7 @@ function renderLearningList() {
 
 function renderLearningDetail(slug) {
   const page = appContent.learningPages.find((item) => item.slug === slug);
+  const whatItLooksLike = page ? learningTopicLookLikeMap[page.slug] || [] : [];
 
   if (!page) {
     screenTitle.textContent = "Not Found";
@@ -2000,6 +2526,17 @@ function renderLearningDetail(slug) {
       <p>These are common examples parents may relate to:</p>
       ${bulletList(page.examples)}
     </section>
+    ${
+      whatItLooksLike.length
+        ? `
+          <section class="detail-card">
+            <h3>What this can look like at home</h3>
+            <p>Here are a few examples of what this might sound or look like in real parenting moments:</p>
+            ${bulletList(whatItLooksLike)}
+          </section>
+        `
+        : ""
+    }
     <section class="detail-card">
       <h3>What to remember</h3>
       ${bulletList([
@@ -2336,6 +2873,7 @@ function renderProgressTracker() {
   const trackerEntries = getParentTrackerEntries();
   const clientProfile = getClientProfile();
   const attendanceEntries = getAttendanceEntries();
+  const dailyHabitEntries = getDailyHabitEntries();
   const disciplineEntries = getDisciplineEntries();
   const totalLessons = appContent.learningPath.length;
   const completedCount = completedLessons.length;
@@ -2359,16 +2897,29 @@ function renderProgressTracker() {
 
     <section class="detail-card">
       <h3>Client and caregiver profile</h3>
-      <p>Save the client and caregiver name here so the printable summary is tied to the right family. This saves in the app on this device.</p>
+      <p>Save the client, caregiver, and child names here so the printable summary and certificate stay tied to the right family. This saves in the app on this device.</p>
       <div class="tracker-form">
         <label class="tracker-field">
-          <span>Client name</span>
-          <input id="client-name" type="text" value="${escapeHtml(clientProfile.clientName || "")}" placeholder="Child or client name" />
+          <span>Primary client name</span>
+          <input id="client-name" type="text" value="${escapeHtml(clientProfile.clientName || "")}" placeholder="Primary child or client name" />
         </label>
         <label class="tracker-field">
           <span>Caregiver name</span>
           <input id="caregiver-name" type="text" value="${escapeHtml(clientProfile.caregiverName || "")}" placeholder="Parent or caregiver name" />
         </label>
+        <div class="tracker-field">
+          <span>Children on this case</span>
+          <div class="tracker-children-list">
+            ${clientProfile.children
+              .map(
+                (childName, index) => `
+                  <input class="child-name-input" type="text" data-child-index="${index}" value="${escapeHtml(childName || "")}" placeholder="Child name ${index + 1}" />
+                `
+              )
+              .join("")}
+          </div>
+          <button class="secondary-button" type="button" data-add-child-profile="true">Add Another Child</button>
+        </div>
         <label class="tracker-field">
           <span>Case note or service note</span>
           <textarea id="case-note" rows="3" placeholder="Example: CPS referral, family support, diversion, reunification support">${escapeHtml(clientProfile.caseNote || "")}</textarea>
@@ -2394,10 +2945,83 @@ function renderProgressTracker() {
         <button class="resource-link" type="button" data-route-link="assessment">Open Pre/Post Assessment</button>
         ${
           completedCount === totalLessons && totalLessons > 0
-            ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Download Completion Certificate</a>`
+            ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Open Auto-Filled Certificate</a>`
             : ""
         }
       </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>21-day parenting habit check-in</h3>
+      <p>Use this once a day while working the program so the app tracks what you practiced, what happened, and what you want to keep building tomorrow.</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Date</span>
+          <input id="daily-date" type="date" />
+        </label>
+        <label class="tracker-field">
+          <span>21-day session worked on today</span>
+          <select id="daily-session">
+            ${appContent.learningPath
+              .map(
+                (lesson) => `
+                  <option value="${escapeHtml(lesson.title)}">${escapeHtml(lesson.title)}</option>
+                `
+              )
+              .join("")}
+          </select>
+        </label>
+        <label class="tracker-field">
+          <span>What happened today</span>
+          <textarea id="daily-what-happened" rows="3" placeholder="What happened at home today that gave you a chance to practice this skill?"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Connection or calm response you used</span>
+          <input id="daily-connection" type="text" placeholder="Example: fewer words, connection before correction, calm tone" />
+        </label>
+        <label class="tracker-field">
+          <span>Reward, praise, or positive reinforcement used</span>
+          <input id="daily-reward" type="text" placeholder="Example: praise, choice time, sticker, extra reading time" />
+        </label>
+        <label class="tracker-field">
+          <span>Consequence, redo, or follow-through used</span>
+          <input id="daily-followthrough" type="text" placeholder="Example: redo, repair, reset, loss of a small privilege" />
+        </label>
+        <label class="tracker-field">
+          <span>What I learned today</span>
+          <textarea id="daily-learned" rows="3" placeholder="What did you notice about your child, yourself, or the parenting habit you practiced?"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Tomorrow's focus</span>
+          <input id="daily-tomorrow" type="text" placeholder="What do you want to keep doing tomorrow?" />
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-daily-habit="true">Save Daily Check-In</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved 21-day check-ins</h3>
+      ${
+        dailyHabitEntries.length
+          ? dailyHabitEntries
+              .map(
+                (entry) => `
+                  <div class="tracker-entry">
+                    <strong>${escapeHtml(entry.date || "No date")} - ${escapeHtml(entry.sessionTitle || "Session not entered")}</strong>
+                    <p><strong>What happened:</strong> ${escapeHtml(entry.whatHappened || "Not entered")}</p>
+                    <p><strong>Connection used:</strong> ${escapeHtml(entry.connectionUsed || "Not entered")}</p>
+                    <p><strong>Reward or praise:</strong> ${escapeHtml(entry.rewardUsed || "Not entered")}</p>
+                    <p><strong>Follow-through:</strong> ${escapeHtml(entry.followThrough || "Not entered")}</p>
+                    <p><strong>What I learned:</strong> ${escapeHtml(entry.learned || "Not entered")}</p>
+                    <p><strong>Tomorrow's focus:</strong> ${escapeHtml(entry.tomorrowFocus || "Not entered")}</p>
+                  </div>
+                `
+              )
+              .join("")
+          : `<p>No daily check-ins saved yet. Add one above so the 21-day program tracks your daily parenting habit work.</p>`
+      }
     </section>
 
     <section class="detail-card">
@@ -2450,7 +3074,7 @@ function renderProgressTracker() {
         <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
         ${
           completedCount === totalLessons && totalLessons > 0
-            ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Download Completion Certificate</a>`
+            ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Open Auto-Filled Certificate</a>`
             : ""
         }
       </div>
@@ -2618,8 +3242,13 @@ function renderProgressTracker() {
         <h3>Printable progress summary</h3>
         <button class="secondary-button no-print" type="button" data-print-progress="true">Print Summary</button>
       </div>
-      <p><strong>Client name:</strong> ${escapeHtml(clientProfile.clientName || "Not entered")}</p>
+      <p><strong>Primary client name:</strong> ${escapeHtml(clientProfile.clientName || "Not entered")}</p>
       <p><strong>Caregiver name:</strong> ${escapeHtml(clientProfile.caregiverName || "Not entered")}</p>
+      <p><strong>Children on case:</strong> ${escapeHtml(
+        clientProfile.children.filter(Boolean).length
+          ? clientProfile.children.filter(Boolean).join(", ")
+          : "Not entered"
+      )}</p>
       <p><strong>Case note:</strong> ${escapeHtml(clientProfile.caseNote || "Not entered")}</p>
       <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
       <p><strong>Course progress:</strong> ${completedCount} of ${totalLessons} lessons completed (${percent}%)</p>
@@ -2635,6 +3264,27 @@ function renderProgressTracker() {
                   .map((lesson) => lesson.title)
               )
             : "<p>No lessons completed yet.</p>"
+        }
+      </div>
+      <div class="note-box">
+        <strong>Recent 21-day daily check-ins</strong>
+        ${
+          dailyHabitEntries.length
+            ? dailyHabitEntries
+                .slice(0, 5)
+                .map(
+                  (entry) => `
+                    <div class="summary-entry">
+                      <p><strong>${escapeHtml(entry.date || "No date")} - ${escapeHtml(entry.sessionTitle || "Session not entered")}</strong></p>
+                      <p><strong>What happened:</strong> ${escapeHtml(entry.whatHappened || "Not entered")}</p>
+                      <p><strong>Connection:</strong> ${escapeHtml(entry.connectionUsed || "Not entered")}</p>
+                      <p><strong>Learned:</strong> ${escapeHtml(entry.learned || "Not entered")}</p>
+                      <p><strong>Tomorrow:</strong> ${escapeHtml(entry.tomorrowFocus || "Not entered")}</p>
+                    </div>
+                  `
+                )
+                .join("")
+            : "<p>No daily check-ins saved yet.</p>"
         }
       </div>
       <div class="note-box">
@@ -3104,6 +3754,36 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const dailyHabitButton = event.target.closest("[data-save-daily-habit]");
+  if (dailyHabitButton) {
+    const sessionTitle = document.getElementById("daily-session")?.value || "";
+    const date = document.getElementById("daily-date")?.value || "";
+    const whatHappened = document.getElementById("daily-what-happened")?.value.trim() || "";
+    const connectionUsed = document.getElementById("daily-connection")?.value.trim() || "";
+    const rewardUsed = document.getElementById("daily-reward")?.value.trim() || "";
+    const followThrough = document.getElementById("daily-followthrough")?.value.trim() || "";
+    const learned = document.getElementById("daily-learned")?.value.trim() || "";
+    const tomorrowFocus = document.getElementById("daily-tomorrow")?.value.trim() || "";
+
+    if (!whatHappened) {
+      window.alert("Please enter what happened today before saving the daily check-in.");
+      return;
+    }
+
+    saveDailyHabitEntry({
+      sessionTitle,
+      date: date || new Date().toISOString().slice(0, 10),
+      whatHappened,
+      connectionUsed,
+      rewardUsed,
+      followThrough,
+      learned,
+      tomorrowFocus
+    });
+    renderRoute();
+    return;
+  }
+
   const assessmentButton = event.target.closest("[data-save-assessment]");
   if (assessmentButton) {
     const ratings = {};
@@ -3160,11 +3840,33 @@ document.addEventListener("click", (event) => {
     const clientName = document.getElementById("client-name")?.value.trim() || "";
     const caregiverName = document.getElementById("caregiver-name")?.value.trim() || "";
     const caseNote = document.getElementById("case-note")?.value.trim() || "";
+    const children = Array.from(document.querySelectorAll(".child-name-input"))
+      .map((input) => input.value.trim())
+      .filter(Boolean);
 
     saveClientProfile({
       clientName,
       caregiverName,
-      caseNote
+      caseNote,
+      children: children.length ? children : [clientName].filter(Boolean)
+    });
+    renderRoute();
+    return;
+  }
+
+  const addChildButton = event.target.closest("[data-add-child-profile]");
+  if (addChildButton) {
+    const clientName = document.getElementById("client-name")?.value.trim() || "";
+    const caregiverName = document.getElementById("caregiver-name")?.value.trim() || "";
+    const caseNote = document.getElementById("case-note")?.value.trim() || "";
+    const children = Array.from(document.querySelectorAll(".child-name-input"))
+      .map((input) => input.value.trim());
+
+    saveClientProfile({
+      clientName,
+      caregiverName,
+      caseNote,
+      children: [...children, ""]
     });
     renderRoute();
     return;
@@ -3262,6 +3964,8 @@ async function loadAppContent() {
       appTitle: "Rooted Parenting",
       intro:
         "This app helps parents respond to children with behavioral challenges using trauma-informed, non-judgmental, supportive guidance.",
+      learningPages: fallbackContent.learningPages,
+      learningPath: build21DayLearningPath(coreLearningPathTemplates),
       behaviors: [
         ...json.behavior_guides.map((guide) => ({
           slug: guide.slug,

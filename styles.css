@@ -330,6 +330,33 @@ button {
   font: inherit;
 }
 
+.tracker-children-list {
+  display: grid;
+  gap: 8px;
+}
+
+.tracker-field .secondary-button {
+  margin-top: 4px;
+}
+
+.site-footer {
+  margin-top: 8px;
+  padding: 18px 0 10px;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0 0 8px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.site-footer a {
+  color: var(--accent-strong);
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .tracker-entry {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);

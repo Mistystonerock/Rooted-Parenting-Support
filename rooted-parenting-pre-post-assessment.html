@@ -19,6 +19,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: "Segoe UI", Calibri, Arial, sans-serif;
@@ -26,24 +27,61 @@
       background: white;
       line-height: 1.4;
     }
+
     h1, h2 {
       margin: 0 0 10px;
       color: var(--accent);
     }
+
     h1 { font-size: 24pt; }
+
     h2 {
       font-size: 16pt;
       border-bottom: 1px solid var(--line);
       padding-bottom: 6px;
     }
+
     p {
       margin: 0 0 10px;
       color: var(--muted);
     }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(255, 253, 250, 0.95);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--accent);
+      min-height: 42px;
+      padding: 0 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
     .page {
       display: grid;
       gap: 16px;
+      padding: 10px 0 24px;
     }
+
     .hero,
     .box {
       border: 1px solid var(--line);
@@ -51,24 +89,55 @@
       padding: 16px;
       background: #fffdfa;
     }
+
     .hero {
       background: linear-gradient(135deg, #fffdf8 0%, #f2eee6 100%);
     }
+
     .line-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
     }
-    .line {
-      border-bottom: 1px solid #abb0ad;
-      min-height: 24px;
-      margin-top: 6px;
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
     }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #abb0ad;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
     .table {
       width: 100%;
       border-collapse: collapse;
       font-size: 10.5pt;
     }
+
     .table th,
     .table td {
       border: 1px solid var(--line);
@@ -76,13 +145,41 @@
       vertical-align: top;
       text-align: left;
     }
+
     .table th {
       background: var(--soft);
       color: var(--accent);
     }
+
+    .table select {
+      border: 0;
+      border-radius: 0;
+      padding: 4px;
+      background: transparent;
+    }
+
+    .status {
+      text-align: center;
+      color: var(--muted);
+      font-size: 10pt;
+      padding-bottom: 8px;
+    }
+
+    @media print {
+      .controls,
+      .status {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="controls">
+    <button class="btn btn--primary" type="button" onclick="window.print()">Print or Save PDF</button>
+    <button class="btn" type="button" onclick="clearForm()">Clear Form</button>
+  </div>
+  <div class="status">This form saves on this device automatically while you type.</div>
+
   <main class="page">
     <section class="hero">
       <h1>Rooted Parenting</h1>
@@ -92,29 +189,35 @@
 
     <section class="box">
       <h2>Participant Information</h2>
-      <div class="line-row">
-        <div>
-          <div>Caregiver name</div>
-          <div class="line"></div>
+      <div class="field-grid">
+        <div class="line-row">
+          <div class="field">
+            <label for="caregiver-name">Caregiver name</label>
+            <input id="caregiver-name" name="caregiverName" type="text" />
+          </div>
+          <div class="field">
+            <label for="date">Date</label>
+            <input id="date" name="date" type="date" />
+          </div>
         </div>
-        <div>
-          <div>Date</div>
-          <div class="line"></div>
+        <div class="line-row">
+          <div class="field">
+            <label for="referral-source">Referral source</label>
+            <input id="referral-source" name="referralSource" type="text" />
+          </div>
+          <div class="field">
+            <label for="facilitator">Facilitator</label>
+            <input id="facilitator" name="facilitator" type="text" />
+          </div>
         </div>
-      </div>
-      <div class="line-row">
-        <div>
-          <div>Referral source</div>
-          <div class="line"></div>
+        <div class="field">
+          <label for="assessment-type">Assessment type</label>
+          <select id="assessment-type" name="assessmentType">
+            <option value=""></option>
+            <option>Pre-assessment</option>
+            <option>Post-assessment</option>
+          </select>
         </div>
-        <div>
-          <div>Facilitator</div>
-          <div class="line"></div>
-        </div>
-      </div>
-      <div>
-        <div>Mark one: Pre-assessment / Post-assessment</div>
-        <div class="line"></div>
       </div>
     </section>
 
@@ -130,29 +233,73 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>I understand that behavior may communicate stress, fear, or unmet needs.</td><td></td></tr>
-          <tr><td>I can usually notice when my child is becoming overwhelmed.</td><td></td></tr>
-          <tr><td>I know ways to calm myself before responding to hard behavior.</td><td></td></tr>
-          <tr><td>I use consequences in a calm, predictable, and non-harmful way.</td><td></td></tr>
-          <tr><td>I use praise, encouragement, or reinforcement to build desired behavior.</td><td></td></tr>
-          <tr><td>I feel more confident setting limits without escalating conflict.</td><td></td></tr>
-          <tr><td>I understand how routines and structure can reduce behavior problems.</td><td></td></tr>
-          <tr><td>I feel better able to repair with my child after difficult moments.</td><td></td></tr>
-          <tr><td>I feel more prepared to work with schools or helpers around my child’s needs.</td><td></td></tr>
-          <tr><td>I believe I have practical parenting tools I can continue using.</td><td></td></tr>
+          <tr><td>I understand that behavior may communicate stress, fear, or unmet needs.</td><td><select name="rating1"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I can usually notice when my child is becoming overwhelmed.</td><td><select name="rating2"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I know ways to calm myself before responding to hard behavior.</td><td><select name="rating3"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I use consequences in a calm, predictable, and non-harmful way.</td><td><select name="rating4"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I use praise, encouragement, or reinforcement to build desired behavior.</td><td><select name="rating5"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I feel more confident setting limits without escalating conflict.</td><td><select name="rating6"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I understand how routines and structure can reduce behavior problems.</td><td><select name="rating7"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I feel better able to repair with my child after difficult moments.</td><td><select name="rating8"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I feel more prepared to work with schools or helpers around my child's needs.</td><td><select name="rating9"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
+          <tr><td>I believe I have practical parenting tools I can continue using.</td><td><select name="rating10"><option value=""></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td></tr>
         </tbody>
       </table>
     </section>
 
     <section class="box">
       <h2>Short Reflection</h2>
-      <div>What is one parenting strength you see in yourself right now?</div>
-      <div class="line" style="min-height: 44px;"></div>
-      <div>What is one parenting area you want to strengthen?</div>
-      <div class="line" style="min-height: 44px;"></div>
-      <div>What is one change you have noticed in your child or family since starting the program?</div>
-      <div class="line" style="min-height: 54px;"></div>
+      <div class="field-grid">
+        <div class="field">
+          <label for="strength">What is one parenting strength you see in yourself right now?</label>
+          <textarea id="strength" name="strength"></textarea>
+        </div>
+        <div class="field">
+          <label for="growth-area">What is one parenting area you want to strengthen?</label>
+          <textarea id="growth-area" name="growthArea"></textarea>
+        </div>
+        <div class="field">
+          <label for="family-change">What is one change you have noticed in your child or family since starting the program?</label>
+          <textarea id="family-change" name="familyChange"></textarea>
+        </div>
+      </div>
     </section>
   </main>
+
+  <script>
+    const storageKey = "rooted-parenting-form-rooted-parenting-pre-post-assessment";
+    const fields = Array.from(document.querySelectorAll("input, textarea, select"));
+
+    function loadForm() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      fields.forEach((field) => {
+        if (Object.prototype.hasOwnProperty.call(saved, field.name)) {
+          field.value = saved[field.name];
+        }
+      });
+    }
+
+    function saveForm() {
+      const payload = {};
+      fields.forEach((field) => {
+        payload[field.name] = field.value;
+      });
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    }
+
+    function clearForm() {
+      fields.forEach((field) => {
+        field.value = "";
+      });
+      localStorage.removeItem(storageKey);
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("input", saveForm);
+      field.addEventListener("change", saveForm);
+    });
+
+    loadForm();
+  </script>
 </body>
 </html>

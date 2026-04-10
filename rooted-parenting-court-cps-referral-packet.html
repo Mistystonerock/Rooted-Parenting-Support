@@ -16,15 +16,18 @@
       --accent: #647261;
       --line: #d8d1c6;
       --soft: #f5f1ea;
+      --surface: #fffdfa;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       font-family: "Segoe UI", Calibri, Arial, sans-serif;
       color: var(--ink);
-      background: #fffdfa;
+      background: var(--surface);
       line-height: 1.42;
     }
 
@@ -35,20 +38,30 @@
       padding: 0.04in 0;
     }
 
-    .page:last-child { page-break-after: auto; }
+    .page:last-child {
+      page-break-after: auto;
+    }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       margin: 0 0 10px;
       color: var(--accent);
     }
 
-    h1 { font-size: 27pt; }
+    h1 {
+      font-size: 27pt;
+    }
+
     h2 {
       font-size: 18pt;
       border-bottom: 1px solid var(--line);
       padding-bottom: 6px;
     }
-    h3 { font-size: 12pt; }
+
+    h3 {
+      font-size: 12pt;
+    }
 
     p {
       margin: 0 0 10px;
@@ -60,10 +73,12 @@
       padding: 0;
     }
 
-    li { margin: 0 0 6px; }
+    li {
+      margin: 0 0 6px;
+    }
 
     .hero {
-      min-height: 8.8in;
+      min-height: 8.4in;
       border: 1px solid var(--line);
       border-radius: 24px;
       background: linear-gradient(180deg, #fffdf8 0%, #f2eee6 100%);
@@ -81,6 +96,37 @@
       font-weight: 700;
     }
 
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(255, 253, 250, 0.95);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--accent);
+      min-height: 42px;
+      padding: 0 16px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
     .card,
     .field-box {
       border: 1px solid var(--line);
@@ -96,16 +142,48 @@
       gap: 14px;
     }
 
-    .line {
-      border-bottom: 1px solid #a6aaa8;
-      min-height: 24px;
-      margin-top: 6px;
-    }
-
     .line-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      color: var(--ink);
+      font-size: 10.5pt;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #a6aaa8;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    .field textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .field--short textarea {
+      min-height: 58px;
     }
 
     .small {
@@ -131,9 +209,46 @@
       background: var(--soft);
       color: var(--accent);
     }
+
+    .signature-row {
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr;
+      gap: 14px;
+    }
+
+    .status {
+      text-align: center;
+      color: var(--muted);
+      font-size: 10pt;
+      padding-bottom: 8px;
+    }
+
+    @media print {
+      .controls,
+      .status {
+        display: none;
+      }
+
+      body {
+        background: #fff;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        border-color: #b3b7b4;
+        box-shadow: none;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="controls">
+    <button class="btn btn--primary" type="button" onclick="window.print()">Print or Save PDF</button>
+    <button class="btn" type="button" onclick="clearForm()">Clear Form</button>
+  </div>
+  <div class="status">This form saves on this device automatically while you type.</div>
+
   <section class="page">
     <div class="hero">
       <h1>Rooted Parenting</h1>
@@ -178,7 +293,7 @@
         <li>10 structured lessons focused on behavior, trauma, regulation, connection, routines, and caregiver follow-through</li>
         <li>Parent-child practice activities and reflection prompts</li>
         <li>Guidance on calm consequences, predictable structure, and healthy reinforcement systems</li>
-        <li>Printable worksheets, progress tracking, attendance documentation, and completion certificate</li>
+        <li>Worksheets, progress tracking, attendance documentation, and completion certificate</li>
       </ul>
     </div>
   </section>
@@ -207,43 +322,71 @@
 
     <div class="field-box">
       <h3>Referral form</h3>
-      <div class="line-row">
-        <div>
-          <div>Caregiver name</div>
-          <div class="line"></div>
+      <div class="field-grid">
+        <div class="line-row">
+          <div class="field">
+            <label for="caregiver-name">Caregiver name</label>
+            <input id="caregiver-name" name="caregiverName" type="text" />
+          </div>
+          <div class="field">
+            <label for="child-names">Child name(s)</label>
+            <input id="child-names" name="childNames" type="text" />
+          </div>
         </div>
-        <div>
-          <div>Child name(s)</div>
-          <div class="line"></div>
+        <div class="line-row">
+          <div class="field">
+            <label for="referral-source">Referral source / agency</label>
+            <input id="referral-source" name="referralSource" type="text" />
+          </div>
+          <div class="field">
+            <label for="caseworker-name">Caseworker / probation / staff name</label>
+            <input id="caseworker-name" name="caseworkerName" type="text" />
+          </div>
         </div>
-      </div>
-      <div class="line-row">
-        <div>
-          <div>Referral source / agency</div>
-          <div class="line"></div>
+        <div class="line-row">
+          <div class="field">
+            <label for="phone-email">Phone / email</label>
+            <input id="phone-email" name="phoneEmail" type="text" />
+          </div>
+          <div class="field">
+            <label for="referral-date">Date of referral</label>
+            <input id="referral-date" name="referralDate" type="date" />
+          </div>
         </div>
-        <div>
-          <div>Caseworker / probation / staff name</div>
-          <div class="line"></div>
+        <div class="line-row">
+          <div class="field">
+            <label for="service-track">Requested service track</label>
+            <select id="service-track" name="serviceTrack">
+              <option value=""></option>
+              <option>Positive Parenting and Reunification</option>
+              <option>Behavior Support for Parents</option>
+              <option>Court-Ordered Parenting Skills</option>
+              <option>Foundations of Safe and Effective Parenting</option>
+              <option>Positive Discipline, Structure, and Follow-Through</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="referral-urgency">Referral priority</label>
+            <select id="referral-urgency" name="referralUrgency">
+              <option value=""></option>
+              <option>Routine</option>
+              <option>Prompt follow-up requested</option>
+              <option>High concern / urgent coordination needed</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="line-row">
-        <div>
-          <div>Phone / email</div>
-          <div class="line"></div>
+        <div class="field field--short">
+          <label for="reason-referral">Reason for referral</label>
+          <textarea id="reason-referral" name="reasonReferral"></textarea>
         </div>
-        <div>
-          <div>Date of referral</div>
-          <div class="line"></div>
+        <div class="field">
+          <label for="current-concerns">Current concerns / safety factors / service plan goals</label>
+          <textarea id="current-concerns" name="currentConcerns"></textarea>
         </div>
-      </div>
-      <div>
-        <div>Reason for referral</div>
-        <div class="line" style="min-height: 54px;"></div>
-      </div>
-      <div>
-        <div>Current concerns / safety factors / service plan goals</div>
-        <div class="line" style="min-height: 72px;"></div>
+        <div class="field">
+          <label for="recommended-outcomes">Requested outcomes or documentation needed</label>
+          <textarea id="recommended-outcomes" name="recommendedOutcomes"></textarea>
+        </div>
       </div>
     </div>
   </section>
@@ -258,26 +401,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Session length</td>
-          <td>45 to 60 minutes per session</td>
-        </tr>
-        <tr>
-          <td>Program length</td>
-          <td>10 sessions or lessons</td>
-        </tr>
-        <tr>
-          <td>Practice expectations</td>
-          <td>Caregiver completes reflection and at least one parent-child practice activity between sessions when assigned</td>
-        </tr>
-        <tr>
-          <td>Documentation</td>
-          <td>Attendance, progress notes, and completion status may be tracked by the facilitator or referring program</td>
-        </tr>
-        <tr>
-          <td>Completion recommendation</td>
-          <td>Attend all required sessions or complete equivalent make-up work, participate in reflection, and demonstrate engagement with core parenting skills</td>
-        </tr>
+        <tr><td>Session length</td><td>45 to 60 minutes per session</td></tr>
+        <tr><td>Program length</td><td>10 sessions or lessons</td></tr>
+        <tr><td>Practice expectations</td><td>Caregiver completes reflection and at least one parent-child practice activity between sessions when assigned</td></tr>
+        <tr><td>Documentation</td><td>Attendance, progress notes, and completion status may be tracked by the facilitator or referring program</td></tr>
+        <tr><td>Completion recommendation</td><td>Attend all required sessions or complete equivalent make-up work, participate in reflection, and demonstrate engagement with core parenting skills</td></tr>
       </tbody>
     </table>
 
@@ -297,49 +425,79 @@
     <h2>Referral Agreement</h2>
     <div class="field-box">
       <p class="small">This section may be used by agencies, CPS units, probation, diversion programs, or community providers to document participation expectations.</p>
-      <div>
-        <div>Participant understands referral purpose and expectations</div>
-        <div class="line"></div>
-      </div>
-      <div>
-        <div>Attendance expectations explained</div>
-        <div class="line"></div>
-      </div>
-      <div>
-        <div>Communication and reporting expectations explained</div>
-        <div class="line"></div>
-      </div>
-      <div class="line-row">
-        <div>
-          <div>Participant signature</div>
-          <div class="line"></div>
+      <div class="field-grid">
+        <div class="field">
+          <label for="expectations-notes">Attendance, communication, and reporting expectations explained</label>
+          <textarea id="expectations-notes" name="expectationsNotes"></textarea>
         </div>
-        <div>
-          <div>Date</div>
-          <div class="line"></div>
+        <div class="signature-row">
+          <div class="field">
+            <label for="participant-signature">Participant signature</label>
+            <input id="participant-signature" name="participantSignature" type="text" />
+          </div>
+          <div class="field">
+            <label for="participant-date">Date</label>
+            <input id="participant-date" name="participantDate" type="date" />
+          </div>
         </div>
-      </div>
-      <div class="line-row">
-        <div>
-          <div>Referring worker signature</div>
-          <div class="line"></div>
+        <div class="signature-row">
+          <div class="field">
+            <label for="worker-signature">Referring worker signature</label>
+            <input id="worker-signature" name="workerSignature" type="text" />
+          </div>
+          <div class="field">
+            <label for="worker-date">Date</label>
+            <input id="worker-date" name="workerDate" type="date" />
+          </div>
         </div>
-        <div>
-          <div>Date</div>
-          <div class="line"></div>
-        </div>
-      </div>
-      <div class="line-row">
-        <div>
-          <div>Facilitator / program representative</div>
-          <div class="line"></div>
-        </div>
-        <div>
-          <div>Date</div>
-          <div class="line"></div>
+        <div class="signature-row">
+          <div class="field">
+            <label for="facilitator-signature">Facilitator / program representative</label>
+            <input id="facilitator-signature" name="facilitatorSignature" type="text" />
+          </div>
+          <div class="field">
+            <label for="facilitator-date">Date</label>
+            <input id="facilitator-date" name="facilitatorDate" type="date" />
+          </div>
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const storageKey = "rooted-parenting-form-rooted-parenting-court-cps-referral-packet";
+    const fields = Array.from(document.querySelectorAll("input, textarea, select"));
+
+    function loadForm() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      fields.forEach((field) => {
+        if (Object.prototype.hasOwnProperty.call(saved, field.name)) {
+          field.value = saved[field.name];
+        }
+      });
+    }
+
+    function saveForm() {
+      const payload = {};
+      fields.forEach((field) => {
+        payload[field.name] = field.value;
+      });
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+    }
+
+    function clearForm() {
+      fields.forEach((field) => {
+        field.value = "";
+      });
+      localStorage.removeItem(storageKey);
+    }
+
+    fields.forEach((field) => {
+      field.addEventListener("input", saveForm);
+      field.addEventListener("change", saveForm);
+    });
+
+    loadForm();
+  </script>
 </body>
 </html>
