@@ -913,6 +913,9 @@ const completionStorageKey = "rooted-parenting-completed-lessons";
 const onboardingStorageKey = "rooted-parenting-onboarding-complete";
 const parentTrackerStorageKey = "rooted-parenting-parent-tracker";
 const clientProfileStorageKey = "rooted-parenting-client-profile";
+const attendanceTrackerStorageKey = "rooted-parenting-attendance-tracker";
+const assessmentStorageKey = "rooted-parenting-assessment";
+const worksheetStorageKey = "rooted-parenting-worksheets";
 const quizFeedbackState = {};
 
 fallbackContent.learningPath[0].sections = [
@@ -944,7 +947,8 @@ fallbackContent.learningPath[1].sections = [
     points: [
       "A child's brain may stay alert for danger even in everyday situations.",
       "Survival responses can get louder than thinking skills.",
-      "This can affect focus, memory, flexibility, and emotional control."
+      "This can affect focus, memory, flexibility, and emotional control.",
+      "When a child is highly upset, the brain may not be able to take in long explanations or yelling."
     ]
   },
   {
@@ -952,7 +956,8 @@ fallbackContent.learningPath[1].sections = [
     points: [
       "Big reactions to small changes.",
       "Trouble calming after a hard moment.",
-      "Forgetting directions or melting down when stressed."
+      "Forgetting directions or melting down when stressed.",
+      "A child may look like they are not listening when their brain is actually overwhelmed."
     ]
   }
 ];
@@ -967,7 +972,8 @@ fallbackContent.learningPath[2].sections = [
     points: [
       "Regulation means the body is calm enough to think, listen, and learn.",
       "A dysregulated child often needs safety and support before correction.",
-      "Limits still matter, but timing matters too."
+      "Limits still matter, but timing matters too.",
+      "Yelling during a child's upset moment usually adds more threat instead of helping the child understand."
     ]
   },
   {
@@ -975,7 +981,8 @@ fallbackContent.learningPath[2].sections = [
     points: [
       "Lower your voice and slow your pace.",
       "Focus on safety before consequences or long explanations.",
-      "Come back to teaching once calm returns."
+      "Come back to teaching once calm returns.",
+      "Use fewer words when the child is overwhelmed and save the lesson for later."
     ]
   }
 ];
@@ -1151,6 +1158,132 @@ fallbackContent.learningPath.forEach((lesson) => {
   }
 });
 
+fallbackContent.courses = [
+  {
+    slug: "cps-positive-parenting-and-reunification",
+    title: "CPS Positive Parenting and Reunification",
+    cpsTitle: "Positive Parenting and Reunification Skills",
+    icon: "CP",
+    description:
+      "A 10-lesson parenting course for CPS-involved families focused on safe parenting, structure, reunification readiness, trust-building, and family stabilization.",
+    completionStandard:
+      "Complete all 10 lessons or sessions, participate in home practice and reflection, and demonstrate engagement with safety, structure, reunification, and parenting skill-building content.",
+    certificateName:
+      "Certificate of Completion: Positive Parenting and Reunification Skills",
+    includes: [
+      "Positive parenting and emotional safety",
+      "Reunification routines and trust-building",
+      "Calm limits and predictable follow-through",
+      "Documentation, reflection, and home practice",
+      "Certificate and progress summary"
+    ],
+    bestFor: [
+      "CPS service plans",
+      "Reunification support",
+      "Family stabilization and parenting education referrals"
+    ],
+    learningOutcomes: [
+      "Uses calmer, safer parenting responses more consistently",
+      "Can build structure and predictability during reunification or stabilization",
+      "Can describe trust-building, repair, and follow-through strategies"
+    ],
+    sessionPlan: [
+      "Lesson 1: Positive parenting foundations",
+      "Lesson 2: Understanding behavior through a stress lens",
+      "Lesson 3: Regulation before discipline",
+      "Lesson 4: Connection, attachment, and trust-building",
+      "Lesson 5: Healthy routines and consistency",
+      "Lesson 6: Positive reinforcement for small successes",
+      "Lesson 7: Calm consequences and follow-through",
+      "Lesson 8: Repair after conflict and rebuilding safety",
+      "Lesson 9: Reunification readiness and stabilization planning",
+      "Lesson 10: Progress review, next steps, and completion"
+    ]
+  },
+  {
+    slug: "behavior-support-for-parents",
+    title: "Behavior Support for Parents",
+    cpsTitle: "Parent Behavior Support and Response Skills",
+    icon: "BP",
+    description:
+      "A 10-lesson parent course for families dealing with anger, defiance, anxiety, shutdown, school issues, and repeated conflict. The focus is practical response skills that work in real-life moments.",
+    completionStandard:
+      "Complete all 10 lessons or sessions, participate in behavior-response practice, and demonstrate use of calm scripts, positive reinforcement, and structured follow-through.",
+    certificateName:
+      "Certificate of Completion: Parent Behavior Support and Response Skills",
+    includes: [
+      "Defiance, aggression, and meltdown response support",
+      "Anxiety, shutdown, and school stress support",
+      "Reward systems and calm follow-through tracking",
+      "Replacement skill teaching",
+      "Progress tracking and certificate completion"
+    ],
+    bestFor: [
+      "Parents dealing with ongoing behavior issues",
+      "Families needing in-the-moment behavior tools",
+      "Referrals focused on stabilization and parent response skills"
+    ],
+    learningOutcomes: [
+      "Responds to common behavior problems more calmly",
+      "Can identify triggers and likely needs under behavior",
+      "Uses rewards, routines, and follow-through with more consistency"
+    ],
+    sessionPlan: [
+      "Lesson 1: Understanding behavior as communication",
+      "Lesson 2: Triggers and warning signs",
+      "Lesson 3: Responding to anger and aggression",
+      "Lesson 4: Responding to defiance and power struggles",
+      "Lesson 5: Anxiety, shutdown, and withdrawal",
+      "Lesson 6: School refusal and school behavior stress",
+      "Lesson 7: Positive rewards for small wins",
+      "Lesson 8: Calm consequences and discipline",
+      "Lesson 9: Repair, replacement skills, and follow-up",
+      "Lesson 10: Review, behavior plan, and completion"
+    ]
+  },
+  {
+    slug: "court-ordered-parenting-skills",
+    title: "Court-Ordered Parenting Skills",
+    cpsTitle: "Court-Ordered Parenting Accountability and Skill Building",
+    icon: "CT",
+    description:
+      "A 10-lesson parenting course designed for court referrals. It focuses on accountability, positive parenting, safe discipline, structure, follow-through, and documented participation.",
+    completionStandard:
+      "Complete all 10 lessons or sessions, participate in reflection and home practice, and demonstrate engagement with accountability, parenting structure, and documented skill-building.",
+    certificateName:
+      "Certificate of Completion: Court-Ordered Parenting Accountability and Skill Building",
+    includes: [
+      "Court-ready parenting education structure",
+      "Positive parenting and child behavior support",
+      "Safe consequences, accountability, and repair",
+      "Attendance and documentation tracking",
+      "Completion certificate and printable summary"
+    ],
+    bestFor: [
+      "Juvenile or family court referrals",
+      "Court-ordered parenting education",
+      "Programs needing documented participation and completion"
+    ],
+    learningOutcomes: [
+      "Understands positive parenting expectations required by the course",
+      "Can describe safe, developmentally appropriate discipline practices",
+      "Demonstrates participation through lessons, tracker entries, and documentation"
+    ],
+    sessionPlan: [
+      "Lesson 1: Course expectations and parent accountability",
+      "Lesson 2: Positive parenting and behavior support basics",
+      "Lesson 3: Child development and realistic expectations",
+      "Lesson 4: Regulation, calm response, and non-escalation",
+      "Lesson 5: Rewards, praise, and building desired behavior",
+      "Lesson 6: Discipline, consequences, and follow-through",
+      "Lesson 7: Repair after conflict and rebuilding trust",
+      "Lesson 8: School, routines, and community expectations",
+      "Lesson 9: Documentation, progress review, and home planning",
+      "Lesson 10: Final reflection, completion, and certificate"
+    ]
+  }
+];
+
 const lessonQuizData = [
   {
     question: "What is the main idea of this lesson?",
@@ -1324,6 +1457,90 @@ function getClientProfile() {
 
 function saveClientProfile(profile) {
   window.localStorage.setItem(clientProfileStorageKey, JSON.stringify(profile));
+}
+
+function getAttendanceEntries() {
+  try {
+    const raw = window.localStorage.getItem(attendanceTrackerStorageKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveAttendanceEntry(entry) {
+  const entries = getAttendanceEntries();
+  const next = [entry, ...entries].slice(0, 20);
+  window.localStorage.setItem(attendanceTrackerStorageKey, JSON.stringify(next));
+}
+
+function getAssessmentData() {
+  try {
+    const raw = window.localStorage.getItem(assessmentStorageKey);
+    return raw
+      ? JSON.parse(raw)
+      : {
+          type: "Pre-assessment",
+          ratings: {},
+          strengths: "",
+          growthArea: "",
+          familyChange: ""
+        };
+  } catch (error) {
+    return {
+      type: "Pre-assessment",
+      ratings: {},
+      strengths: "",
+      growthArea: "",
+      familyChange: ""
+    };
+  }
+}
+
+function saveAssessmentData(data) {
+  window.localStorage.setItem(assessmentStorageKey, JSON.stringify(data));
+}
+
+function getWorksheetEntries() {
+  try {
+    const raw = window.localStorage.getItem(worksheetStorageKey);
+    return raw
+      ? JSON.parse(raw)
+      : {
+          behavior_reflection_log: { trigger: "", need: "", helped: "" },
+          calm_plan: { earlySigns: "", calmingChoices: "", supportPeople: "" },
+          school_meeting_planner: { concern: "", supportRequest: "", followUp: "" },
+          trigger_tracker: { pattern: "", bodySigns: "", whatHelped: "" },
+          parent_self_regulation_plan: { warningSigns: "", groundingTool: "", resetPlan: "" }
+        };
+  } catch (error) {
+    return {
+      behavior_reflection_log: { trigger: "", need: "", helped: "" },
+      calm_plan: { earlySigns: "", calmingChoices: "", supportPeople: "" },
+      school_meeting_planner: { concern: "", supportRequest: "", followUp: "" },
+      trigger_tracker: { pattern: "", bodySigns: "", whatHelped: "" },
+      parent_self_regulation_plan: { warningSigns: "", groundingTool: "", resetPlan: "" }
+    };
+  }
+}
+
+function saveWorksheetEntries(data) {
+  window.localStorage.setItem(worksheetStorageKey, JSON.stringify(data));
+}
+
+function getDisciplineEntries() {
+  try {
+    const raw = window.localStorage.getItem("rooted-parenting-discipline-tracker");
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveDisciplineEntry(entry) {
+  const entries = getDisciplineEntries();
+  const next = [entry, ...entries].slice(0, 20);
+  window.localStorage.setItem("rooted-parenting-discipline-tracker", JSON.stringify(next));
 }
 
 function checkLessonQuiz(slug) {
@@ -1634,6 +1851,34 @@ function renderCourseDetail(slug) {
     <section class="detail-card">
       <h3>What this course includes</h3>
       ${bulletList(course.includes)}
+    </section>
+
+    <section class="detail-card">
+      <h3>Best fit for</h3>
+      ${bulletList(course.bestFor || [
+        "Families needing practical parent education",
+        "Caregivers needing structured support",
+        "Parent skill-building with reflection and follow-through"
+      ])}
+    </section>
+
+    <section class="detail-card">
+      <h3>What parents should be able to do after this course</h3>
+      ${bulletList(course.learningOutcomes || [
+        "Understand the course content more clearly",
+        "Use practical parenting tools at home",
+        "Describe what they are working on with more confidence"
+      ])}
+    </section>
+
+    <section class="detail-card">
+      <h3>Suggested session outline</h3>
+      <p>This course can be delivered as a multi-session parent support track.</p>
+      ${bulletList(course.sessionPlan || [
+        "Session 1: Introduction and parent education",
+        "Session 2: Skill-building and practice",
+        "Session 3: Reflection, follow-through, and planning"
+      ])}
     </section>
 
     <section class="detail-card">
@@ -2090,6 +2335,8 @@ function renderProgressTracker() {
   const completedLessons = getCompletedLessons();
   const trackerEntries = getParentTrackerEntries();
   const clientProfile = getClientProfile();
+  const attendanceEntries = getAttendanceEntries();
+  const disciplineEntries = getDisciplineEntries();
   const totalLessons = appContent.learningPath.length;
   const completedCount = completedLessons.length;
   const remainingCount = Math.max(totalLessons - completedCount, 0);
@@ -2144,7 +2391,7 @@ function renderProgressTracker() {
       <div class="hero-actions hero-actions--stacked">
         <button class="primary-button" type="button" data-route-link="learning">Open Learning Path</button>
         <button class="secondary-button" type="button" data-route-link="courses">Open Course Catalog</button>
-        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Open Pre/Post Assessment</a>
+        <button class="resource-link" type="button" data-route-link="assessment">Open Pre/Post Assessment</button>
         ${
           completedCount === totalLessons && totalLessons > 0
             ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Download Completion Certificate</a>`
@@ -2260,6 +2507,112 @@ function renderProgressTracker() {
       }
     </section>
 
+    <section class="detail-card">
+      <h3>Discipline and follow-up tracker</h3>
+      <p>Use this section to document calm discipline choices such as grounding, time out, taking a game, or other follow-through steps, plus how the child reacted and what follow-up happened after.</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Date</span>
+          <input id="discipline-date" type="date" />
+        </label>
+        <label class="tracker-field">
+          <span>Discipline or consequence used</span>
+          <input id="discipline-type" type="text" placeholder="Example: grounded, time out, loss of game, redo task" />
+        </label>
+        <label class="tracker-field">
+          <span>Reason for the consequence</span>
+          <input id="discipline-reason" type="text" placeholder="Example: hit sibling, refused repeated directions, unsafe language" />
+        </label>
+        <label class="tracker-field">
+          <span>How the child reacted</span>
+          <textarea id="discipline-reaction" rows="3" placeholder="Example: cried, shut down, got angrier at first, then calmed down"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Follow-up after the consequence</span>
+          <textarea id="discipline-followup" rows="3" placeholder="Example: talked after calm, repaired with sibling, practiced better choice, restated rule"></textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-discipline="true">Save Discipline Entry</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved discipline entries</h3>
+      ${
+        disciplineEntries.length
+          ? disciplineEntries
+              .map(
+                (entry) => `
+                  <div class="tracker-entry">
+                    <strong>${escapeHtml(entry.date || "No date")}</strong>
+                    <p><strong>Discipline used:</strong> ${escapeHtml(entry.type || "Not entered")}</p>
+                    <p><strong>Reason:</strong> ${escapeHtml(entry.reason || "Not entered")}</p>
+                    <p><strong>Child reaction:</strong> ${escapeHtml(entry.reaction || "Not entered")}</p>
+                    <p><strong>Follow-up:</strong> ${escapeHtml(entry.followup || "Not entered")}</p>
+                  </div>
+                `
+              )
+              .join("")
+          : `<p>No discipline entries saved yet. Add one above to document calm discipline and follow-up.</p>`
+      }
+    </section>
+
+    <section class="detail-card">
+      <h3>Attendance and progress documentation</h3>
+      <p>Use this section to document each parent session in the app, including the session title, date, attendance, and what the parent reports learning.</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Session or course title</span>
+          <input id="attendance-session" type="text" placeholder="Example: Session 2 - Positive Discipline and Follow-Through" />
+        </label>
+        <label class="tracker-field">
+          <span>Date</span>
+          <input id="attendance-date" type="date" />
+        </label>
+        <label class="tracker-field">
+          <span>Attendance</span>
+          <select id="attendance-status">
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+            <option value="Completed make-up work">Completed make-up work</option>
+          </select>
+        </label>
+        <label class="tracker-field">
+          <span>What the parent learned</span>
+          <textarea id="attendance-learned" rows="3" placeholder="Example: Dad identified triggers, practiced calmer follow-through, and described one reward system he wants to try."></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Notes</span>
+          <textarea id="attendance-notes" rows="3" placeholder="Add progress notes, barriers, home practice, or follow-up needs."></textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-attendance="true">Save Attendance Entry</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved attendance entries</h3>
+      ${
+        attendanceEntries.length
+          ? attendanceEntries
+              .map(
+                (entry) => `
+                  <div class="tracker-entry">
+                    <strong>${escapeHtml(entry.sessionTitle || "Session not entered")}</strong>
+                    <p><strong>Date:</strong> ${escapeHtml(entry.date || "No date")}</p>
+                    <p><strong>Status:</strong> ${escapeHtml(entry.status || "Not entered")}</p>
+                    <p><strong>What was learned:</strong> ${escapeHtml(entry.learned || "Not entered")}</p>
+                    <p><strong>Notes:</strong> ${escapeHtml(entry.notes || "None entered")}</p>
+                  </div>
+                `
+              )
+              .join("")
+          : `<p>No attendance entries saved yet. Add one above to document each session in the app.</p>`
+      }
+    </section>
+
     <section class="detail-card print-summary" id="progress-summary">
       <div class="detail-card__header">
         <h3>Printable progress summary</h3>
@@ -2305,22 +2658,145 @@ function renderProgressTracker() {
             : "<p>No parenting tracker entries saved yet.</p>"
         }
       </div>
+      <div class="note-box">
+        <strong>Recent attendance and progress documentation</strong>
+        ${
+          attendanceEntries.length
+            ? attendanceEntries
+                .slice(0, 5)
+                .map(
+                  (entry) => `
+                    <div class="summary-entry">
+                      <p><strong>${escapeHtml(entry.sessionTitle || "Session not entered")}</strong></p>
+                      <p><strong>Date:</strong> ${escapeHtml(entry.date || "No date")}</p>
+                      <p><strong>Status:</strong> ${escapeHtml(entry.status || "Not entered")}</p>
+                      <p><strong>Learned:</strong> ${escapeHtml(entry.learned || "Not entered")}</p>
+                      <p><strong>Notes:</strong> ${escapeHtml(entry.notes || "None entered")}</p>
+                    </div>
+                  `
+                )
+                .join("")
+            : "<p>No attendance entries saved yet.</p>"
+        }
+      </div>
+      <div class="note-box">
+        <strong>Recent discipline and follow-up entries</strong>
+        ${
+          disciplineEntries.length
+            ? disciplineEntries
+                .slice(0, 5)
+                .map(
+                  (entry) => `
+                    <div class="summary-entry">
+                      <p><strong>${escapeHtml(entry.date || "No date")}</strong></p>
+                      <p><strong>Discipline:</strong> ${escapeHtml(entry.type || "Not entered")}</p>
+                      <p><strong>Reason:</strong> ${escapeHtml(entry.reason || "Not entered")}</p>
+                      <p><strong>Reaction:</strong> ${escapeHtml(entry.reaction || "Not entered")}</p>
+                      <p><strong>Follow-up:</strong> ${escapeHtml(entry.followup || "Not entered")}</p>
+                    </div>
+                  `
+                )
+                .join("")
+            : "<p>No discipline entries saved yet.</p>"
+        }
+      </div>
+    </section>
+  `;
+}
+
+function renderAssessment() {
+  const assessment = getAssessmentData();
+  const ratingLabels = [
+    "I understand that behavior may communicate stress, fear, or unmet needs.",
+    "I can usually notice when my child is becoming overwhelmed.",
+    "I know ways to calm myself before responding to hard behavior.",
+    "I use consequences in a calm, predictable, and non-harmful way.",
+    "I use praise, encouragement, or reinforcement to build desired behavior.",
+    "I feel more confident setting limits without escalating conflict.",
+    "I understand how routines and structure can reduce behavior problems.",
+    "I feel better able to repair with my child after difficult moments.",
+    "I feel more prepared to work with schools or helpers around my child's needs.",
+    "I believe I have practical parenting tools I can continue using."
+  ];
+
+  screenTitle.textContent = "Assessment";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Pre/Post Assessment</h2>
+      <p>Complete this form in the app and save it on this device. It can be used at the beginning of services and again later to show growth.</p>
+    </section>
+
+    <section class="detail-card">
+      <h3>Assessment type</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Choose one</span>
+          <select id="assessment-type">
+            <option value="Pre-assessment" ${assessment.type === "Pre-assessment" ? "selected" : ""}>Pre-assessment</option>
+            <option value="Post-assessment" ${assessment.type === "Post-assessment" ? "selected" : ""}>Post-assessment</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Rating scale</h3>
+      <p>1 = strongly disagree, 2 = disagree, 3 = not sure / sometimes, 4 = agree, 5 = strongly agree</p>
+      <div class="tracker-form">
+        ${ratingLabels
+          .map(
+            (label, index) => `
+              <label class="tracker-field">
+                <span>${label}</span>
+                <select id="assessment-rating-${index}">
+                  <option value="">Choose rating</option>
+                  <option value="1" ${assessment.ratings[index] === "1" ? "selected" : ""}>1</option>
+                  <option value="2" ${assessment.ratings[index] === "2" ? "selected" : ""}>2</option>
+                  <option value="3" ${assessment.ratings[index] === "3" ? "selected" : ""}>3</option>
+                  <option value="4" ${assessment.ratings[index] === "4" ? "selected" : ""}>4</option>
+                  <option value="5" ${assessment.ratings[index] === "5" ? "selected" : ""}>5</option>
+                </select>
+              </label>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Short reflection</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>What is one parenting strength you see in yourself right now?</span>
+          <textarea id="assessment-strengths" rows="3">${escapeHtml(assessment.strengths || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What is one parenting area you want to strengthen?</span>
+          <textarea id="assessment-growth" rows="3">${escapeHtml(assessment.growthArea || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What is one change you have noticed in your child or family?</span>
+          <textarea id="assessment-change" rows="3">${escapeHtml(assessment.familyChange || "")}</textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-assessment="true">Save Assessment</button>
+          <button class="secondary-button" type="button" data-route-link="progress">Back to Progress Tracker</button>
+        </div>
+      </div>
     </section>
   `;
 }
 
 // Worksheets screen content, including printable tools and the professional packet.
 function renderWorksheets() {
+  const worksheets = getWorksheetEntries();
   screenTitle.textContent = "Worksheets";
   appContentRoot.innerHTML = `
     <section class="section-card">
-      <h2>Printable Worksheets</h2>
-      <p>Use these pages to notice patterns, prepare for hard moments, and support calm repair after stress.</p>
-      <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Download Worksheets</a>
-      <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Open Printable Worksheet Pages</a>
-      <a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Download Parent Workbook</a>
-      <a class="resource-link" href="rooted-parenting-facilitator-guide.html" target="_blank" rel="noopener noreferrer">Facilitator Guide</a>
+      <h2>Fillable Worksheets</h2>
+      <p>Use these worksheets right inside the app. They save on this device so parents can come back to them later.</p>
       <button class="resource-link" type="button" data-route-link="progress">Open Progress Tracker</button>
+      <button class="resource-link" type="button" data-route-link="assessment">Open Pre/Post Assessment</button>
     </section>
     <section class="section-card">
       <h2>Professional Packet</h2>
@@ -2334,25 +2810,94 @@ function renderWorksheets() {
         <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
       </div>
     </section>
-    <section class="detail-stack">
-      ${appContent.worksheets
-        .map(
-          (worksheet) => `
-            <article class="detail-card">
-              <h3>${worksheet.title}</h3>
-              <p>${worksheet.description}</p>
-              <div class="template-box worksheet-preview">
-                <strong>Printable preview</strong>
-                <div class="worksheet-preview__line"></div>
-                <div class="worksheet-preview__line"></div>
-                <div class="worksheet-preview__line"></div>
-                <div class="worksheet-preview__line"></div>
-              </div>
-              <a class="resource-link" href="worksheets-printable.html" target="_blank" rel="noopener noreferrer">Open Printable Page</a>
-            </article>
-          `
-        )
-        .join("")}
+    <section class="detail-card">
+      <h3>Behavior Reflection Log</h3>
+      <p>Notice what happened, what your child may have needed, and what helped.</p>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>What happened right before the behavior?</span>
+          <textarea id="ws-behavior-trigger" rows="3">${escapeHtml(worksheets.behavior_reflection_log.trigger || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What might your child have needed?</span>
+          <textarea id="ws-behavior-need" rows="3">${escapeHtml(worksheets.behavior_reflection_log.need || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What helped or what would you try next time?</span>
+          <textarea id="ws-behavior-helped" rows="3">${escapeHtml(worksheets.behavior_reflection_log.helped || "")}</textarea>
+        </label>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Calm Plan Worksheet</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Early signs your child is becoming overwhelmed</span>
+          <textarea id="ws-calm-signs" rows="3">${escapeHtml(worksheets.calm_plan.earlySigns || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Calming choices that help</span>
+          <textarea id="ws-calm-choices" rows="3">${escapeHtml(worksheets.calm_plan.calmingChoices || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>People who can help</span>
+          <textarea id="ws-calm-people" rows="3">${escapeHtml(worksheets.calm_plan.supportPeople || "")}</textarea>
+        </label>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>School Meeting Planner</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Main concern to bring to the meeting</span>
+          <textarea id="ws-school-concern" rows="3">${escapeHtml(worksheets.school_meeting_planner.concern || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Support you want to request</span>
+          <textarea id="ws-school-support" rows="3">${escapeHtml(worksheets.school_meeting_planner.supportRequest || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Follow-up plan</span>
+          <textarea id="ws-school-followup" rows="3">${escapeHtml(worksheets.school_meeting_planner.followUp || "")}</textarea>
+        </label>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Trigger Tracker</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Pattern or trigger you are noticing</span>
+          <textarea id="ws-trigger-pattern" rows="3">${escapeHtml(worksheets.trigger_tracker.pattern || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Body signs or warning signs</span>
+          <textarea id="ws-trigger-body" rows="3">${escapeHtml(worksheets.trigger_tracker.bodySigns || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What helped</span>
+          <textarea id="ws-trigger-helped" rows="3">${escapeHtml(worksheets.trigger_tracker.whatHelped || "")}</textarea>
+        </label>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Parent Self-Regulation Plan</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Your warning signs</span>
+          <textarea id="ws-parent-warning" rows="3">${escapeHtml(worksheets.parent_self_regulation_plan.warningSigns || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Grounding tool you want to use</span>
+          <textarea id="ws-parent-grounding" rows="3">${escapeHtml(worksheets.parent_self_regulation_plan.groundingTool || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Your reset plan</span>
+          <textarea id="ws-parent-reset" rows="3">${escapeHtml(worksheets.parent_self_regulation_plan.resetPlan || "")}</textarea>
+        </label>
+      </div>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-save-worksheets="true">Save Worksheets</button>
+      </div>
     </section>
   `;
 }
@@ -2397,6 +2942,9 @@ function renderRoute() {
       break;
     case "tools":
       renderTools();
+      break;
+    case "assessment":
+      renderAssessment();
       break;
     case "progress":
       renderProgressTracker();
@@ -2556,6 +3104,57 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const assessmentButton = event.target.closest("[data-save-assessment]");
+  if (assessmentButton) {
+    const ratings = {};
+    for (let i = 0; i < 10; i += 1) {
+      ratings[i] = document.getElementById(`assessment-rating-${i}`)?.value || "";
+    }
+
+    saveAssessmentData({
+      type: document.getElementById("assessment-type")?.value || "Pre-assessment",
+      ratings,
+      strengths: document.getElementById("assessment-strengths")?.value.trim() || "",
+      growthArea: document.getElementById("assessment-growth")?.value.trim() || "",
+      familyChange: document.getElementById("assessment-change")?.value.trim() || ""
+    });
+    renderRoute();
+    return;
+  }
+
+  const worksheetsButton = event.target.closest("[data-save-worksheets]");
+  if (worksheetsButton) {
+    saveWorksheetEntries({
+      behavior_reflection_log: {
+        trigger: document.getElementById("ws-behavior-trigger")?.value.trim() || "",
+        need: document.getElementById("ws-behavior-need")?.value.trim() || "",
+        helped: document.getElementById("ws-behavior-helped")?.value.trim() || ""
+      },
+      calm_plan: {
+        earlySigns: document.getElementById("ws-calm-signs")?.value.trim() || "",
+        calmingChoices: document.getElementById("ws-calm-choices")?.value.trim() || "",
+        supportPeople: document.getElementById("ws-calm-people")?.value.trim() || ""
+      },
+      school_meeting_planner: {
+        concern: document.getElementById("ws-school-concern")?.value.trim() || "",
+        supportRequest: document.getElementById("ws-school-support")?.value.trim() || "",
+        followUp: document.getElementById("ws-school-followup")?.value.trim() || ""
+      },
+      trigger_tracker: {
+        pattern: document.getElementById("ws-trigger-pattern")?.value.trim() || "",
+        bodySigns: document.getElementById("ws-trigger-body")?.value.trim() || "",
+        whatHelped: document.getElementById("ws-trigger-helped")?.value.trim() || ""
+      },
+      parent_self_regulation_plan: {
+        warningSigns: document.getElementById("ws-parent-warning")?.value.trim() || "",
+        groundingTool: document.getElementById("ws-parent-grounding")?.value.trim() || "",
+        resetPlan: document.getElementById("ws-parent-reset")?.value.trim() || ""
+      }
+    });
+    renderRoute();
+    return;
+  }
+
   const clientProfileButton = event.target.closest("[data-save-client-profile]");
   if (clientProfileButton) {
     const clientName = document.getElementById("client-name")?.value.trim() || "";
@@ -2566,6 +3165,54 @@ document.addEventListener("click", (event) => {
       clientName,
       caregiverName,
       caseNote
+    });
+    renderRoute();
+    return;
+  }
+
+  const attendanceButton = event.target.closest("[data-save-attendance]");
+  if (attendanceButton) {
+    const sessionTitle = document.getElementById("attendance-session")?.value.trim() || "";
+    const date = document.getElementById("attendance-date")?.value || "";
+    const status = document.getElementById("attendance-status")?.value || "Present";
+    const learned = document.getElementById("attendance-learned")?.value.trim() || "";
+    const notes = document.getElementById("attendance-notes")?.value.trim() || "";
+
+    if (!sessionTitle) {
+      window.alert("Please enter the session or course title before saving attendance.");
+      return;
+    }
+
+    saveAttendanceEntry({
+      sessionTitle,
+      date: date || new Date().toISOString().slice(0, 10),
+      status,
+      learned,
+      notes
+    });
+    renderRoute();
+    return;
+  }
+
+  const disciplineButton = event.target.closest("[data-save-discipline]");
+  if (disciplineButton) {
+    const type = document.getElementById("discipline-type")?.value.trim() || "";
+    const date = document.getElementById("discipline-date")?.value || "";
+    const reason = document.getElementById("discipline-reason")?.value.trim() || "";
+    const reaction = document.getElementById("discipline-reaction")?.value.trim() || "";
+    const followup = document.getElementById("discipline-followup")?.value.trim() || "";
+
+    if (!type) {
+      window.alert("Please enter the discipline or consequence used before saving.");
+      return;
+    }
+
+    saveDisciplineEntry({
+      date: date || new Date().toISOString().slice(0, 10),
+      type,
+      reason,
+      reaction,
+      followup
     });
     renderRoute();
     return;
