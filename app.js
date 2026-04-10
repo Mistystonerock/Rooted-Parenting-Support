@@ -1656,9 +1656,9 @@ fallbackContent.courses = [
     cpsTitle: "Positive Parenting and Reunification Skills",
     icon: "CP",
     description:
-      "A 10-lesson parenting course for CPS-involved families focused on safe parenting, structure, reunification readiness, trust-building, and family stabilization.",
+      "A 21-day parenting habit program for CPS-involved families focused on safe parenting, structure, reunification readiness, trust-building, and family stabilization.",
     completionStandard:
-      "Complete all 10 lessons or sessions, participate in home practice and reflection, and demonstrate engagement with safety, structure, reunification, and parenting skill-building content.",
+      "Complete all 21 daily sessions, participate in home practice and reflection, and demonstrate engagement with safety, structure, reunification, and parenting skill-building content.",
     certificateName:
       "Certificate of Completion: Positive Parenting and Reunification Skills",
     includes: [
@@ -1679,16 +1679,10 @@ fallbackContent.courses = [
       "Can describe trust-building, repair, and follow-through strategies"
     ],
     sessionPlan: [
-      "Lesson 1: Positive parenting foundations",
-      "Lesson 2: Understanding behavior through a stress lens",
-      "Lesson 3: Regulation before discipline",
-      "Lesson 4: Connection, attachment, and trust-building",
-      "Lesson 5: Healthy routines and consistency",
-      "Lesson 6: Positive reinforcement for small successes",
-      "Lesson 7: Calm consequences and follow-through",
-      "Lesson 8: Repair after conflict and rebuilding safety",
-      "Lesson 9: Reunification readiness and stabilization planning",
-      "Lesson 10: Progress review, next steps, and completion"
+      "Week 1: Safety and Regulation",
+      "Week 2: Connection and Follow-Through",
+      "Week 3: Habit Building and Long-Term Change",
+      "Day 21: Progress review, next steps, and completion"
     ]
   },
   {
@@ -1697,9 +1691,9 @@ fallbackContent.courses = [
     cpsTitle: "Parent Behavior Support and Response Skills",
     icon: "BP",
     description:
-      "A 10-lesson parent course for families dealing with anger, defiance, anxiety, shutdown, school issues, and repeated conflict. The focus is practical response skills that work in real-life moments.",
+      "A 21-day parent habit-building course for families dealing with anger, defiance, anxiety, shutdown, school issues, and repeated conflict. The focus is practical response skills that work in real-life moments.",
     completionStandard:
-      "Complete all 10 lessons or sessions, participate in behavior-response practice, and demonstrate use of calm scripts, positive reinforcement, and structured follow-through.",
+      "Complete all 21 daily sessions, participate in behavior-response practice, and demonstrate use of calm scripts, positive reinforcement, and structured follow-through.",
     certificateName:
       "Certificate of Completion: Parent Behavior Support and Response Skills",
     includes: [
@@ -1720,16 +1714,10 @@ fallbackContent.courses = [
       "Uses rewards, routines, and follow-through with more consistency"
     ],
     sessionPlan: [
-      "Lesson 1: Understanding behavior as communication",
-      "Lesson 2: Triggers and warning signs",
-      "Lesson 3: Responding to anger and aggression",
-      "Lesson 4: Responding to defiance and power struggles",
-      "Lesson 5: Anxiety, shutdown, and withdrawal",
-      "Lesson 6: School refusal and school behavior stress",
-      "Lesson 7: Positive rewards for small wins",
-      "Lesson 8: Calm consequences and discipline",
-      "Lesson 9: Repair, replacement skills, and follow-up",
-      "Lesson 10: Review, behavior plan, and completion"
+      "Week 1: Safety and Regulation",
+      "Week 2: Connection and Follow-Through",
+      "Week 3: Habit Building and Long-Term Change",
+      "Day 21: Review, behavior plan, and completion"
     ]
   },
   {
@@ -1738,9 +1726,9 @@ fallbackContent.courses = [
     cpsTitle: "Court-Ordered Parenting Accountability and Skill Building",
     icon: "CT",
     description:
-      "A 10-lesson parenting course designed for court referrals. It focuses on accountability, positive parenting, safe discipline, structure, follow-through, and documented participation.",
+      "A 21-day parenting habit program designed for court referrals. It focuses on accountability, positive parenting, safe discipline, structure, follow-through, and documented participation.",
     completionStandard:
-      "Complete all 10 lessons or sessions, participate in reflection and home practice, and demonstrate engagement with accountability, parenting structure, and documented skill-building.",
+      "Complete all 21 daily sessions, participate in reflection and home practice, and demonstrate engagement with accountability, parenting structure, and documented skill-building.",
     certificateName:
       "Certificate of Completion: Court-Ordered Parenting Accountability and Skill Building",
     includes: [
@@ -1761,16 +1749,10 @@ fallbackContent.courses = [
       "Demonstrates participation through lessons, tracker entries, and documentation"
     ],
     sessionPlan: [
-      "Lesson 1: Course expectations and parent accountability",
-      "Lesson 2: Positive parenting and behavior support basics",
-      "Lesson 3: Child development and realistic expectations",
-      "Lesson 4: Regulation, calm response, and non-escalation",
-      "Lesson 5: Rewards, praise, and building desired behavior",
-      "Lesson 6: Discipline, consequences, and follow-through",
-      "Lesson 7: Repair after conflict and rebuilding trust",
-      "Lesson 8: School, routines, and community expectations",
-      "Lesson 9: Documentation, progress review, and home planning",
-      "Lesson 10: Final reflection, completion, and certificate"
+      "Week 1: Safety and Regulation",
+      "Week 2: Connection and Follow-Through",
+      "Week 3: Habit Building and Long-Term Change",
+      "Day 21: Final reflection, completion, and certificate"
     ]
   }
 ];
@@ -2478,6 +2460,14 @@ function renderLearningList() {
         <h2>21-Day Learning Path</h2>
       </div>
       <p>Follow these 21 daily sessions in order for a step-by-step parenting habit-building sequence.</p>
+      <div class="note-box">
+        <strong>3-week structure</strong>
+        ${bulletList([
+          "Week 1: Safety and Regulation",
+          "Week 2: Connection and Follow-Through",
+          "Week 3: Habit Building and Long-Term Change"
+        ])}
+      </div>
       <div class="pill-row">
         <span class="status-pill is-complete">${completedCount} of ${totalCount} lessons completed</span>
       </div>
