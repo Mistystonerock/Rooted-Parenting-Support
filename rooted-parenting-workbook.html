@@ -5,337 +5,563 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rooted Parenting Workbook</title>
   <style>
+    :root {
+      --ink: #2f3538;
+      --muted: #667177;
+      --accent: #637260;
+      --accent-soft: #e7ede1;
+      --line: #d8d1c6;
+      --soft: #f5f1ea;
+      --surface: #fffdfa;
+      --shadow: 0 12px 32px rgba(47, 53, 56, 0.08);
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --max: 880px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     @page {
       size: Letter;
       margin: 0.6in;
     }
 
-    :root {
-      --ink: #2f3538;
-      --muted: #667177;
-      --accent: #637260;
-      --line: #d8d1c6;
-      --soft: #f5f1ea;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: "Segoe UI", Calibri, Arial, sans-serif;
       color: var(--ink);
-      background: #fffdfa;
-      line-height: 1.45;
+      background: linear-gradient(180deg, #f8f5ef 0%, #f1ece3 100%);
+      line-height: 1.5;
     }
 
-    .page {
-      page-break-after: always;
-      padding: 0.05in 0;
+    .shell {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 24px 18px 48px;
     }
 
-    .page:last-child {
-      page-break-after: auto;
-    }
-
-    .cover {
-      min-height: 9in;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(180deg, #fffdf8 0%, #f3eee6 100%);
+    .hero,
+    .card {
+      background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 0.8in;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      margin-bottom: 18px;
     }
 
-    h1, h2, h3 {
+    .hero {
+      background: linear-gradient(135deg, #fffdf8 0%, #f1eee6 100%);
+    }
+
+    h1,
+    h2,
+    h3 {
       margin: 0 0 10px;
       color: var(--accent);
     }
 
-    h1 { font-size: 28pt; }
-    h2 { font-size: 18pt; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
-    h3 { font-size: 13pt; }
+    h1 {
+      font-size: 32px;
+    }
 
-    p { margin: 0 0 10px; }
-    ul { margin: 8px 0 0 20px; }
-    li { margin: 0 0 6px; }
+    h2 {
+      font-size: 24px;
+    }
 
-    .subtitle {
-      font-size: 14pt;
+    h3 {
+      font-size: 18px;
+    }
+
+    p {
+      margin: 0 0 10px;
+    }
+
+    .muted {
       color: var(--muted);
-      margin-bottom: 16px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .button,
+    .button-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      width: 100%;
+      border-radius: 16px;
+      padding: 0 16px;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button {
+      background: var(--accent);
+      color: #fff;
+      border: 0;
+    }
+
+    .button-secondary {
+      background: #fff;
+      color: var(--accent);
+      border: 1px solid var(--line);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
     }
 
     .section-box {
       background: var(--soft);
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .lesson-list,
+    .bullet-list {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .lesson-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #fff;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    .lesson-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .tracker-table {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .tracker-row {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       padding: 14px;
-      margin: 12px 0;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #fff;
     }
 
-    .line {
-      min-height: 22px;
-      border-bottom: 1px solid #cfc8bd;
-      margin: 10px 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .note {
       margin-top: 10px;
-    }
-
-    th, td {
-      border: 1px solid #cfc8bd;
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .small {
       color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .shell {
+        max-width: none;
+        padding: 0;
+      }
+
+      .hero,
+      .card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .toolbar,
+      .footer {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <section class="page">
-    <div class="cover">
-      <h1>Rooted Parenting</h1>
-      <p class="subtitle">Trauma-Informed Support for Families</p>
-      <p>A printable workbook for parents navigating behavior challenges, trauma responses, and emotional stress in children.</p>
-      <p>You are not alone. Guidance is available right when you need it.</p>
-    </div>
-  </section>
+  <div class="shell">
+    <section class="hero">
+      <h1>Rooted Parenting Workbook</h1>
+      <p class="muted">A fillable parent workbook for the 21-Day Parenting Habit Program.</p>
+      <p>This workbook now works inside the browser. Parents can type directly into it, the entries save automatically on the device, and the page can be printed or saved as a PDF when needed.</p>
+      <div class="toolbar">
+        <button class="button" type="button" id="print-workbook">Print or Save PDF</button>
+        <button class="button-secondary" type="button" id="clear-workbook">Clear Workbook</button>
+      </div>
+      <div class="status" id="save-status">Workbook ready. Your entries will save automatically on this device.</div>
+    </section>
 
-  <section class="page">
-    <h2>Welcome</h2>
-    <p>Welcome to Rooted Parenting. This workbook is designed to help parents understand behavior, respond with calm, and build emotional safety at home.</p>
-    <div class="section-box">
-      <h3>Inside this workbook</h3>
-      <ul>
-        <li>Lessons 1-10 from the Rooted Parenting learning path</li>
-        <li>Behavior guides for common hard moments</li>
-        <li>Printable worksheets and planning pages</li>
-        <li>Reflection pages to support practice and growth</li>
-      </ul>
-    </div>
-    <p>You do not have to be perfect. Small changes in response can make a big difference over time.</p>
-  </section>
+    <section class="card">
+      <h2>Family Profile</h2>
+      <div class="grid two">
+        <label>
+          Caregiver name
+          <input data-workbook-field="caregiver_name" type="text" placeholder="Parent or caregiver name" />
+        </label>
+        <label>
+          Primary child name
+          <input data-workbook-field="primary_child_name" type="text" placeholder="Primary child or client name" />
+        </label>
+        <label>
+          Case or referral focus
+          <input data-workbook-field="referral_focus" type="text" placeholder="Behavior support, reunification, court order, etc." />
+        </label>
+        <label>
+          Start date
+          <input data-workbook-field="start_date" type="date" />
+        </label>
+      </div>
+      <label>
+        What do I most want to change in my parenting over these 21 days?
+        <textarea data-workbook-field="goal_statement" placeholder="Write the habit, mindset, or parenting change you want to build."></textarea>
+      </label>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 1: Understanding Behavior as Communication</h2>
-    <p>Behavior often tells us what a child cannot yet say with words. Looking underneath the behavior helps parents respond with more understanding and skill.</p>
-    <div class="section-box">
-      <h3>Key points</h3>
-      <ul>
-        <li>Children often show stress through behavior before they can explain it.</li>
-        <li>Big reactions can point to fear, overwhelm, shame, or unmet needs.</li>
-        <li>Curiosity helps more than labels.</li>
-      </ul>
-    </div>
-    <p><strong>Reflection:</strong> When my child acts out, what do I assume first: disrespect, or distress?</p>
-  </section>
+    <section class="card">
+      <h2>How to Use This Workbook</h2>
+      <div class="section-box">
+        <ul class="bullet-list">
+          <li>Read one daily lesson at a time instead of trying to do everything at once.</li>
+          <li>Use the daily notes to track what happened, what worked, and what you want to practice tomorrow.</li>
+          <li>Focus on calm, connection, predictable follow-through, and repair.</li>
+          <li>When a child is highly upset, the brain often cannot take in a lecture or yelling. Calm first, teach second.</li>
+        </ul>
+      </div>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 2: How Trauma Impacts the Brain</h2>
-    <p>Trauma can keep a child's brain and body on alert. That can make it harder to think clearly, stay flexible, and calm down quickly.</p>
-    <div class="section-box">
-      <h3>Key points</h3>
-      <ul>
-        <li>Survival responses can turn on fast.</li>
-        <li>Stress can make learning and problem-solving harder.</li>
-        <li>A calm adult can help the brain feel safer.</li>
-      </ul>
-    </div>
-    <p><strong>Reflection:</strong> What part of the day seems to put my child most on alert?</p>
-  </section>
+    <section class="card">
+      <h2>21-Day Learning Themes</h2>
+      <p class="muted">This workbook follows the same 3-week structure used in the app.</p>
+      <div class="lesson-card">
+        <span class="lesson-tag">Week 1</span>
+        <h3>Safety and Regulation</h3>
+        <ul class="lesson-list">
+          <li>Understand behavior as communication.</li>
+          <li>Notice stress brain versus thinking brain.</li>
+          <li>Practice calm first instead of yelling first.</li>
+          <li>Learn why fewer words often work better in upset moments.</li>
+        </ul>
+      </div>
+      <div class="lesson-card">
+        <span class="lesson-tag">Week 2</span>
+        <h3>Connection and Follow-Through</h3>
+        <ul class="lesson-list">
+          <li>Use connection before correction.</li>
+          <li>Practice positive praise for small steps.</li>
+          <li>Use calm consequences, redos, and predictable follow-through.</li>
+          <li>Reduce power struggles by being steady and clear.</li>
+        </ul>
+      </div>
+      <div class="lesson-card">
+        <span class="lesson-tag">Week 3</span>
+        <h3>Habit Building and Long-Term Change</h3>
+        <ul class="lesson-list">
+          <li>Build routines that support safety and success.</li>
+          <li>Track progress and repeat what helps.</li>
+          <li>Repair after hard moments instead of staying stuck in shame.</li>
+          <li>Finish the 21 days with a stronger parenting habit and certificate completion path.</li>
+        </ul>
+      </div>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 3: Regulation Before Discipline</h2>
-    <p>Children learn best when their body feels calm enough to think. Helping regulation first makes discipline more effective and more respectful.</p>
-    <ul>
-      <li>Calm bodies learn better.</li>
-      <li>Safety comes before teaching.</li>
-      <li>Timing matters when giving correction.</li>
-    </ul>
-    <p><strong>Practice step:</strong> Use one calming phrase this week, such as "We will calm first."</p>
-  </section>
+    <section class="card">
+      <h2>Weekly Reflection</h2>
+      <div class="grid">
+        <label>
+          Week 1: What helped my child feel safer?
+          <textarea data-workbook-field="week1_reflection" placeholder="Write what you noticed about safety, stress signs, and regulation."></textarea>
+        </label>
+        <label>
+          Week 2: What helped with connection and follow-through?
+          <textarea data-workbook-field="week2_reflection" placeholder="Write what worked with praise, calm consequences, and connection."></textarea>
+        </label>
+        <label>
+          Week 3: What parenting habit am I building now?
+          <textarea data-workbook-field="week3_reflection" placeholder="Write what you want to keep doing after the program ends."></textarea>
+        </label>
+      </div>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 4: Connection Before Correction</h2>
-    <p>Connection lowers threat and opens the door to listening. Children are more ready for correction when they feel understood and safe with the adult.</p>
-    <ul>
-      <li>Connection is not giving in.</li>
-      <li>A kind tone can lower defensiveness.</li>
-      <li>Repair builds trust after hard moments.</li>
-    </ul>
-  </section>
+    <section class="card">
+      <h2>Daily Parenting Log</h2>
+      <p class="muted">Use this to notice daily growth, not just hard moments.</p>
+      <div class="tracker-table">
+        <div class="tracker-row">
+          <label>Day 1
+            <textarea data-workbook-field="day1_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 2
+            <textarea data-workbook-field="day2_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 3
+            <textarea data-workbook-field="day3_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 4
+            <textarea data-workbook-field="day4_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 5
+            <textarea data-workbook-field="day5_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 6
+            <textarea data-workbook-field="day6_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 7
+            <textarea data-workbook-field="day7_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 8
+            <textarea data-workbook-field="day8_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 9
+            <textarea data-workbook-field="day9_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 10
+            <textarea data-workbook-field="day10_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 11
+            <textarea data-workbook-field="day11_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 12
+            <textarea data-workbook-field="day12_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 13
+            <textarea data-workbook-field="day13_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 14
+            <textarea data-workbook-field="day14_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 15
+            <textarea data-workbook-field="day15_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 16
+            <textarea data-workbook-field="day16_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 17
+            <textarea data-workbook-field="day17_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 18
+            <textarea data-workbook-field="day18_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 19
+            <textarea data-workbook-field="day19_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>Day 20
+            <textarea data-workbook-field="day20_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+        </div>
+        <div class="tracker-row">
+          <label>Day 21
+            <textarea data-workbook-field="day21_log" placeholder="What happened today? What did I try? What did I learn?"></textarea>
+          </label>
+          <label>After the 21 days, what do I want to keep doing?
+            <textarea data-workbook-field="after_program_plan" placeholder="Write the parenting habits, routines, or responses you want to keep."></textarea>
+          </label>
+        </div>
+      </div>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 5: Understanding Triggers</h2>
-    <p>Triggers are reminders that make the body react like danger is close. Noticing patterns helps parents prepare and respond with care.</p>
-    <ul>
-      <li>Triggers can be hidden and surprising.</li>
-      <li>Patterns matter more than isolated moments.</li>
-      <li>Preparation can reduce stress for everyone.</li>
-    </ul>
-  </section>
+    <section class="card">
+      <h2>Positive Progress and Rewards Tracker</h2>
+      <p class="muted">Notice the small things the child completed and how you reinforced them.</p>
+      <div class="grid">
+        <label>
+          Small thing my child completed
+          <textarea data-workbook-field="reward_small_success" placeholder="What did the child complete or try?"></textarea>
+        </label>
+        <label>
+          Reward, praise, or encouragement I used
+          <textarea data-workbook-field="reward_used" placeholder="What positive response did I give?"></textarea>
+        </label>
+        <label>
+          Why this matters
+          <textarea data-workbook-field="reward_why_it_matters" placeholder="How does this build the new parenting habit and help the child?"></textarea>
+        </label>
+      </div>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 6: Responding to Anger and Defiance</h2>
-    <p>Anger and pushback often show a child feels overwhelmed, powerless, or misunderstood. Calm limits and support can help more than power struggles.</p>
-    <ul>
-      <li>Stay steady and reduce extra words.</li>
-      <li>Offer clear choices when possible.</li>
-      <li>Reconnect before teaching.</li>
-    </ul>
-  </section>
+    <section class="card">
+      <h2>Discipline, Redo, and Follow-Up Tracker</h2>
+      <p class="muted">Use this to document calm discipline instead of reactive punishment.</p>
+      <div class="grid">
+        <label>
+          Consequence or discipline used
+          <textarea data-workbook-field="discipline_used" placeholder="Grounded, game removed, time out, redo, loss of privilege, etc."></textarea>
+        </label>
+        <label>
+          How did the child react?
+          <textarea data-workbook-field="discipline_reaction" placeholder="Describe the child's reaction without judgment."></textarea>
+        </label>
+        <label>
+          What follow-up happened after calm?
+          <textarea data-workbook-field="discipline_follow_up" placeholder="Did you reconnect, repair, explain, or practice a redo?"></textarea>
+        </label>
+        <label>
+          What did I learn about using discipline calmly?
+          <textarea data-workbook-field="discipline_learned" placeholder="What helped, what did not help, and what would I try next time?"></textarea>
+        </label>
+      </div>
+      <p class="note">A child in a highly upset state often cannot fully process lectures or yelling. Calm first, then teach the lesson when the brain is ready to hear it.</p>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 7: Responding to Anxiety and Shutdown</h2>
-    <p>Anxiety and shutdown often mean a child’s body is overwhelmed. Gentle support, extra time, and less pressure can help them feel safer.</p>
-    <ul>
-      <li>Not all distress looks loud.</li>
-      <li>Some children need space more than questions.</li>
-      <li>Calm presence can help a child come back online.</li>
-    </ul>
-  </section>
+    <section class="card">
+      <h2>Connection Before Correction Examples</h2>
+      <div class="section-box">
+        <h3>Example 1: Homework frustration</h3>
+        <p><strong>Connection first:</strong> “This feels hard right now. I’m with you.”</p>
+        <p><strong>Correction after calm:</strong> “We still need to finish one small step before screens.”</p>
+      </div>
+      <div class="section-box">
+        <h3>Example 2: Disrespectful words</h3>
+        <p><strong>Connection first:</strong> “You sound really upset. Let’s get calm.”</p>
+        <p><strong>Correction after calm:</strong> “You can be upset, but you still need a respectful redo.”</p>
+      </div>
+      <div class="section-box">
+        <h3>Example 3: Bedtime refusal</h3>
+        <p><strong>Connection first:</strong> “You wish you could stay up longer.”</p>
+        <p><strong>Correction after calm:</strong> “Bedtime is still happening. Let’s choose the next step together.”</p>
+      </div>
+    </section>
 
-  <section class="page">
-    <h2>Lesson 8: Supporting Children at School</h2>
-    <p>School stress can show up through refusal, stomachaches, anger, or exhaustion. Small supports and teamwork with school staff can make a big difference.</p>
-    <ul>
-      <li>Predictability helps children feel safer.</li>
-      <li>School support works best when it is specific and realistic.</li>
-      <li>Documentation can help parents notice patterns and advocate clearly.</li>
-    </ul>
-  </section>
+    <p class="footer">
+      Rooted Parenting Support Program<br />
+      Created by Misty Stonerock<br />
+      Community Behavioral Health Worker | Parent Advocate<br />
+      &copy; 2026 Misty Stonerock. All Rights Reserved.
+    </p>
+  </div>
 
-  <section class="page">
-    <h2>Lesson 9: Parent Self Regulation</h2>
-    <p>Parents need support too. When you notice your own stress signals early, it becomes easier to respond with steadiness and care.</p>
-    <ul>
-      <li>Your nervous system affects the moment.</li>
-      <li>Small pauses can change the tone of an interaction.</li>
-      <li>Self-regulation is a skill, not perfection.</li>
-    </ul>
-  </section>
+  <script>
+    const workbookStorageKey = "rooted-parenting-fillable-workbook";
+    const saveStatus = document.getElementById("save-status");
+    const fields = Array.from(document.querySelectorAll("[data-workbook-field]"));
 
-  <section class="page">
-    <h2>Lesson 10: Building Long-Term Emotional Safety</h2>
-    <p>Healing grows through many small moments of safety, repair, predictability, and care. Emotional safety is built over time, not in one perfect response.</p>
-    <ul>
-      <li>Consistency matters more than perfection.</li>
-      <li>Repair after conflict helps restore trust.</li>
-      <li>Children grow through repeated safe experiences.</li>
-    </ul>
-  </section>
+    function loadWorkbook() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(workbookStorageKey) || "{}");
+        fields.forEach((field) => {
+          const key = field.dataset.workbookField;
+          if (Object.prototype.hasOwnProperty.call(saved, key)) {
+            field.value = saved[key];
+          }
+        });
+      } catch (error) {
+        console.error("Unable to load workbook", error);
+      }
+    }
 
-  <section class="page">
-    <h2>Behavior Guides</h2>
-    <div class="section-box">
-      <h3>Tantrums / Emotional Overload</h3>
-      <p><strong>What is happening:</strong> The child is overwhelmed and does not yet have the skills to regulate emotions.</p>
-      <p><strong>What to say:</strong> "I can see this is really hard right now." "You're not in trouble. I'm here to help."</p>
-    </div>
-    <div class="section-box">
-      <h3>Defiance / Not Listening</h3>
-      <p><strong>What is happening:</strong> The child may feel powerless, unheard, or overwhelmed.</p>
-      <p><strong>What to say:</strong> "Let's figure this out together." "You have two choices."</p>
-    </div>
-    <div class="section-box">
-      <h3>Lying</h3>
-      <p><strong>What is happening:</strong> Lying often happens when children fear punishment or feel unsafe telling the truth.</p>
-      <p><strong>What to say:</strong> "You can tell me the truth. You are safe."</p>
-    </div>
-    <div class="section-box">
-      <h3>Aggression / Hitting</h3>
-      <p><strong>What is happening:</strong> The child does not yet have safe ways to express anger or frustration.</p>
-      <p><strong>What to say:</strong> "I will not let you hurt others." "Let's find a safer way."</p>
-    </div>
-    <div class="section-box">
-      <h3>Anxiety / Worry</h3>
-      <p><strong>What is happening:</strong> The child's brain is trying to stay safe. Their body may feel tense or overwhelmed.</p>
-      <p><strong>What to say:</strong> "You are safe right now." "We can take this one step at a time."</p>
-    </div>
-    <div class="section-box">
-      <h3>Emotional Shutdown</h3>
-      <p><strong>What is happening:</strong> Child feels overwhelmed and disconnects as a protection response.</p>
-      <p><strong>What to say:</strong> "I'm here when you're ready." "You don't have to talk yet."</p>
-    </div>
-    <div class="section-box">
-      <h3>School Refusal</h3>
-      <p><strong>What is happening:</strong> Child may feel unsafe, overwhelmed, or worried about expectations.</p>
-      <p><strong>What to say:</strong> "We will figure this out together."</p>
-    </div>
-    <div class="section-box">
-      <h3>Attention Seeking</h3>
-      <p><strong>What is happening:</strong> Connection need is not being met in a positive way.</p>
-      <p><strong>What to say:</strong> "I see you." "Let's spend time together."</p>
-    </div>
-  </section>
+    function saveWorkbook() {
+      const payload = {};
+      fields.forEach((field) => {
+        payload[field.dataset.workbookField] = field.value;
+      });
+      localStorage.setItem(workbookStorageKey, JSON.stringify(payload));
+      saveStatus.textContent = `Workbook saved automatically on ${new Date().toLocaleString()}.`;
+    }
 
-  <section class="page">
-    <h2>Worksheets</h2>
-    <h3>Trigger Tracker</h3>
-    <table>
-      <tr><th>Date</th><th>What happened before?</th><th>Behavior</th><th>What helped?</th></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td><td></td></tr>
-    </table>
+    fields.forEach((field) => {
+      field.addEventListener("input", saveWorkbook);
+      field.addEventListener("change", saveWorkbook);
+    });
 
-    <h3 style="margin-top:24px;">Behavior Pattern Tracker</h3>
-    <table>
-      <tr><th>Behavior</th><th>Time of Day</th><th>Possible Need</th></tr>
-      <tr><td></td><td></td><td></td></tr>
-      <tr><td></td><td></td><td></td></tr>
-    </table>
-  </section>
+    document.getElementById("print-workbook").addEventListener("click", () => window.print());
+    document.getElementById("clear-workbook").addEventListener("click", () => {
+      localStorage.removeItem(workbookStorageKey);
+      fields.forEach((field) => {
+        field.value = "";
+      });
+      saveStatus.textContent = "Workbook cleared on this device.";
+    });
 
-  <section class="page">
-    <h2>Worksheets Continued</h2>
-    <h3>Calm Down Plan</h3>
-    <p>What helps my child feel safe:</p>
-    <ul><li></li><li></li><li></li></ul>
-    <p>Signs my child is overwhelmed:</p>
-    <ul><li></li><li></li></ul>
-    <p>Ways I can respond calmly:</p>
-    <ul><li></li><li></li></ul>
-
-    <h3 style="margin-top:24px;">Repair Conversation Guide</h3>
-    <p>What happened:</p>
-    <div class="line"></div>
-    <div class="line"></div>
-    <p>What I want my child to learn:</p>
-    <div class="line"></div>
-    <div class="line"></div>
-    <p>What I can say:</p>
-    <ul>
-      <li>I care about you</li>
-      <li>We can fix this</li>
-      <li>We are still okay</li>
-    </ul>
-  </section>
-
-  <section class="page">
-    <h2>Parent Reflection Page</h2>
-    <p><strong>What behavior has been most challenging lately?</strong></p>
-    <div class="line"></div>
-    <div class="line"></div>
-    <p><strong>What might my child be needing underneath that behavior?</strong></p>
-    <div class="line"></div>
-    <div class="line"></div>
-    <p><strong>How do I usually respond?</strong></p>
-    <div class="line"></div>
-    <div class="line"></div>
-    <p><strong>What is one change I want to practice?</strong></p>
-    <div class="line"></div>
-    <div class="line"></div>
-    <p class="small">Small changes in response can make a big difference over time.</p>
-  </section>
+    loadWorkbook();
+  </script>
 </body>
 </html>

@@ -175,6 +175,7 @@
 </head>
 <body>
   <div class="controls">
+    <button class="btn" type="button" onclick="goBack()">Back</button>
     <button class="btn btn--primary" type="button" onclick="window.print()">Print or Save PDF</button>
     <button class="btn" type="button" onclick="clearForm()">Clear Form</button>
   </div>
@@ -292,6 +293,15 @@
         field.value = "";
       });
       localStorage.removeItem(storageKey);
+    }
+
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = "index.html";
     }
 
     fields.forEach((field) => {

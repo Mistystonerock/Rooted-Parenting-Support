@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting | Family Setup</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Family Setup</h1>
+      </div>
+      <button class="top-action" id="parent-signout" type="button">Sign Out</button>
+    </header>
+
+    <main class="content">
+      <section class="hero">
+        <h2>Set up your family profile</h2>
+        <p>This page saves the caregiver and child information to Supabase so the parent program, certificates, and staff portal can eventually use the same family record.</p>
+      </section>
+
+      <section class="section-card">
+        <h2>Caregiver and Family Information</h2>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>Caregiver name</span>
+            <input id="setup-caregiver-name" type="text" placeholder="Parent or caregiver name" />
+          </label>
+          <label class="tracker-field">
+            <span>Primary client name</span>
+            <input id="setup-primary-client" type="text" placeholder="Primary child or client name" />
+          </label>
+          <label class="tracker-field">
+            <span>Assigned course track</span>
+            <input id="setup-assigned-course-display" type="text" value="Not assigned yet" readonly />
+          </label>
+          <div class="note-box">
+            <p>Course tracks are assigned later by staff, CPS, or the court based on the referral reason. Parents can create the family profile here, but they do not need to choose the case track.</p>
+          </div>
+          <label class="tracker-field">
+            <span>Case note</span>
+            <textarea id="setup-case-note" rows="3" placeholder="Optional family or referral note"></textarea>
+          </label>
+
+          <div class="tracker-field">
+            <span>Children on this case</span>
+            <div class="tracker-children-list" id="setup-children-list"></div>
+            <button class="secondary-button" type="button" id="add-child-button">Add Another Child</button>
+          </div>
+
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" id="save-family-button">Save Family Profile</button>
+            <a class="secondary-button" href="index.html">Go to Parent App</a>
+          </div>
+          <div class="note-box" id="setup-message">
+            <p>Family setup saves into the shared database so it can be used by the parent app and read-only staff portal later.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> |
+        <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms</a> |
+        <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br />
+        Created by Misty Stonerock<br />
+        Community Behavioral Health Worker | Parent Advocate<br />
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      window.ROOTED_SUPABASE_URL,
+      window.ROOTED_SUPABASE_ANON_KEY
+    );
+
+    const childrenList = document.getElementById("setup-children-list");
+    const messageBox = document.getElementById("setup-message");
+    let currentUser = null;
+    let currentFamilyId = null;
+    let currentAssignedCourseSlug = null;
+    let childCount = 0;
+
+    function escapeHtml(text) {
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function addChildInput(value = "") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "tracker-field";
+      wrapper.innerHTML = `
+        <span>Child name ${childCount + 1}</span>
+        <input class="setup-child-input" type="text" value="${escapeHtml(value)}" placeholder="Child name ${childCount + 1}" />
+      `;
+      childrenList.appendChild(wrapper);
+      childCount += 1;
+    }
+
+    async function requireParentSession() {
+      const { data } = await supabaseClient.auth.getSession();
+      if (!data.session) {
+        window.location.href = "parent-login.html";
+        return null;
+      }
+
+      currentUser = data.session.user;
+
+      const { data: profile } = await supabaseClient
+        .from("profiles")
+        .select("role")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+
+      if (profile && profile.role && profile.role !== "parent") {
+        messageBox.innerHTML = "<p>This account is not marked as a parent account.</p>";
+        return null;
+      }
+
+      return data.session;
+    }
+
+    async function loadExistingFamily() {
+      const { data: family, error } = await supabaseClient
+        .from("families")
+        .select("*")
+        .eq("parent_user_id", currentUser.id)
+        .maybeSingle();
+
+      if (error) {
+        throw error;
+      }
+
+      if (!family) {
+        addChildInput("");
+        return;
+      }
+
+      currentFamilyId = family.id;
+      currentAssignedCourseSlug = family.assigned_course_slug || null;
+      document.getElementById("setup-caregiver-name").value = family.caregiver_name || "";
+      document.getElementById("setup-primary-client").value = family.primary_client_name || "";
+      document.getElementById("setup-case-note").value = family.case_note || "";
+      document.getElementById("setup-assigned-course-display").value =
+        currentAssignedCourseSlug
+          ? currentAssignedCourseSlug
+              .split("-")
+              .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+              .join(" ")
+          : "Not assigned yet";
+
+      const { data: children, error: childrenError } = await supabaseClient
+        .from("family_children")
+        .select("child_name")
+        .eq("family_id", family.id);
+
+      if (childrenError) {
+        throw childrenError;
+      }
+
+      if (children && children.length) {
+        children.forEach((child) => addChildInput(child.child_name));
+      } else {
+        addChildInput(family.primary_client_name || "");
+      }
+    }
+
+    async function saveParentProfile() {
+      const caregiverName = document.getElementById("setup-caregiver-name").value.trim();
+      const primaryClientName = document.getElementById("setup-primary-client").value.trim();
+      const caseNote = document.getElementById("setup-case-note").value.trim();
+      const childNames = Array.from(document.querySelectorAll(".setup-child-input"))
+        .map((input) => input.value.trim())
+        .filter(Boolean);
+
+      if (!caregiverName || !primaryClientName) {
+        messageBox.innerHTML = "<p>Please enter both caregiver name and primary client name.</p>";
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Saving family profile...</p>";
+
+      const { error: profileError } = await supabaseClient
+        .from("profiles")
+        .upsert({
+          user_id: currentUser.id,
+          full_name: caregiverName,
+          role: "parent",
+          agency_name: "Rooted Parenting"
+        });
+
+      if (profileError) {
+        messageBox.innerHTML = `<p>${profileError.message}</p>`;
+        return;
+      }
+
+      const familyPayload = {
+        parent_user_id: currentUser.id,
+        caregiver_name: caregiverName,
+        primary_client_name: primaryClientName,
+        case_note: caseNote,
+        assigned_course_slug: currentAssignedCourseSlug
+      };
+
+      const familyQuery = currentFamilyId
+        ? supabaseClient
+            .from("families")
+            .update(familyPayload)
+            .eq("id", currentFamilyId)
+            .select()
+            .single()
+        : supabaseClient
+            .from("families")
+            .insert(familyPayload)
+            .select()
+            .single();
+
+      const { data: family, error: familyError } = await familyQuery;
+
+      if (familyError) {
+        messageBox.innerHTML = `<p>${familyError.message}</p>`;
+        return;
+      }
+
+      currentFamilyId = family.id;
+      currentAssignedCourseSlug = family.assigned_course_slug || currentAssignedCourseSlug;
+
+      const { error: deleteChildrenError } = await supabaseClient
+        .from("family_children")
+        .delete()
+        .eq("family_id", currentFamilyId);
+
+      if (deleteChildrenError) {
+        messageBox.innerHTML = `<p>${deleteChildrenError.message}</p>`;
+        return;
+      }
+
+      if (childNames.length) {
+        const { error: childError } = await supabaseClient
+          .from("family_children")
+          .insert(
+            childNames.map((childName) => ({
+              family_id: currentFamilyId,
+              child_name: childName
+            }))
+          );
+
+        if (childError) {
+          messageBox.innerHTML = `<p>${childError.message}</p>`;
+          return;
+        }
+      }
+
+      const { error: completionError } = await supabaseClient
+        .from("completion_records")
+        .upsert({
+          family_id: currentFamilyId,
+          completed_sessions: 0,
+          certificate_unlocked: false,
+          certificate_name: null
+        });
+
+      if (completionError) {
+        messageBox.innerHTML = `<p>${completionError.message}</p>`;
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Family profile saved successfully. You can now use this family record in the parent app and future staff portal assignments.</p>";
+    }
+
+    document.getElementById("add-child-button").addEventListener("click", () => addChildInput(""));
+    document.getElementById("save-family-button").addEventListener("click", saveParentProfile);
+    document.getElementById("parent-signout").addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      window.location.href = "parent-login.html";
+    });
+
+    (async () => {
+      const session = await requireParentSession();
+      if (!session) return;
+      await loadExistingFamily();
+    })();
+  </script>
+</body>
+</html>

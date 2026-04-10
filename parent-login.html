@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting | Parent Login</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ROOTED PARENTING</p>
+        <h1>Parent Login</h1>
+      </div>
+      <a class="top-action" href="index.html">Home</a>
+    </header>
+
+    <main class="content">
+      <section class="hero">
+        <h2>Create your account or sign in</h2>
+        <p>Parents and caregivers can use this page to create an account, sign in, and then set up their family profile inside the app.</p>
+      </section>
+
+      <section class="section-card">
+        <h2>Parent Sign In</h2>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>Email</span>
+            <input id="parent-email" type="email" placeholder="parent@email.com" />
+          </label>
+          <label class="tracker-field">
+            <span>Password</span>
+            <input id="parent-password" type="password" placeholder="Password" />
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" id="parent-signin-button">Sign In</button>
+            <button class="secondary-button" type="button" id="parent-signup-button">Create Parent Account</button>
+          </div>
+          <div class="note-box" id="parent-login-message">
+            <p>After sign in, you will be taken to the family setup page so you can add caregiver and child information.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>What happens next</h2>
+        <ul class="bullet-list">
+          <li>Parent creates or signs into an account.</li>
+          <li>Parent completes family setup with caregiver name and child names.</li>
+          <li>Family profile is saved into Supabase instead of only on the device.</li>
+          <li>That family can later be assigned to staff for read-only CPS or court review.</li>
+        </ul>
+      </section>
+
+      <section class="section-card">
+        <h2>Shared program setup</h2>
+        <ul class="bullet-list">
+          <li>Parents create their own account and family profile.</li>
+          <li>Multiple children can be saved under the same family record.</li>
+          <li>Daily logs, assessments, and completion records can later feed the shared program portal.</li>
+          <li>Staff can review assigned families in the read-only portal after case assignment.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <a href="privacy-policy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a> |
+        <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms</a> |
+        <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
+      </p>
+      <p>
+        Rooted Parenting Support Program<br />
+        Created by Misty Stonerock<br />
+        Community Behavioral Health Worker | Parent Advocate<br />
+        © 2026 Misty Stonerock. All Rights Reserved.
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      window.ROOTED_SUPABASE_URL,
+      window.ROOTED_SUPABASE_ANON_KEY
+    );
+
+    const messageBox = document.getElementById("parent-login-message");
+
+    async function redirectIfLoggedIn() {
+      const { data } = await supabaseClient.auth.getSession();
+      if (data.session) {
+        window.location.href = "parent-setup.html";
+      }
+    }
+
+    async function ensureParentProfile(userId, email) {
+      const { error } = await supabaseClient
+        .from("profiles")
+        .upsert({
+          user_id: userId,
+          full_name: email,
+          role: "parent",
+          agency_name: "Rooted Parenting"
+        });
+
+      if (error) {
+        throw error;
+      }
+    }
+
+    document.getElementById("parent-signin-button").addEventListener("click", async () => {
+      const email = document.getElementById("parent-email").value.trim();
+      const password = document.getElementById("parent-password").value;
+
+      if (!email || !password) {
+        messageBox.innerHTML = "<p>Please enter both email and password.</p>";
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Signing in...</p>";
+
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        messageBox.innerHTML = `<p>${error.message}</p>`;
+        return;
+      }
+
+      window.location.href = "parent-setup.html";
+    });
+
+    document.getElementById("parent-signup-button").addEventListener("click", async () => {
+      const email = document.getElementById("parent-email").value.trim();
+      const password = document.getElementById("parent-password").value;
+
+      if (!email || !password) {
+        messageBox.innerHTML = "<p>Please enter both email and password.</p>";
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Creating parent account...</p>";
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) {
+        messageBox.innerHTML = `<p>${error.message}</p>`;
+        return;
+      }
+
+      if (data.user) {
+        try {
+          await ensureParentProfile(data.user.id, email);
+        } catch (profileError) {
+          messageBox.innerHTML = `<p>${profileError.message}</p>`;
+          return;
+        }
+      }
+
+      if (data.session) {
+        messageBox.innerHTML = "<p>Account created. Continuing to family setup...</p>";
+        window.location.href = "parent-setup.html";
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Account created. If email confirmation is on, confirm your email and then sign in to continue to family setup.</p>";
+    });
+
+    redirectIfLoggedIn();
+  </script>
+</body>
+</html>

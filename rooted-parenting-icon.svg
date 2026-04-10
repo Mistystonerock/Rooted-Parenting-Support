@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Rooted Parenting App Icon</title>
+  <desc id="desc">A calm green app icon with a heart, leaves, and home shape representing Rooted Parenting.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f5ef"/>
+      <stop offset="100%" stop-color="#dfe7d8"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="184" fill="#7f8f79"/>
+  <path d="M256 140c-42 0-78 30-86 71-9 45 19 81 50 106 15 12 28 24 36 38 8-14 21-26 36-38 31-25 59-61 50-106-8-41-44-71-86-71z" fill="#fffdf9"/>
+  <path d="M179 324c28-8 54 1 77 26-30 8-56-1-77-26z" fill="#e8efe2"/>
+  <path d="M333 324c-28-8-54 1-77 26 30 8 56-1 77-26z" fill="#e8efe2"/>
+  <path d="M205 211l51-44 51 44v91h-31v-60h-40v60h-31z" fill="#5f6f5a"/>
+</svg>

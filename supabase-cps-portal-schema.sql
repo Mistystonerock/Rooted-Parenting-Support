@@ -18,6 +18,9 @@ create table if not exists public.families (
   created_at timestamptz not null default now()
 );
 
+create unique index if not exists families_parent_user_id_idx
+on public.families(parent_user_id);
+
 create table if not exists public.family_children (
   id uuid primary key default gen_random_uuid(),
   family_id uuid not null references public.families(id) on delete cascade,
@@ -93,6 +96,13 @@ on public.profiles
 for select
 to authenticated
 using (auth.uid() = user_id);
+
+drop policy if exists "profiles_self_insert" on public.profiles;
+create policy "profiles_self_insert"
+on public.profiles
+for insert
+to authenticated
+with check (auth.uid() = user_id);
 
 drop policy if exists "profiles_self_update" on public.profiles;
 create policy "profiles_self_update"

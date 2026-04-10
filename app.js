@@ -2359,6 +2359,16 @@ function renderHome() {
     </section>
 
     <section class="section-card">
+      <h2>Install on Your Phone</h2>
+      <p>You can save Rooted Parenting to your phone home screen so it opens like an app even before it is in the app stores.</p>
+      ${bulletList([
+        "On iPhone: open the site in Safari, tap Share, then choose Add to Home Screen.",
+        "On Android: open the site in Chrome, tap the menu, then choose Install App or Add to Home Screen.",
+        "Once installed, the app opens in full-screen mode and can keep core pages available offline."
+      ])}
+    </section>
+
+    <section class="section-card">
       <h2>For Courts and Agencies</h2>
       <p>Use these printable tools to present Rooted Parenting as a structured caregiver intervention for juvenile court, CPS, school family support, diversion, and community-based parent education.</p>
       <div class="hero-actions hero-actions--stacked">
@@ -2370,7 +2380,7 @@ function renderHome() {
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
-        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Pre/Post Parenting Assessment</a>
+        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html">Pre/Post Parenting Assessment</a>
         <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
         <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
         <a class="resource-link" href="supabase-cps-portal-schema.sql" target="_blank" rel="noopener noreferrer">Supabase Staff Portal SQL</a>
@@ -3690,7 +3700,7 @@ function renderWorksheets() {
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
-        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html" target="_blank" rel="noopener noreferrer">Pre/Post Parenting Assessment</a>
+        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html">Pre/Post Parenting Assessment</a>
         <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
         <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
       </div>
