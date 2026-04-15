@@ -1,0 +1,297 @@
+# Trauma-Informed Parenting Support Content
+
+This content is written for parents and caregivers of children with behavioral challenges. The language is simple, supportive, and focused on connection, safety, and skill-building.
+
+## Anger Outbursts
+
+**Possible underlying emotional need**
+- Safety
+- Help with overwhelm
+- Support naming big feelings
+- A sense of control
+
+**Trauma-informed explanation**
+Anger outbursts can be a child's way of showing distress when their body feels overloaded or unsafe. The child may not yet have the skills to slow down, ask for help, or say what is happening inside.
+
+**What the parent can say**
+- "I can see this feels really big right now."
+- "You are having a hard time. I am here with you."
+- "Let's work on getting your body calm first."
+- "You are safe. We can figure this out together."
+
+**What to avoid saying**
+- "Calm down right now."
+- "You are being bad."
+- "Stop acting crazy."
+- "If you do not stop, I am leaving."
+
+**Calming strategies**
+- Lower your voice and reduce words.
+- Move to a quieter, safer space if possible.
+- Offer water, deep breaths, or a sensory tool.
+- Sit nearby without demanding eye contact.
+- Use short choices such as "sit with me or stand by the wall."
+
+**What to do after the moment**
+- Reconnect before correcting.
+- Talk about what the child was feeling and needing.
+- Practice one replacement skill for next time.
+- Repair any harm in a simple, supportive way.
+
+**When to seek additional support**
+- Outbursts are frequent, intense, or unsafe.
+- The child destroys property or hurts self or others.
+- Recovery takes a long time or is getting harder.
+- The family feels stuck despite using calm support.
+
+## School Refusal
+
+**Possible underlying emotional need**
+- Safety
+- Predictability
+- Support with anxiety or overwhelm
+- Help with social or academic stress
+
+**Trauma-informed explanation**
+School refusal is often a sign of distress, not laziness. A child may fear separation, embarrassment, bullying, failure, sensory overload, or other stress that feels too big to manage alone.
+
+**What the parent can say**
+- "I believe that school feels hard right now."
+- "We do not have to solve everything this minute."
+- "Let's talk about what feels most scary."
+- "We will make a step-by-step plan together."
+
+**What to avoid saying**
+- "You are just being dramatic."
+- "Everyone has to do it, so get over it."
+- "If you do not go, you are in trouble."
+- "There is nothing to worry about."
+
+**Calming strategies**
+- Break the morning into very small steps.
+- Use a visual routine with one step at a time.
+- Offer a comfort item or grounding strategy.
+- Coordinate with school for a soft start or check-in person.
+- Practice the routine when the child is calm.
+
+**What to do after the moment**
+- Notice the part that was hardest.
+- Work with the child and school to reduce barriers.
+- Create a predictable next-step plan.
+- Praise effort, not just attendance.
+
+**When to seek additional support**
+- The child misses repeated days of school.
+- Anxiety symptoms are intense or worsening.
+- There are signs of bullying, panic, or depression.
+- Family conflict around school is escalating.
+
+## Defiance
+
+**Possible underlying emotional need**
+- Respect
+- Autonomy
+- A felt sense of safety with adults
+- Clear and predictable limits
+
+**Trauma-informed explanation**
+What looks like defiance may be a child's protective response to feeling controlled, shamed, rushed, or misunderstood. Some children push back when their nervous system reads adult demands as threat.
+
+**What the parent can say**
+- "I want to understand what is making this hard."
+- "You do not have to like the limit, but I will help you through it."
+- "Let's find two choices that both work."
+- "We can do this together."
+
+**What to avoid saying**
+- "Because I said so."
+- "You are so disrespectful."
+- "Why do you always do this?"
+- "You never listen."
+
+**Calming strategies**
+- Slow the interaction and reduce power struggles.
+- Offer limited choices.
+- Use a calm, steady tone.
+- State the limit once, then support follow-through.
+- Check whether hunger, fatigue, or overload is adding stress.
+
+**What to do after the moment**
+- Talk about what made cooperation hard.
+- Practice the routine or expectation during a calm time.
+- Adjust demands when needed without dropping the limit.
+- Rebuild connection through play, closeness, or shared time.
+
+**When to seek additional support**
+- Conflicts are constant and harming the relationship.
+- The child reacts strongly to ordinary requests.
+- There may be trauma, ADHD, learning needs, or sensory concerns.
+- Home no longer feels calm or workable.
+
+## Lying
+
+**Possible underlying emotional need**
+- Safety
+- Protection from shame
+- Help telling the truth when afraid
+- Trust
+
+**Trauma-informed explanation**
+Children may lie to avoid fear, punishment, embarrassment, or disconnection. When a child expects shame or harsh reaction, hiding the truth can feel safer than being honest.
+
+**What the parent can say**
+- "I want to understand what made it hard to tell me the truth."
+- "You are not in trouble for being honest with me now."
+- "Let's slow down and start again."
+- "The truth helps us solve the problem together."
+
+**What to avoid saying**
+- "You are a liar."
+- "I can never trust you."
+- "Tell me the truth right now or else."
+- "What is wrong with you?"
+
+**Calming strategies**
+- Stay neutral before asking questions.
+- Focus on safety and honesty over blame.
+- Give the child a moment to think.
+- Use simple, specific questions.
+- Notice if fear is driving the behavior.
+
+**What to do after the moment**
+- Talk about what felt risky about telling the truth.
+- Practice honest repair in a manageable way.
+- Use natural consequences when needed without shaming.
+- Build trust by responding calmly to honesty.
+
+**When to seek additional support**
+- Lying is frequent and tied to strong fear or shame.
+- The behavior creates major safety issues.
+- There is a trauma history or severe attachment strain.
+- Parents and child are stuck in ongoing mistrust.
+
+## Aggression
+
+**Possible underlying emotional need**
+- Safety
+- Strong co-regulation
+- Help with impulse control
+- Protection from overwhelm
+
+**Trauma-informed explanation**
+Aggression can happen when a child's fight response turns on quickly. This does not mean the child wants to harm others; it often means the body has moved into survival mode faster than thinking skills can keep up.
+
+**What the parent can say**
+- "I will keep everyone safe."
+- "Your body is telling me you are overwhelmed."
+- "I am going to help you get space and calm."
+- "We can talk when your body feels safer."
+
+**What to avoid saying**
+- "What is wrong with you?"
+- "You are dangerous."
+- "Hit me again and see what happens."
+- "You should know better."
+
+**Calming strategies**
+- Increase physical safety first.
+- Move siblings or objects out of the area if needed.
+- Keep your body language calm and non-threatening.
+- Use brief phrases and lots of space.
+- Offer movement, squeezing a pillow, or stomping in a safe spot.
+
+**What to do after the moment**
+- Repair connection once calm returns.
+- Name the trigger, body signs, and safer choices for next time.
+- Make a safety plan for future high-risk moments.
+- Support accountability without shaming.
+
+**When to seek additional support**
+- Anyone is getting hurt.
+- Aggression is becoming more frequent or severe.
+- The child cannot recover without major intervention.
+- Parents feel unable to keep everyone safe.
+
+## Emotional Shutdown
+
+**Possible underlying emotional need**
+- Safety without pressure
+- Time
+- Gentle connection
+- Reduced overwhelm
+
+**Trauma-informed explanation**
+When a child shuts down, their nervous system may be moving into freeze. The child may look distant, quiet, numb, or unreachable because stress has become too much, not because they do not care.
+
+**What the parent can say**
+- "You do not have to talk right now."
+- "I am here with you."
+- "We can be quiet together until your body feels ready."
+- "You are safe, and I will stay nearby."
+
+**What to avoid saying**
+- "Use your words."
+- "Stop ignoring me."
+- "If you do not talk, I cannot help you."
+- "You are being rude."
+
+**Calming strategies**
+- Reduce questions and demands.
+- Sit nearby with calm presence.
+- Offer nonverbal choices such as nodding, pointing, or drawing.
+- Use grounding through blankets, warm drinks, or quiet sensory input.
+- Give extra time before expecting conversation.
+
+**What to do after the moment**
+- Check in gently later.
+- Talk about early signs of shutdown.
+- Create a plan for how the child can signal "I need space."
+- Strengthen connection through calm, low-pressure time together.
+
+**When to seek additional support**
+- Shutdown happens often or lasts a long time.
+- The child stops eating, sleeping, or functioning well.
+- There are signs of trauma, depression, or selective mutism.
+- The child cannot return to daily routines.
+
+## Anxiety
+
+**Possible underlying emotional need**
+- Safety
+- Predictability
+- Reassurance with coping support
+- Help facing stress in small steps
+
+**Trauma-informed explanation**
+Anxiety can make ordinary situations feel unsafe. A child may worry, cling, avoid, ask repeated questions, or become irritable because their body is preparing for danger, even when no immediate threat is present.
+
+**What the parent can say**
+- "I can see your worry is feeling strong."
+- "You are not alone with this feeling."
+- "Let's help your body first, then make a small plan."
+- "We can take this one step at a time."
+
+**What to avoid saying**
+- "There is nothing to be afraid of."
+- "Just stop worrying."
+- "You are fine."
+- "Big kids do not get scared."
+
+**Calming strategies**
+- Use slow breathing or grounding with the five senses.
+- Write or draw the worry.
+- Break tasks into very small steps.
+- Use routines and visual plans.
+- Offer practice, not pressure.
+
+**What to do after the moment**
+- Notice what helped the child cope.
+- Name the fear without judging it.
+- Build a step-by-step bravery plan.
+- Support confidence by noticing effort and recovery.
+
+**When to seek additional support**
+- Anxiety is interrupting school, sleep, eating, or friendships.
+- Panic, severe avoidance, or physical symptoms are present.
+- Reassurance no longer helps much.
+- The child seems stuck in worry most days.

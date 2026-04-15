@@ -4,17 +4,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f4f1eb" />
-  <title>Rooted Parenting</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Rooted Parenting Network" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Rooted Parenting Network</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icons/rooted-parenting-icon.svg" />
+  <link rel="apple-touch-icon" href="icons/rooted-parenting-icon.svg" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
 </head>
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">Rooted Parenting</p>
-        <h1 id="screen-title">Home</h1>
+      <div class="brand-lockup">
+        <div>
+          <p class="eyebrow">Rooted Parenting Network</p>
+          <h1 id="screen-title">Home</h1>
+        </div>
       </div>
-      <button class="top-action" id="home-quick-action" type="button">Help Me Right Now</button>
+      <button class="top-action" id="home-quick-action" type="button">Real-Time Help</button>
     </header>
 
     <main class="content" id="app-content" aria-live="polite"></main>
@@ -28,7 +39,7 @@
         <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
       </p>
       <p>
-        Rooted Parenting Support Program<br />
+        Rooted Parenting Network<br />
         Created by Misty Stonerock<br />
         Community Behavioral Health Worker | Parent Advocate<br />
         © 2026 Misty Stonerock. All Rights Reserved.
@@ -50,13 +61,24 @@
 
     <nav class="tabbar" aria-label="Primary">
       <button class="tabbar__item" data-route="home" type="button">Home</button>
-      <button class="tabbar__item" data-route="behaviors" type="button">Behaviors</button>
-      <button class="tabbar__item" data-route="learning" type="button">Learn</button>
-      <button class="tabbar__item" data-route="tools" type="button">Tools</button>
-      <button class="tabbar__item" data-route="worksheets" type="button">Worksheets</button>
+      <button class="tabbar__item" data-route="checkin" type="button">Check-In</button>
+      <button class="tabbar__item" data-route="learning" type="button">Lessons</button>
+      <button class="tabbar__item" data-route="progress" type="button">Progress</button>
+      <button class="tabbar__item" data-route="goals" type="button">Goals</button>
+      <button class="tabbar__item" data-route="teacher" type="button">Teacher</button>
+      <button class="tabbar__item" data-route="team" type="button">Team</button>
+      <button class="tabbar__item" data-route="support" type="button">Support</button>
     </nav>
   </div>
-
   <script src="app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch((error) => {
+          console.error("Service worker registration failed:", error);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

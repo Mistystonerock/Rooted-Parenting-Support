@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rooted Parenting | Staff Portal</title>
+  <title>Rooted Parenting Network | Staff Portal</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
@@ -11,9 +11,11 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">ROOTED PARENTING</p>
-        <h1>Staff Portal</h1>
+      <div class="brand-lockup">
+        <div>
+          <p class="eyebrow">ROOTED PARENTING NETWORK</p>
+          <h1>Staff Portal</h1>
+        </div>
       </div>
       <button class="top-action" id="staff-signout" type="button">Sign Out</button>
     </header>
@@ -32,7 +34,7 @@
         <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
       </p>
       <p>
-        Rooted Parenting Support Program<br />
+        Rooted Parenting Network<br />
         Created by Misty Stonerock<br />
         Community Behavioral Health Worker | Parent Advocate<br />
         © 2026 Misty Stonerock. All Rights Reserved.
@@ -90,6 +92,20 @@
       }));
     }
 
+    function generateInviteCode() {
+      const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let result = "RPN-";
+      for (let index = 0; index < 8; index += 1) {
+        result += alphabet[Math.floor(Math.random() * alphabet.length)];
+      }
+      return result;
+    }
+
+    function buildInviteMessage(code, agencyName, assignedCourseSlug) {
+      const trackText = assignedCourseSlug ? ` Assigned track: ${assignedCourseSlug}.` : "";
+      return `You have been invited to join Rooted Parenting Network.${trackText} Use invite code ${code} during sign-up and family setup to connect with ${agencyName || "your agency"}.`;
+    }
+
     async function requireStaffSession() {
       const { data } = await supabaseClient.auth.getSession();
       if (!data.session) {
@@ -127,28 +143,175 @@
 
       const familyIds = (assignments || []).map((item) => item.family_id);
       if (!familyIds.length) {
-        return { families: [], children: [], logs: [], completions: [], assessments: [] };
+        return { families: [], children: [], logs: [], completions: [], assessments: [], sharedGoals: [], supportPlans: [], scheduleEvents: [] };
       }
 
-      const [{ data: families }, { data: children }, { data: logs }, { data: completions }, { data: assessments }] =
+      const [{ data: families }, { data: children }, { data: logs }, { data: completions }, { data: assessments }, { data: sharedGoals }, { data: supportPlans }, { data: scheduleEvents }] =
         await Promise.all([
           supabaseClient.from("families").select("*").in("id", familyIds),
           supabaseClient.from("family_children").select("*").in("family_id", familyIds),
           supabaseClient.from("daily_logs").select("*").in("family_id", familyIds).order("log_date", { ascending: false }),
           supabaseClient.from("completion_records").select("*").in("family_id", familyIds),
-          supabaseClient.from("assessment_submissions").select("*").in("family_id", familyIds).order("created_at", { ascending: false })
+          supabaseClient.from("assessment_submissions").select("*").in("family_id", familyIds).order("created_at", { ascending: false }),
+          supabaseClient.from("family_shared_goals").select("*").in("family_id", familyIds),
+          supabaseClient.from("family_support_plans").select("*").in("family_id", familyIds),
+          supabaseClient.from("family_schedule_events").select("*").in("family_id", familyIds).order("event_date", { ascending: true })
         ]);
+
+      let messages = [];
+      const { data: messageRows, error: messageError } = await supabaseClient
+        .from("family_messages")
+        .select("*")
+        .in("family_id", familyIds)
+        .order("created_at", { ascending: true });
+
+      if (messageError) {
+        const message = String(messageError.message || "").toLowerCase();
+        if (!(message.includes("family_messages") || message.includes("does not exist") || message.includes("schema cache"))) {
+          throw messageError;
+        }
+      } else {
+        messages = messageRows || [];
+      }
+
+      let documents = [];
+      const { data: documentRows, error: documentError } = await supabaseClient
+        .from("family_documents")
+        .select("*")
+        .in("family_id", familyIds)
+        .order("created_at", { ascending: false });
+
+      if (documentError) {
+        const message = String(documentError.message || "").toLowerCase();
+        if (!(message.includes("family_documents") || message.includes("does not exist") || message.includes("schema cache"))) {
+          throw documentError;
+        }
+      } else {
+        documents = documentRows || [];
+      }
 
       return {
         families: families || [],
         children: children || [],
         logs: logs || [],
         completions: completions || [],
-        assessments: assessments || []
+        assessments: assessments || [],
+        messages: messages || [],
+        sharedGoals: sharedGoals || [],
+        supportPlans: supportPlans || [],
+        scheduleEvents: scheduleEvents || [],
+        documents: documents || []
       };
     }
 
-    function renderPortal(staffProfile, dataset) {
+    async function loadInviteCodes(staffUserId) {
+      const { data, error } = await supabaseClient
+        .from("invite_codes")
+        .select("*")
+        .eq("staff_user_id", staffUserId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("invite_codes") || message.includes("does not exist") || message.includes("schema cache")) {
+          return [];
+        }
+        throw error;
+      }
+
+      return data || [];
+    }
+
+    function bindInviteCodeActions(access) {
+      document.getElementById("create-invite-code")?.addEventListener("click", async () => {
+        const code = document.getElementById("invite-code-value")?.value.trim().toUpperCase();
+        const assignedCourseSlug = document.getElementById("invite-course-slug")?.value.trim() || null;
+        const messageBox = document.getElementById("invite-code-message");
+
+        if (!code) {
+          messageBox.innerHTML = "<p>Please enter an invite code.</p>";
+          return;
+        }
+
+        messageBox.innerHTML = "<p>Creating invite code...</p>";
+
+        const { error } = await supabaseClient
+          .from("invite_codes")
+          .insert({
+            code,
+            staff_user_id: access.session.user.id,
+            agency_name: access.profile.agency_name || "",
+            assigned_course_slug: assignedCourseSlug,
+            is_active: true
+          });
+
+        if (error) {
+          const message = String(error.message || "").toLowerCase();
+          if (message.includes("invite_codes") || message.includes("does not exist") || message.includes("schema cache")) {
+            messageBox.innerHTML = "<p>The invite-code database update has not been run in Supabase yet. The staff portal still works, but invite codes are not live until that SQL is applied.</p>";
+            return;
+          }
+          messageBox.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+          return;
+        }
+
+        const refreshedDataset = await loadAssignedFamilies(access.session.user.id);
+        const refreshedInviteCodes = await loadInviteCodes(access.session.user.id);
+        renderPortal(access.profile, refreshedDataset, refreshedInviteCodes);
+        bindInviteCodeActions(access);
+
+        document.getElementById("invite-code-message").innerHTML = `<p>Invite code ${escapeHtml(code)} created successfully.</p>`;
+      });
+
+      document.getElementById("send-email-invite")?.addEventListener("click", () => {
+        const code = document.getElementById("invite-code-value")?.value.trim().toUpperCase();
+        const assignedCourseSlug = document.getElementById("invite-course-slug")?.value.trim() || null;
+        const familyEmail = document.getElementById("invite-family-email")?.value.trim();
+        const messageBox = document.getElementById("invite-code-message");
+
+        if (!familyEmail) {
+          messageBox.innerHTML = "<p>Enter a family email first.</p>";
+          return;
+        }
+
+        const subject = encodeURIComponent("Your Rooted Parenting Network Invite Code");
+        const body = encodeURIComponent(buildInviteMessage(code, access.profile.agency_name || "", assignedCourseSlug));
+        window.location.href = `mailto:${encodeURIComponent(familyEmail)}?subject=${subject}&body=${body}`;
+        messageBox.innerHTML = `<p>Email draft opened for ${escapeHtml(familyEmail)}.</p>`;
+      });
+
+      document.getElementById("send-text-invite")?.addEventListener("click", () => {
+        const code = document.getElementById("invite-code-value")?.value.trim().toUpperCase();
+        const assignedCourseSlug = document.getElementById("invite-course-slug")?.value.trim() || null;
+        const familyPhone = document.getElementById("invite-family-phone")?.value.trim();
+        const messageBox = document.getElementById("invite-code-message");
+
+        if (!familyPhone) {
+          messageBox.innerHTML = "<p>Enter a family phone number first.</p>";
+          return;
+        }
+
+        const body = encodeURIComponent(buildInviteMessage(code, access.profile.agency_name || "", assignedCourseSlug));
+        window.location.href = `sms:${encodeURIComponent(familyPhone)}?body=${body}`;
+        messageBox.innerHTML = `<p>Text draft opened for ${escapeHtml(familyPhone)}.</p>`;
+      });
+
+      document.getElementById("copy-invite-code")?.addEventListener("click", async () => {
+        const code = document.getElementById("invite-code-value")?.value.trim().toUpperCase();
+        const assignedCourseSlug = document.getElementById("invite-course-slug")?.value.trim() || null;
+        const messageBox = document.getElementById("invite-code-message");
+        const message = buildInviteMessage(code, access.profile.agency_name || "", assignedCourseSlug);
+
+        try {
+          await navigator.clipboard.writeText(message);
+          messageBox.innerHTML = "<p>Invite message copied to clipboard.</p>";
+        } catch (error) {
+          messageBox.innerHTML = `<p>${escapeHtml(message)}</p>`;
+        }
+      });
+    }
+
+    function renderPortal(staffProfile, dataset, inviteCodes) {
       const familyCards = dataset.families.map((family) => {
         const childNames = dataset.children
           .filter((child) => child.family_id === family.id)
@@ -157,6 +320,12 @@
         const summaries = buildWeeklySummaries(logs);
         const completion = dataset.completions.find((item) => item.family_id === family.id);
         const latestAssessment = dataset.assessments.find((item) => item.family_id === family.id);
+        const familyAssessments = dataset.assessments.filter((item) => item.family_id === family.id);
+        const messages = dataset.messages.filter((message) => message.family_id === family.id);
+        const sharedGoals = dataset.sharedGoals.find((item) => item.family_id === family.id)?.goals || [];
+        const supportPlan = dataset.supportPlans.find((item) => item.family_id === family.id)?.plan || {};
+        const scheduleEvents = dataset.scheduleEvents.filter((item) => item.family_id === family.id);
+        const documents = dataset.documents.filter((item) => item.family_id === family.id);
 
         return `
           <section class="detail-card">
@@ -184,6 +353,196 @@
                 )
                 .join("")}
             </div>
+            <div class="note-box">
+              <strong>Messages</strong>
+              ${
+                messages.length
+                  ? messages
+                      .map(
+                        (message) => `
+                          <div class="summary-entry">
+                            <p><strong>${escapeHtml(message.sender_role === "parent" ? "Parent" : "Provider")}</strong></p>
+                            <p>${escapeHtml(message.message_text)}</p>
+                            <p><small>${escapeHtml(new Date(message.created_at).toLocaleString())}</small></p>
+                          </div>
+                        `
+                      )
+                      .join("")
+                  : "<p>No messages yet.</p>"
+              }
+              <div class="tracker-form" style="margin-top:12px;">
+                <label class="tracker-field">
+                  <span>Reply to family</span>
+                  <textarea id="staff-message-${family.id}" rows="3" placeholder="Type a message for this family"></textarea>
+                </label>
+                <div class="hero-actions hero-actions--stacked">
+                  <button class="secondary-button" type="button" data-send-staff-message="${family.id}">Send Reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="note-box">
+              <strong>Shared schedule</strong>
+              ${
+                scheduleEvents.length
+                  ? scheduleEvents
+                      .map(
+                        (item) => `
+                          <div class="summary-entry">
+                            <p><strong>${escapeHtml(item.title)}</strong></p>
+                            <p><strong>Type:</strong> ${escapeHtml(item.event_type || "General event")}</p>
+                            <p><strong>Date:</strong> ${escapeHtml(item.event_date || "No date")}${item.event_time ? ` at ${escapeHtml(item.event_time)}` : ""}</p>
+                            <p><strong>Notes:</strong> ${escapeHtml(item.notes || "No notes entered")}</p>
+                          </div>
+                        `
+                      )
+                      .join("")
+                  : "<p>No shared schedule events yet.</p>"
+              }
+              <div class="tracker-form" style="margin-top:12px;">
+                <label class="tracker-field">
+                  <span>Event type</span>
+                  <select id="staff-schedule-type-${family.id}">
+                    <option value="Court date">Court date</option>
+                    <option value="Provider visit">Provider visit</option>
+                    <option value="Appointment">Appointment</option>
+                    <option value="Teacher-parent conference">Teacher-parent conference</option>
+                    <option value="School meeting">School meeting</option>
+                  </select>
+                </label>
+                <label class="tracker-field">
+                  <span>Title</span>
+                  <input id="staff-schedule-title-${family.id}" type="text" placeholder="Enter event title" />
+                </label>
+                <label class="tracker-field">
+                  <span>Date</span>
+                  <input id="staff-schedule-date-${family.id}" type="date" />
+                </label>
+                <label class="tracker-field">
+                  <span>Time</span>
+                  <input id="staff-schedule-time-${family.id}" type="text" placeholder="Example: 2:00 PM" />
+                </label>
+                <label class="tracker-field">
+                  <span>Notes</span>
+                  <textarea id="staff-schedule-notes-${family.id}" rows="2" placeholder="Add any detail the family should know"></textarea>
+                </label>
+                <div class="hero-actions hero-actions--stacked">
+                  <button class="secondary-button" type="button" data-save-staff-schedule="${family.id}">Save Schedule Event</button>
+                </div>
+              </div>
+            </div>
+            <div class="note-box">
+              <strong>Private documents</strong>
+              ${
+                documents.length
+                  ? documents
+                      .map(
+                        (item) => `
+                          <div class="summary-entry">
+                            <p><strong>${escapeHtml(item.file_name || "Document")}</strong></p>
+                            <p><strong>Type:</strong> ${escapeHtml(item.document_type || "General document")}</p>
+                            <p><strong>Uploaded by:</strong> ${escapeHtml(item.uploaded_by_role || "Team member")}</p>
+                            <p><strong>Notes:</strong> ${escapeHtml(item.notes || "No note entered")}</p>
+                          </div>
+                        `
+                      )
+                      .join("")
+                  : "<p>No private documents uploaded yet.</p>"
+              }
+            </div>
+            <div class="note-box">
+              <strong>Trauma assessments</strong>
+              ${
+                familyAssessments.length
+                  ? familyAssessments
+                      .map((assessment) => {
+                        const ratings = assessment.ratings || {};
+                        const aceItems = Array.isArray(ratings.aceItems) ? ratings.aceItems : [];
+                        return `
+                          <div class="summary-entry">
+                            <p><strong>${escapeHtml(assessment.assessment_type || "Assessment")}</strong></p>
+                            <p><strong>ACE score:</strong> ${escapeHtml(String(ratings.aceScore ?? 0))}</p>
+                            <p><strong>Current concerns:</strong> ${escapeHtml(ratings.concerns || "No concerns entered")}</p>
+                            <p><strong>Protective factors:</strong> ${escapeHtml(assessment.strengths || "No strengths entered")}</p>
+                            <p><strong>Recommended supports:</strong> ${escapeHtml(assessment.growth_area || "No recommendations entered")}</p>
+                            <p><strong>ACE items marked:</strong> ${escapeHtml(aceItems.join(", ") || "None selected")}</p>
+                          </div>
+                        `;
+                      })
+                      .join("")
+                  : "<p>No trauma assessment saved yet.</p>"
+              }
+            </div>
+            <div class="note-box">
+              <strong>Shared goals</strong>
+              <div class="tracker-form" style="margin-top:12px;">
+                ${[0, 1, 2, 3, 4].map((index) => {
+                  const goal = sharedGoals[index] || {};
+                  return `
+                    <div class="goal-card">
+                      <label class="tracker-field">
+                        <span>Goal ${index + 1}</span>
+                        <input id="staff-goal-title-${family.id}-${index}" type="text" value="${escapeHtml(goal.title || "")}" placeholder="Enter shared goal" />
+                      </label>
+                      <label class="tracker-field">
+                        <span>Progress percent</span>
+                        <input id="staff-goal-progress-${family.id}-${index}" type="number" min="0" max="100" value="${escapeHtml(String(goal.progress ?? 0))}" />
+                      </label>
+                      <label class="tracker-field">
+                        <span>Parent note</span>
+                        <textarea id="staff-goal-parent-note-${family.id}-${index}" rows="2" placeholder="Parent note">${escapeHtml(goal.parentNote || "")}</textarea>
+                      </label>
+                      <label class="tracker-field">
+                        <span>Provider note</span>
+                        <textarea id="staff-goal-provider-note-${family.id}-${index}" rows="2" placeholder="Provider note">${escapeHtml(goal.providerNote || "")}</textarea>
+                      </label>
+                    </div>
+                  `;
+                }).join("")}
+                <div class="hero-actions hero-actions--stacked">
+                  <button class="secondary-button" type="button" data-save-staff-goals="${family.id}">Save Shared Goals</button>
+                </div>
+              </div>
+            </div>
+            <div class="note-box">
+              <strong>Child support plan</strong>
+              <div class="tracker-form" style="margin-top:12px;">
+                <label class="tracker-field">
+                  <span>Strengths</span>
+                  <textarea id="staff-plan-strengths-${family.id}" rows="2">${escapeHtml(supportPlan.strengths || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>Triggers</span>
+                  <textarea id="staff-plan-triggers-${family.id}" rows="2">${escapeHtml(supportPlan.triggers || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>Warning signs</span>
+                  <textarea id="staff-plan-warning-signs-${family.id}" rows="2">${escapeHtml(supportPlan.warningSigns || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>What helps</span>
+                  <textarea id="staff-plan-what-helps-${family.id}" rows="2">${escapeHtml(supportPlan.whatHelps || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>What to avoid</span>
+                  <textarea id="staff-plan-avoid-${family.id}" rows="2">${escapeHtml(supportPlan.avoid || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>Repair plan</span>
+                  <textarea id="staff-plan-repair-plan-${family.id}" rows="2">${escapeHtml(supportPlan.repairPlan || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>Team commitments</span>
+                  <textarea id="staff-plan-team-commitments-${family.id}" rows="2">${escapeHtml(supportPlan.teamCommitments || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>Immediate safety steps</span>
+                  <textarea id="staff-plan-immediate-safety-${family.id}" rows="2">${escapeHtml(supportPlan.immediateSafety || "")}</textarea>
+                </label>
+                <div class="hero-actions hero-actions--stacked">
+                  <button class="secondary-button" type="button" data-save-staff-plan="${family.id}">Save Child Support Plan</button>
+                </div>
+              </div>
+            </div>
           </section>
         `;
       });
@@ -193,6 +552,63 @@
           <h2>Welcome, ${escapeHtml(staffProfile.full_name || "Staff user")}</h2>
           <p><strong>Agency:</strong> ${escapeHtml(staffProfile.agency_name || "Not entered")}</p>
           <p>This portal is read-only by design. Staff should review assigned family progress, weekly summaries, attendance, assessment status, and certificate status here without editing client-entered records.</p>
+        </section>
+
+        <section class="section-card">
+          <h2>Agency Invite Codes</h2>
+          <p>Create an invite code for a family. They can use it during sign-up and family setup to connect automatically to your agency view.</p>
+          <div class="tracker-form">
+            <label class="tracker-field">
+              <span>Family email</span>
+              <input id="invite-family-email" type="email" placeholder="family@email.com" />
+            </label>
+            <label class="tracker-field">
+              <span>Family phone</span>
+              <input id="invite-family-phone" type="text" placeholder="5551234567" />
+            </label>
+            <label class="tracker-field">
+              <span>Invite code</span>
+              <input id="invite-code-value" type="text" value="${escapeHtml(generateInviteCode())}" />
+            </label>
+            <label class="tracker-field">
+              <span>Assigned course track</span>
+              <input id="invite-course-slug" type="text" placeholder="Optional course slug" />
+            </label>
+            <div class="hero-actions hero-actions--stacked">
+              <button class="primary-button" type="button" id="create-invite-code">Create Invite Code</button>
+              <button class="secondary-button" type="button" id="send-email-invite">Send Email Invite</button>
+              <button class="secondary-button" type="button" id="send-text-invite">Send Text Invite</button>
+              <button class="secondary-button" type="button" id="copy-invite-code">Copy Invite Message</button>
+            </div>
+            <div class="note-box" id="invite-code-message">
+              <p>Families can enter this code during account creation and the app will connect them to your agency after family setup.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="section-card">
+          <h2>Existing invite codes</h2>
+          ${
+            inviteCodes.length
+              ? inviteCodes
+                  .map(
+                    (invite) => `
+                      <div class="tracker-entry">
+                        <p><strong>Code:</strong> ${escapeHtml(invite.code)}</p>
+                        <p><strong>Assigned track:</strong> ${escapeHtml(invite.assigned_course_slug || "Not assigned")}</p>
+                        <p><strong>Status:</strong> ${
+                          invite.redeemed_family_id
+                            ? `Redeemed by family ${escapeHtml(invite.redeemed_family_id)}`
+                            : invite.is_active
+                              ? "Active"
+                              : "Inactive"
+                        }</p>
+                      </div>
+                    `
+                  )
+                  .join("")
+              : "<p>No invite codes created yet.</p>"
+          }
         </section>
 
         <section class="section-card">
@@ -222,7 +638,166 @@
         const access = await requireStaffSession();
         if (!access) return;
         const dataset = await loadAssignedFamilies(access.session.user.id);
-        renderPortal(access.profile, dataset);
+        const inviteCodes = await loadInviteCodes(access.session.user.id);
+        renderPortal(access.profile, dataset, inviteCodes);
+        bindInviteCodeActions(access);
+        portalRoot.addEventListener("click", async (event) => {
+          const saveGoalsButton = event.target.closest("[data-save-staff-goals]");
+          if (saveGoalsButton) {
+            const familyId = saveGoalsButton.dataset.saveStaffGoals;
+            const goals = [0, 1, 2, 3, 4].map((index) => ({
+              title: document.getElementById(`staff-goal-title-${familyId}-${index}`)?.value.trim() || "",
+              progress: Math.max(0, Math.min(100, Number(document.getElementById(`staff-goal-progress-${familyId}-${index}`)?.value || 0))),
+              parentNote: document.getElementById(`staff-goal-parent-note-${familyId}-${index}`)?.value.trim() || "",
+              providerNote: document.getElementById(`staff-goal-provider-note-${familyId}-${index}`)?.value.trim() || ""
+            }));
+
+            const { error } = await supabaseClient
+              .from("family_shared_goals")
+              .upsert({
+                family_id: familyId,
+                goals,
+                updated_at: new Date().toISOString()
+              });
+
+            if (error) {
+              const message = String(error.message || "").toLowerCase();
+              if (message.includes("family_shared_goals") || message.includes("does not exist") || message.includes("schema cache")) {
+                window.alert("Shared goals are not active yet because the newest Supabase SQL has not been run.");
+                return;
+              }
+              window.alert(error.message);
+              return;
+            }
+
+            const refreshedDataset = await loadAssignedFamilies(access.session.user.id);
+            const refreshedInviteCodes = await loadInviteCodes(access.session.user.id);
+            renderPortal(access.profile, refreshedDataset, refreshedInviteCodes);
+            bindInviteCodeActions(access);
+            return;
+          }
+
+          const savePlanButton = event.target.closest("[data-save-staff-plan]");
+          if (savePlanButton) {
+            const familyId = savePlanButton.dataset.saveStaffPlan;
+            const plan = {
+              strengths: document.getElementById(`staff-plan-strengths-${familyId}`)?.value.trim() || "",
+              triggers: document.getElementById(`staff-plan-triggers-${familyId}`)?.value.trim() || "",
+              warningSigns: document.getElementById(`staff-plan-warning-signs-${familyId}`)?.value.trim() || "",
+              whatHelps: document.getElementById(`staff-plan-what-helps-${familyId}`)?.value.trim() || "",
+              avoid: document.getElementById(`staff-plan-avoid-${familyId}`)?.value.trim() || "",
+              repairPlan: document.getElementById(`staff-plan-repair-plan-${familyId}`)?.value.trim() || "",
+              teamCommitments: document.getElementById(`staff-plan-team-commitments-${familyId}`)?.value.trim() || "",
+              immediateSafety: document.getElementById(`staff-plan-immediate-safety-${familyId}`)?.value.trim() || ""
+            };
+
+            const { error } = await supabaseClient
+              .from("family_support_plans")
+              .upsert({
+                family_id: familyId,
+                plan,
+                updated_at: new Date().toISOString()
+              });
+
+            if (error) {
+              const message = String(error.message || "").toLowerCase();
+              if (message.includes("family_support_plans") || message.includes("does not exist") || message.includes("schema cache")) {
+                window.alert("Child support plans are not active yet because the newest Supabase SQL has not been run.");
+                return;
+              }
+              window.alert(error.message);
+              return;
+            }
+
+            const refreshedDataset = await loadAssignedFamilies(access.session.user.id);
+            const refreshedInviteCodes = await loadInviteCodes(access.session.user.id);
+            renderPortal(access.profile, refreshedDataset, refreshedInviteCodes);
+            bindInviteCodeActions(access);
+            return;
+          }
+
+          const saveScheduleButton = event.target.closest("[data-save-staff-schedule]");
+          if (saveScheduleButton) {
+            const familyId = saveScheduleButton.dataset.saveStaffSchedule;
+            const title = document.getElementById(`staff-schedule-title-${familyId}`)?.value.trim() || "";
+            const eventDate = document.getElementById(`staff-schedule-date-${familyId}`)?.value || "";
+            const eventType = document.getElementById(`staff-schedule-type-${familyId}`)?.value || "Appointment";
+            const eventTime = document.getElementById(`staff-schedule-time-${familyId}`)?.value.trim() || "";
+            const notes = document.getElementById(`staff-schedule-notes-${familyId}`)?.value.trim() || "";
+
+            if (!title || !eventDate) {
+              window.alert("Please enter both a title and date before saving the schedule event.");
+              return;
+            }
+
+            const { error } = await supabaseClient
+              .from("family_schedule_events")
+              .insert({
+                family_id: familyId,
+                created_by_user_id: access.session.user.id,
+                created_by_role: access.profile.role === "admin" ? "admin" : "staff",
+                event_type: eventType,
+                title,
+                event_date: eventDate,
+                event_time: eventTime,
+                notes
+              });
+
+            if (error) {
+              const message = String(error.message || "").toLowerCase();
+              if (message.includes("family_schedule_events") || message.includes("does not exist") || message.includes("schema cache")) {
+                window.alert("Shared scheduling is not active yet because the newest Supabase SQL has not been run.");
+                return;
+              }
+              window.alert(error.message);
+              return;
+            }
+
+            const refreshedDataset = await loadAssignedFamilies(access.session.user.id);
+            const refreshedInviteCodes = await loadInviteCodes(access.session.user.id);
+            renderPortal(access.profile, refreshedDataset, refreshedInviteCodes);
+            bindInviteCodeActions(access);
+            return;
+          }
+
+          const replyButton = event.target.closest("[data-send-staff-message]");
+          if (!replyButton) {
+            return;
+          }
+
+          const familyId = replyButton.dataset.sendStaffMessage;
+          const input = document.getElementById(`staff-message-${familyId}`);
+          const messageText = input?.value.trim() || "";
+
+          if (!messageText) {
+            return;
+          }
+
+          const { error } = await supabaseClient
+            .from("family_messages")
+            .insert({
+              family_id: familyId,
+              sender_user_id: access.session.user.id,
+              sender_role: access.profile.role === "admin" ? "admin" : "staff",
+              message_text: messageText
+            });
+
+          if (error) {
+            const message = String(error.message || "").toLowerCase();
+            if (message.includes("family_messages") || message.includes("does not exist") || message.includes("schema cache")) {
+              window.alert("Messaging is not active yet because the newest Supabase SQL has not been run.");
+              return;
+            }
+            window.alert(error.message);
+            return;
+          }
+
+          input.value = "";
+          const refreshedDataset = await loadAssignedFamilies(access.session.user.id);
+          const refreshedInviteCodes = await loadInviteCodes(access.session.user.id);
+          renderPortal(access.profile, refreshedDataset, refreshedInviteCodes);
+          bindInviteCodeActions(access);
+        });
       } catch (error) {
         portalRoot.innerHTML = `
           <section class="section-card">

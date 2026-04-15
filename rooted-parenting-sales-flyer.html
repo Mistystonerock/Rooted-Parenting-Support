@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Network Professional Flyer</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.55in;
+    }
+
+    :root {
+      --ink: #293238;
+      --muted: #5f6c71;
+      --accent: #66755f;
+      --accent-soft: #e6ece0;
+      --line: #d7d1c8;
+      --soft: #f5f1ea;
+      --surface: #fffdfa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      font-size: 10.5pt;
+      line-height: 1.35;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 28pt;
+      line-height: 1.05;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 11pt;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 11pt;
+      margin-bottom: 6px;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+    }
+
+    .page {
+      display: grid;
+      gap: 14px;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: rgba(255, 253, 250, 0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--accent);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fffdf9 0%, #f3eee6 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .subtitle {
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .highlight-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .highlight {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .highlight strong {
+      display: block;
+      color: var(--accent);
+      margin-bottom: 4px;
+      font-size: 11pt;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--surface);
+      break-inside: avoid;
+    }
+
+    .soft-card {
+      background: var(--soft);
+    }
+
+    .track-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .track {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 9.5pt;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pricing {
+      display: grid;
+      gap: 10px;
+    }
+
+    .price-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .price {
+      font-size: 18pt;
+      color: var(--accent);
+      font-weight: 700;
+      margin: 4px 0 6px;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      display: grid;
+      gap: 5px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 9.5pt;
+    }
+
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .controls {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button class="btn btn--primary" type="button" onclick="window.print()">Download / Save as PDF</button>
+    <button class="btn" type="button" onclick="goBack()">Back</button>
+  </div>
+  <main class="page">
+    <section class="hero">
+      <h1>Rooted Parenting Network</h1>
+      <p class="subtitle">A trauma-informed family support platform for parents, teachers, and providers</p>
+      <p>Rooted Parenting Network helps caregivers, teachers, and professionals respond to children with trauma history and behavior concerns using one shared, trauma-informed support system. The platform combines daily guided lessons, real-time response tools, family-provider messaging, shared goals, private documents, trauma assessment tracking, and certificate-based completion for home, school, CPS, court, therapy, and community-based family services.</p>
+
+      <div class="highlight-row">
+        <div class="highlight">
+          <strong>21-Day Program</strong>
+          <p>Daily lessons, reflections, quizzes, and skill-building check-ins.</p>
+        </div>
+        <div class="highlight">
+          <strong>Shared Team Tools</strong>
+          <p>Messaging, shared goals, child support plans, schedule tracking, and trauma assessments.</p>
+        </div>
+        <div class="highlight">
+          <strong>Parent and Agency Ready</strong>
+          <p>Mobile-ready tools, secure family records, and practical support across systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="stack">
+        <article class="card">
+          <h2>What Is Included</h2>
+          <ul>
+            <li>21-day parenting habit program with structured daily sessions</li>
+            <li>Daily lesson completion with quiz-based feedback</li>
+            <li>Progress tracker with date-stamped daily logs and weekly summaries</li>
+            <li>Positive reinforcement, reward tracking, and shared goals</li>
+            <li>Shared child support plan across home, school, and provider systems</li>
+            <li>Secure parent-provider messaging and team communication</li>
+            <li>Private document storage for case plans, court papers, homework, and forms</li>
+            <li>Trauma assessment tools, including ACE-style screening support</li>
+            <li>Fillable parent workbook and worksheets</li>
+            <li>Certificate unlocked after program completion</li>
+          </ul>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Who It Serves</h2>
+          <ul>
+            <li>Parents and caregivers of children with behavioral or emotional challenges</li>
+            <li>Teachers responding to children with trauma history and school behavior concerns</li>
+            <li>Providers, therapists, counselors, and case workers coordinating support</li>
+            <li>CPS-involved and reunification families</li>
+            <li>Juvenile court and diversion referrals</li>
+            <li>School-linked family support programs</li>
+            <li>Family preservation, stabilization, and behavioral health programs</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Why It Stands Out</h2>
+          <ul>
+            <li>Trauma-informed and practical, not shame-based</li>
+            <li>Built around daily use, not just handouts, PDFs, or reading</li>
+            <li>Keeps parents, teachers, and providers aligned around the same response plan</li>
+            <li>Supports both parent growth and professional documentation</li>
+            <li>Structured enough for referral, monitoring, confidential file sharing, and certificate completion</li>
+            <li>Works for both direct parent support and agency implementation</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="card">
+          <h2>Course Tracks</h2>
+          <div class="track-list">
+            <div class="track">
+              <span class="tag">Track 1</span>
+              <h3>CPS Positive Parenting and Reunification</h3>
+              <p>Supports parent skill-building, stability, trust rebuilding, emotional safety, and structure during reunification or active child welfare involvement.</p>
+            </div>
+            <div class="track">
+              <span class="tag">Track 2</span>
+              <h3>Behavior Support for Parents</h3>
+              <p>Focuses on defiance, aggression, anxiety, school struggles, calm consequences, positive reinforcement, and safer parent responses.</p>
+            </div>
+            <div class="track">
+              <span class="tag">Track 3</span>
+              <h3>Court-Ordered Parenting Skills</h3>
+              <p>Provides structured parent education with progress tracking, participation documentation, and certificate-based completion.</p>
+            </div>
+            <div class="track">
+              <span class="tag">Track 4</span>
+              <h3>Teacher and School Trauma Support</h3>
+              <p>Helps teachers respond to trauma-related behavior, school stress, de-escalation needs, and trauma/ADHD overlap with practical classroom supports.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Professional Features</h2>
+          <ul>
+            <li>Assigned track by family or case</li>
+            <li>Staff portal for CPS, courts, teachers, and providers</li>
+            <li>Shared family schedule for court dates, visits, appointments, and conferences</li>
+            <li>Private family documents and case file support</li>
+            <li>ACE-style trauma assessment and assessment status review</li>
+            <li>Date-stamped daily logs, attendance tracking, and progress review</li>
+            <li>Printable documentation, reports, and certificates</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>Suggested Pricing</h2>
+          <div class="pricing">
+            <div class="price-box">
+              <h3>Parent Premium</h3>
+              <p class="price">$4.99/mo</p>
+              <p>Includes a 3-day free trial, then full 21-day program, workbook, trackers, assessments, and certificate access.</p>
+            </div>
+            <div class="price-box">
+              <h3>Small Program / Agency</h3>
+              <p class="price">$79.99</p>
+              <p>Professional use with staff portal, assigned tracks, shared schedule, secure messaging, trauma assessments, and documentation tools.</p>
+            </div>
+            <div class="price-box">
+              <h3>Parent Lifetime</h3>
+              <p class="price">$59.99</p>
+              <p>One-time full parent access to the 21-day program, workbook, trackers, assessments, and certificate tools.</p>
+            </div>
+          </div>
+          <p style="margin-top: 10px; color: var(--muted);">Scholarship or sponsored access codes can be offered to families who cannot afford premium parent access.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>One-Sentence Summary</h2>
+      <p><strong>Rooted Parenting Network is a trauma-informed family support platform that combines daily skill-building, behavior tools, shared team planning, secure communication, private documents, trauma assessment support, and professional oversight for families and referring agencies.</strong></p>
+    </section>
+
+    <section class="footer">
+      <p>Rooted Parenting Network</p>
+      <p>Created by Misty Stonerock | Community Behavioral Health Worker | Parent Advocate</p>
+      <p>Use this flyer digitally or choose Download / Save as PDF for professional sharing.</p>
+    </section>
+  </main>
+
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

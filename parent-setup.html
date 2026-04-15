@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rooted Parenting | Family Setup</title>
+  <title>Rooted Parenting Network | Family Setup</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
@@ -11,11 +11,16 @@
 <body>
   <div class="app-shell">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">ROOTED PARENTING</p>
-        <h1>Family Setup</h1>
+      <div class="brand-lockup">
+        <div>
+          <p class="eyebrow">ROOTED PARENTING NETWORK</p>
+          <h1>Family Setup</h1>
+        </div>
       </div>
-      <button class="top-action" id="parent-signout" type="button">Sign Out</button>
+      <div class="hero-actions" style="margin-top:0;">
+        <button class="secondary-button" id="family-setup-back" type="button">Back</button>
+        <button class="top-action" id="parent-signout" type="button">Sign Out</button>
+      </div>
     </header>
 
     <main class="content">
@@ -43,6 +48,13 @@
             <p>Course tracks are assigned later by staff, CPS, or the court based on the referral reason. Parents can create the family profile here, but they do not need to choose the case track.</p>
           </div>
           <label class="tracker-field">
+            <span>Agency invite code</span>
+            <input id="setup-invite-code" type="text" placeholder="Optional invite code" />
+          </label>
+          <div class="note-box" id="invite-status-box">
+            <p>If you were given an agency invite code, saving your family profile will connect your family to that agency automatically.</p>
+          </div>
+          <label class="tracker-field">
             <span>Case note</span>
             <textarea id="setup-case-note" rows="3" placeholder="Optional family or referral note"></textarea>
           </label>
@@ -62,6 +74,251 @@
           </div>
         </div>
       </section>
+
+      <section class="section-card">
+        <h2>Messages</h2>
+        <p>Use this secure thread to message your assigned provider, agency, or program staff.</p>
+        <div class="note-box" id="messages-status-box">
+          <p>Save your family profile first to activate messages.</p>
+        </div>
+        <div id="parent-messages-thread" class="detail-stack"></div>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>New message</span>
+            <textarea id="parent-message-input" rows="3" placeholder="Type your message to the provider or agency"></textarea>
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" id="send-parent-message">Send Message</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Shared Schedule</h2>
+        <p>Providers, agencies, and teachers can add court dates, visits, appointments, and teacher-parent conferences here so families can see upcoming events in one place.</p>
+        <div class="note-box" id="schedule-status-box">
+          <p>Save your family profile first to activate the shared schedule.</p>
+        </div>
+        <div id="family-schedule-thread" class="detail-stack"></div>
+      </section>
+
+      <section class="section-card">
+        <h2>Private Documents</h2>
+        <p>Upload case plans, court papers, school paperwork, and homework here so the family and assigned provider can keep important documents in one protected place.</p>
+        <div class="note-box" id="documents-status-box">
+          <p>Save your family profile first to activate private document storage.</p>
+        </div>
+        <div id="family-documents-thread" class="detail-stack"></div>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>Document type</span>
+            <select id="document-type">
+              <option value="Case plan">Case plan</option>
+              <option value="Court paper">Court paper</option>
+              <option value="Homework">Homework</option>
+              <option value="School form">School form</option>
+              <option value="Provider form">Provider form</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label class="tracker-field">
+            <span>Document file</span>
+            <input id="document-file" type="file" />
+          </label>
+          <label class="tracker-field">
+            <span>Document note</span>
+            <textarea id="document-note" rows="2" placeholder="Add a short note about this file"></textarea>
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" id="upload-document-button">Upload Document</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Shared Goals</h2>
+        <p>These five goals are shared with your provider or agency so everyone can work from the same plan.</p>
+        <div class="tracker-form" id="shared-goals-form">
+          <div class="goal-card">
+            <label class="tracker-field">
+              <span>Goal 1</span>
+              <input id="family-goal-title-0" type="text" placeholder="Enter shared goal" />
+            </label>
+            <label class="tracker-field">
+              <span>Progress percent</span>
+              <input id="family-goal-progress-0" type="number" min="0" max="100" />
+            </label>
+            <label class="tracker-field">
+              <span>Parent note</span>
+              <textarea id="family-goal-parent-note-0" rows="2" placeholder="What you are seeing at home"></textarea>
+            </label>
+            <label class="tracker-field">
+              <span>Provider note</span>
+              <textarea id="family-goal-provider-note-0" rows="2" placeholder="Shared provider note"></textarea>
+            </label>
+          </div>
+          <div class="goal-card">
+            <label class="tracker-field">
+              <span>Goal 2</span>
+              <input id="family-goal-title-1" type="text" placeholder="Enter shared goal" />
+            </label>
+            <label class="tracker-field">
+              <span>Progress percent</span>
+              <input id="family-goal-progress-1" type="number" min="0" max="100" />
+            </label>
+            <label class="tracker-field">
+              <span>Parent note</span>
+              <textarea id="family-goal-parent-note-1" rows="2" placeholder="What you are seeing at home"></textarea>
+            </label>
+            <label class="tracker-field">
+              <span>Provider note</span>
+              <textarea id="family-goal-provider-note-1" rows="2" placeholder="Shared provider note"></textarea>
+            </label>
+          </div>
+          <div class="goal-card">
+            <label class="tracker-field">
+              <span>Goal 3</span>
+              <input id="family-goal-title-2" type="text" placeholder="Enter shared goal" />
+            </label>
+            <label class="tracker-field">
+              <span>Progress percent</span>
+              <input id="family-goal-progress-2" type="number" min="0" max="100" />
+            </label>
+            <label class="tracker-field">
+              <span>Parent note</span>
+              <textarea id="family-goal-parent-note-2" rows="2" placeholder="What you are seeing at home"></textarea>
+            </label>
+            <label class="tracker-field">
+              <span>Provider note</span>
+              <textarea id="family-goal-provider-note-2" rows="2" placeholder="Shared provider note"></textarea>
+            </label>
+          </div>
+          <div class="goal-card">
+            <label class="tracker-field">
+              <span>Goal 4</span>
+              <input id="family-goal-title-3" type="text" placeholder="Enter shared goal" />
+            </label>
+            <label class="tracker-field">
+              <span>Progress percent</span>
+              <input id="family-goal-progress-3" type="number" min="0" max="100" />
+            </label>
+            <label class="tracker-field">
+              <span>Parent note</span>
+              <textarea id="family-goal-parent-note-3" rows="2" placeholder="What you are seeing at home"></textarea>
+            </label>
+            <label class="tracker-field">
+              <span>Provider note</span>
+              <textarea id="family-goal-provider-note-3" rows="2" placeholder="Shared provider note"></textarea>
+            </label>
+          </div>
+          <div class="goal-card">
+            <label class="tracker-field">
+              <span>Goal 5</span>
+              <input id="family-goal-title-4" type="text" placeholder="Enter shared goal" />
+            </label>
+            <label class="tracker-field">
+              <span>Progress percent</span>
+              <input id="family-goal-progress-4" type="number" min="0" max="100" />
+            </label>
+            <label class="tracker-field">
+              <span>Parent note</span>
+              <textarea id="family-goal-parent-note-4" rows="2" placeholder="What you are seeing at home"></textarea>
+            </label>
+            <label class="tracker-field">
+              <span>Provider note</span>
+              <textarea id="family-goal-provider-note-4" rows="2" placeholder="Shared provider note"></textarea>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Child Support Plan</h2>
+        <p>This is the shared trauma-informed plan for how adults will respond to this child across systems.</p>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>Strengths</span>
+            <textarea id="support-plan-strengths" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Triggers</span>
+            <textarea id="support-plan-triggers" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Warning signs</span>
+            <textarea id="support-plan-warning-signs" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>What helps</span>
+            <textarea id="support-plan-what-helps" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>What to avoid</span>
+            <textarea id="support-plan-avoid" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Repair plan</span>
+            <textarea id="support-plan-repair-plan" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Team commitments</span>
+            <textarea id="support-plan-team-commitments" rows="3"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Immediate safety steps</span>
+            <textarea id="support-plan-immediate-safety" rows="3"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <h2>Trauma Assessment</h2>
+        <p>This section can hold a structured trauma screen like an ACE review so the team can understand history without losing sight of strengths, safety, and healing.</p>
+        <div class="note-box" id="assessment-status-box">
+          <p>Save your family profile first to activate trauma assessments.</p>
+        </div>
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>Assessment type</span>
+            <select id="assessment-type">
+              <option value="ACE">ACE</option>
+              <option value="Trauma History Review">Trauma History Review</option>
+              <option value="School Trauma Concerns">School Trauma Concerns</option>
+            </select>
+          </label>
+          <div class="goal-card">
+            <p><strong>ACE Checklist</strong></p>
+            <div class="tracker-field">
+              <label><input class="ace-checkbox" type="checkbox" value="emotional_abuse" /> Emotional abuse</label>
+              <label><input class="ace-checkbox" type="checkbox" value="physical_abuse" /> Physical abuse</label>
+              <label><input class="ace-checkbox" type="checkbox" value="sexual_abuse" /> Sexual abuse</label>
+              <label><input class="ace-checkbox" type="checkbox" value="emotional_neglect" /> Emotional neglect</label>
+              <label><input class="ace-checkbox" type="checkbox" value="physical_neglect" /> Physical neglect</label>
+              <label><input class="ace-checkbox" type="checkbox" value="domestic_violence" /> Domestic violence in the home</label>
+              <label><input class="ace-checkbox" type="checkbox" value="substance_use" /> Caregiver substance misuse</label>
+              <label><input class="ace-checkbox" type="checkbox" value="mental_illness" /> Caregiver mental health concerns</label>
+              <label><input class="ace-checkbox" type="checkbox" value="parent_separation" /> Parent separation or divorce</label>
+              <label><input class="ace-checkbox" type="checkbox" value="incarceration" /> Household incarceration</label>
+            </div>
+          </div>
+          <label class="tracker-field">
+            <span>Current trauma concerns</span>
+            <textarea id="assessment-concerns" rows="3" placeholder="Describe current concerns, stress patterns, or behavior concerns"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Strengths and protective factors</span>
+            <textarea id="assessment-strengths" rows="3" placeholder="What supports, strengths, and protective factors are already present"></textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Recommended supports</span>
+            <textarea id="assessment-recommendations" rows="3" placeholder="What trauma-informed supports would help most right now"></textarea>
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" id="save-assessment-button">Save Trauma Assessment</button>
+          </div>
+        </div>
+        <div id="family-assessment-thread" class="detail-stack"></div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -71,7 +328,7 @@
         <a href="disclaimer.html" target="_blank" rel="noopener noreferrer">Disclaimer</a>
       </p>
       <p>
-        Rooted Parenting Support Program<br />
+        Rooted Parenting Network<br />
         Created by Misty Stonerock<br />
         Community Behavioral Health Worker | Parent Advocate<br />
         © 2026 Misty Stonerock. All Rights Reserved.
@@ -84,13 +341,40 @@
       window.ROOTED_SUPABASE_URL,
       window.ROOTED_SUPABASE_ANON_KEY
     );
+    const pendingInviteCodeKey = "rooted-parenting-network-pending-invite-code";
 
     const childrenList = document.getElementById("setup-children-list");
     const messageBox = document.getElementById("setup-message");
+    const inviteStatusBox = document.getElementById("invite-status-box");
+    const messagesStatusBox = document.getElementById("messages-status-box");
+    const scheduleStatusBox = document.getElementById("schedule-status-box");
+    const documentsStatusBox = document.getElementById("documents-status-box");
+    const assessmentStatusBox = document.getElementById("assessment-status-box");
+    const parentMessagesThread = document.getElementById("parent-messages-thread");
+    const familyScheduleThread = document.getElementById("family-schedule-thread");
+    const familyDocumentsThread = document.getElementById("family-documents-thread");
+    const familyAssessmentThread = document.getElementById("family-assessment-thread");
     let currentUser = null;
     let currentFamilyId = null;
     let currentAssignedCourseSlug = null;
     let childCount = 0;
+    const defaultSharedGoals = [
+      { title: "Improve emotional regulation", progress: 42, parentNote: "", providerNote: "" },
+      { title: "Reduce school incidents", progress: 36, parentNote: "", providerNote: "" },
+      { title: "Improve communication", progress: 51, parentNote: "", providerNote: "" },
+      { title: "Build calmer transitions", progress: 24, parentNote: "", providerNote: "" },
+      { title: "Increase positive follow-through", progress: 33, parentNote: "", providerNote: "" }
+    ];
+    const defaultSupportPlan = {
+      strengths: "Creative, caring, and more successful with calm connection and predictable support.",
+      triggers: "Transitions, correction in front of others, feeling rushed, loud conflict, and feeling overwhelmed.",
+      warningSigns: "Louder voice, refusal, pacing, shutdown, tearfulness, leaving the area, or arguing quickly.",
+      whatHelps: "Calm tone, fewer words, one direction at a time, simple choices, co-regulation, movement or reset space, and private follow-up.",
+      avoid: "Public shame, rapid questions, sarcasm, threats, arguing, raised voices, and power struggles.",
+      repairPlan: "Reconnect after calm, name what happened without shame, repair harm, practice the replacement skill, and reset the relationship.",
+      teamCommitments: "Parents, teachers, and providers will use the same trauma-informed language, focus on safety first, and coordinate around what helps the child regulate.",
+      immediateSafety: "If there is immediate risk of harm, move to safety, reduce stimulation, contact emergency supports if needed, and do not try to teach during crisis."
+    };
 
     function escapeHtml(text) {
       return String(text || "")
@@ -110,6 +394,508 @@
       `;
       childrenList.appendChild(wrapper);
       childCount += 1;
+    }
+
+    function formatMessageDate(value) {
+      try {
+        return new Date(value).toLocaleString();
+      } catch (error) {
+        return value || "";
+      }
+    }
+
+    function renderParentMessages(messages) {
+      parentMessagesThread.innerHTML = messages.length
+        ? messages
+            .map(
+              (message) => `
+                <div class="tracker-entry">
+                  <p><strong>${escapeHtml(message.sender_role === "parent" ? "You" : "Provider")}</strong></p>
+                  <p>${escapeHtml(message.message_text)}</p>
+                  <p><small>${escapeHtml(formatMessageDate(message.created_at))}</small></p>
+                </div>
+              `
+            )
+            .join("")
+        : "<p>No messages yet.</p>";
+    }
+
+    function renderSchedule(events) {
+      familyScheduleThread.innerHTML = events.length
+        ? events
+            .map(
+              (event) => `
+                <div class="tracker-entry">
+                  <p><strong>${escapeHtml(event.title)}</strong></p>
+                  <p><strong>Type:</strong> ${escapeHtml(event.event_type || "General event")}</p>
+                  <p><strong>Date:</strong> ${escapeHtml(event.event_date || "No date")}${event.event_time ? ` at ${escapeHtml(event.event_time)}` : ""}</p>
+                  <p><strong>Added by:</strong> ${escapeHtml(event.created_by_role || "Provider")}</p>
+                  <p><strong>Notes:</strong> ${escapeHtml(event.notes || "No notes entered")}</p>
+                </div>
+              `
+            )
+            .join("")
+        : "<p>No shared schedule events yet.</p>";
+    }
+
+    function renderDocuments(documents) {
+      familyDocumentsThread.innerHTML = documents.length
+        ? documents
+            .map(
+              (entry) => `
+                <div class="tracker-entry">
+                  <p><strong>${escapeHtml(entry.file_name || "Document")}</strong></p>
+                  <p><strong>Type:</strong> ${escapeHtml(entry.document_type || "General document")}</p>
+                  <p><strong>Uploaded by:</strong> ${escapeHtml(entry.uploaded_by_role || "Team member")}</p>
+                  <p><strong>Note:</strong> ${escapeHtml(entry.notes || "No note entered")}</p>
+                  <p><small>${escapeHtml(formatMessageDate(entry.created_at))}</small></p>
+                  ${entry.signed_url ? `<p><a href="${escapeHtml(entry.signed_url)}" target="_blank" rel="noopener noreferrer">Open document</a></p>` : ""}
+                </div>
+              `
+            )
+            .join("")
+        : "<p>No private documents uploaded yet.</p>";
+    }
+
+    function renderAssessments(assessments) {
+      familyAssessmentThread.innerHTML = assessments.length
+        ? assessments
+            .map((assessment) => {
+              const ratings = assessment.ratings || {};
+              const aceItems = Array.isArray(ratings.aceItems) ? ratings.aceItems : [];
+              return `
+                <div class="tracker-entry">
+                  <p><strong>${escapeHtml(assessment.assessment_type || "Assessment")}</strong></p>
+                  <p><strong>ACE score:</strong> ${escapeHtml(String(ratings.aceScore ?? 0))}</p>
+                  <p><strong>ACE items marked:</strong> ${escapeHtml(aceItems.join(", ") || "None selected")}</p>
+                  <p><strong>Current concerns:</strong> ${escapeHtml(ratings.concerns || "No concerns entered")}</p>
+                  <p><strong>Protective factors:</strong> ${escapeHtml(assessment.strengths || "No strengths entered")}</p>
+                  <p><strong>Recommended supports:</strong> ${escapeHtml(assessment.growth_area || "No recommendations entered")}</p>
+                  <p><small>${escapeHtml(formatMessageDate(assessment.created_at))}</small></p>
+                </div>
+              `;
+            })
+            .join("")
+        : "<p>No trauma assessment saved yet.</p>";
+    }
+
+    function fillSharedGoals(goals) {
+      const nextGoals = Array.isArray(goals) && goals.length ? goals : defaultSharedGoals;
+      defaultSharedGoals.forEach((fallbackGoal, index) => {
+        const goal = nextGoals[index] || fallbackGoal;
+        document.getElementById(`family-goal-title-${index}`).value = goal.title || fallbackGoal.title;
+        document.getElementById(`family-goal-progress-${index}`).value = Number.isFinite(Number(goal.progress)) ? Number(goal.progress) : fallbackGoal.progress;
+        document.getElementById(`family-goal-parent-note-${index}`).value = goal.parentNote || "";
+        document.getElementById(`family-goal-provider-note-${index}`).value = goal.providerNote || "";
+      });
+    }
+
+    function fillSupportPlan(plan) {
+      const nextPlan = { ...defaultSupportPlan, ...(plan || {}) };
+      document.getElementById("support-plan-strengths").value = nextPlan.strengths || "";
+      document.getElementById("support-plan-triggers").value = nextPlan.triggers || "";
+      document.getElementById("support-plan-warning-signs").value = nextPlan.warningSigns || "";
+      document.getElementById("support-plan-what-helps").value = nextPlan.whatHelps || "";
+      document.getElementById("support-plan-avoid").value = nextPlan.avoid || "";
+      document.getElementById("support-plan-repair-plan").value = nextPlan.repairPlan || "";
+      document.getElementById("support-plan-team-commitments").value = nextPlan.teamCommitments || "";
+      document.getElementById("support-plan-immediate-safety").value = nextPlan.immediateSafety || "";
+    }
+
+    async function loadSharedFamilyPlan() {
+      if (!currentFamilyId) {
+        fillSharedGoals(defaultSharedGoals);
+        fillSupportPlan(defaultSupportPlan);
+        return;
+      }
+
+      const [{ data: goalsRow, error: goalsError }, { data: planRow, error: planError }] = await Promise.all([
+        supabaseClient.from("family_shared_goals").select("*").eq("family_id", currentFamilyId).maybeSingle(),
+        supabaseClient.from("family_support_plans").select("*").eq("family_id", currentFamilyId).maybeSingle()
+      ]);
+
+      if (goalsError) {
+        const message = String(goalsError.message || "").toLowerCase();
+        if (!message.includes("family_shared_goals") && !message.includes("does not exist") && !message.includes("schema cache")) {
+          throw goalsError;
+        }
+      }
+
+      if (planError) {
+        const message = String(planError.message || "").toLowerCase();
+        if (!message.includes("family_support_plans") && !message.includes("does not exist") && !message.includes("schema cache")) {
+          throw planError;
+        }
+      }
+
+      fillSharedGoals(goalsRow?.goals || defaultSharedGoals);
+      fillSupportPlan(planRow?.plan || defaultSupportPlan);
+    }
+
+    async function loadFamilyMessages() {
+      if (!currentFamilyId) {
+        messagesStatusBox.innerHTML = "<p>Save your family profile first to activate messages.</p>";
+        renderParentMessages([]);
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("family_messages")
+        .select("*")
+        .eq("family_id", currentFamilyId)
+        .order("created_at", { ascending: true });
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("family_messages") || message.includes("does not exist") || message.includes("schema cache")) {
+          messagesStatusBox.innerHTML = "<p>Messaging is not active yet because the latest Supabase SQL has not been run.</p>";
+          renderParentMessages([]);
+          return;
+        }
+        throw error;
+      }
+
+      messagesStatusBox.innerHTML = "<p>Messages are active for this family record.</p>";
+      renderParentMessages(data || []);
+    }
+
+    async function loadFamilySchedule() {
+      if (!currentFamilyId) {
+        scheduleStatusBox.innerHTML = "<p>Save your family profile first to activate the shared schedule.</p>";
+        renderSchedule([]);
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("family_schedule_events")
+        .select("*")
+        .eq("family_id", currentFamilyId)
+        .order("event_date", { ascending: true });
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("family_schedule_events") || message.includes("does not exist") || message.includes("schema cache")) {
+          scheduleStatusBox.innerHTML = "<p>Shared scheduling is not active yet because the latest Supabase SQL has not been run.</p>";
+          renderSchedule([]);
+          return;
+        }
+        throw error;
+      }
+
+      scheduleStatusBox.innerHTML = "<p>Shared schedule is active for this family record.</p>";
+      renderSchedule(data || []);
+    }
+
+    async function loadFamilyDocuments() {
+      if (!currentFamilyId) {
+        documentsStatusBox.innerHTML = "<p>Save your family profile first to activate private document storage.</p>";
+        renderDocuments([]);
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("family_documents")
+        .select("*")
+        .eq("family_id", currentFamilyId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("family_documents") || message.includes("does not exist") || message.includes("schema cache")) {
+          documentsStatusBox.innerHTML = "<p>Private documents are not active yet because the latest Supabase SQL has not been run.</p>";
+          renderDocuments([]);
+          return;
+        }
+        throw error;
+      }
+
+      const documents = await Promise.all((data || []).map(async (entry) => {
+        if (!entry.storage_path) {
+          return entry;
+        }
+
+        const { data: signed } = await supabaseClient.storage
+          .from("family-documents")
+          .createSignedUrl(entry.storage_path, 1800);
+
+        return {
+          ...entry,
+          signed_url: signed?.signedUrl || ""
+        };
+      }));
+
+      documentsStatusBox.innerHTML = "<p>Private document storage is active for this family record.</p>";
+      renderDocuments(documents);
+    }
+
+    async function loadFamilyAssessments() {
+      if (!currentFamilyId) {
+        assessmentStatusBox.innerHTML = "<p>Save your family profile first to activate trauma assessments.</p>";
+        renderAssessments([]);
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("assessment_submissions")
+        .select("*")
+        .eq("family_id", currentFamilyId)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("assessment_submissions") || message.includes("does not exist") || message.includes("schema cache")) {
+          assessmentStatusBox.innerHTML = "<p>Trauma assessments are not active yet because the latest Supabase SQL has not been run.</p>";
+          renderAssessments([]);
+          return;
+        }
+        throw error;
+      }
+
+      assessmentStatusBox.innerHTML = "<p>Trauma assessments are active for this family record.</p>";
+      renderAssessments(data || []);
+    }
+
+    async function sendParentMessage() {
+      const messageText = document.getElementById("parent-message-input").value.trim();
+      if (!currentFamilyId) {
+        messagesStatusBox.innerHTML = "<p>Save your family profile first before sending a message.</p>";
+        return;
+      }
+
+      if (!messageText) {
+        messagesStatusBox.innerHTML = "<p>Type a message first.</p>";
+        return;
+      }
+
+      const { error } = await supabaseClient
+        .from("family_messages")
+        .insert({
+          family_id: currentFamilyId,
+          sender_user_id: currentUser.id,
+          sender_role: "parent",
+          message_text: messageText
+        });
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("family_messages") || message.includes("does not exist") || message.includes("schema cache")) {
+          messagesStatusBox.innerHTML = "<p>Messaging is not active yet because the latest Supabase SQL has not been run.</p>";
+          return;
+        }
+        messagesStatusBox.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+        return;
+      }
+
+      document.getElementById("parent-message-input").value = "";
+      messagesStatusBox.innerHTML = "<p>Message sent.</p>";
+      await loadFamilyMessages();
+    }
+
+    async function uploadFamilyDocument() {
+      if (!currentFamilyId) {
+        documentsStatusBox.innerHTML = "<p>Save your family profile first before uploading documents.</p>";
+        return;
+      }
+
+      const fileInput = document.getElementById("document-file");
+      const file = fileInput.files?.[0];
+      const documentType = document.getElementById("document-type").value || "Other";
+      const note = document.getElementById("document-note").value.trim();
+
+      if (!file) {
+        documentsStatusBox.innerHTML = "<p>Please choose a file first.</p>";
+        return;
+      }
+
+      documentsStatusBox.innerHTML = "<p>Uploading document...</p>";
+
+      const safeFileName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+      const storagePath = `${currentFamilyId}/${safeFileName}`;
+
+      const { error: uploadError } = await supabaseClient.storage
+        .from("family-documents")
+        .upload(storagePath, file, { upsert: false });
+
+      if (uploadError) {
+        documentsStatusBox.innerHTML = `<p>${escapeHtml(uploadError.message)}. Make sure the private storage bucket and policies are set up.</p>`;
+        return;
+      }
+
+      const { error: saveError } = await supabaseClient
+        .from("family_documents")
+        .insert({
+          family_id: currentFamilyId,
+          uploaded_by_user_id: currentUser.id,
+          uploaded_by_role: "parent",
+          document_type: documentType,
+          file_name: file.name,
+          file_size: file.size,
+          mime_type: file.type || "application/octet-stream",
+          storage_bucket: "family-documents",
+          storage_path: storagePath,
+          notes: note,
+          visible_to_parent: true,
+          visible_to_staff: true,
+          visible_to_teacher: false
+        });
+
+      if (saveError) {
+        const message = String(saveError.message || "").toLowerCase();
+        if (message.includes("family_documents") || message.includes("does not exist") || message.includes("schema cache")) {
+          documentsStatusBox.innerHTML = "<p>Your file upload bucket worked, but the document table is not active yet. Run the latest Supabase SQL first.</p>";
+          return;
+        }
+        documentsStatusBox.innerHTML = `<p>${escapeHtml(saveError.message)}</p>`;
+        return;
+      }
+
+      fileInput.value = "";
+      document.getElementById("document-note").value = "";
+      documentsStatusBox.innerHTML = "<p>Document uploaded successfully.</p>";
+      await loadFamilyDocuments();
+    }
+
+    async function saveTraumaAssessment() {
+      if (!currentFamilyId) {
+        assessmentStatusBox.innerHTML = "<p>Save your family profile first before saving an assessment.</p>";
+        return;
+      }
+
+      const assessmentType = document.getElementById("assessment-type").value || "ACE";
+      const aceItems = Array.from(document.querySelectorAll(".ace-checkbox:checked")).map((checkbox) => checkbox.value);
+      const concerns = document.getElementById("assessment-concerns").value.trim();
+      const strengths = document.getElementById("assessment-strengths").value.trim();
+      const recommendations = document.getElementById("assessment-recommendations").value.trim();
+
+      const { error } = await supabaseClient
+        .from("assessment_submissions")
+        .insert({
+          family_id: currentFamilyId,
+          assessment_type: assessmentType,
+          ratings: {
+            aceItems,
+            aceScore: aceItems.length,
+            concerns
+          },
+          strengths,
+          growth_area: recommendations,
+          family_change: concerns
+        });
+
+      if (error) {
+        assessmentStatusBox.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+        return;
+      }
+
+      assessmentStatusBox.innerHTML = `<p>${escapeHtml(assessmentType)} saved with an ACE score of ${aceItems.length}.</p>`;
+      await loadFamilyAssessments();
+    }
+
+    async function getInviteCodeRecord(rawCode) {
+      const code = String(rawCode || "").trim().toUpperCase();
+      if (!code) {
+        return null;
+      }
+
+      const { data, error } = await supabaseClient
+        .from("invite_codes")
+        .select("*")
+        .eq("code", code)
+        .maybeSingle();
+
+      if (error) {
+        const message = String(error.message || "").toLowerCase();
+        if (message.includes("invite_codes") || message.includes("does not exist") || message.includes("schema cache")) {
+          inviteStatusBox.innerHTML = "<p>The invite-code database update has not been applied in Supabase yet. Your family profile can still save, but agency linking is not active yet.</p>";
+          return null;
+        }
+        throw error;
+      }
+
+      return data || null;
+    }
+
+    async function applyInviteCodeToFamily(familyId) {
+      const inviteCode = document.getElementById("setup-invite-code").value.trim().toUpperCase();
+      if (!inviteCode) {
+        inviteStatusBox.innerHTML = "<p>No agency invite code was entered. Your family profile is still saved.</p>";
+        window.localStorage.removeItem(pendingInviteCodeKey);
+        return;
+      }
+
+      const invite = await getInviteCodeRecord(inviteCode);
+      if (!invite) {
+        inviteStatusBox.innerHTML = "<p>That invite code was not found. Your family profile saved, but no agency connection was made.</p>";
+        return;
+      }
+
+      if (!invite.is_active || invite.redeemed_family_id) {
+        inviteStatusBox.innerHTML = "<p>That invite code is no longer active. Your family profile saved, but no agency connection was made.</p>";
+        return;
+      }
+
+      const nextAssignedCourseSlug = currentAssignedCourseSlug || invite.assigned_course_slug || null;
+
+      const { error: familyLinkError } = await supabaseClient
+        .from("families")
+        .update({
+          invited_staff_user_id: invite.staff_user_id,
+          invite_code_used: invite.code,
+          assigned_course_slug: nextAssignedCourseSlug
+        })
+        .eq("id", familyId);
+
+      if (familyLinkError) {
+        throw familyLinkError;
+      }
+
+      currentAssignedCourseSlug = nextAssignedCourseSlug;
+      document.getElementById("setup-assigned-course-display").value =
+        currentAssignedCourseSlug
+          ? currentAssignedCourseSlug
+              .split("-")
+              .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+              .join(" ")
+          : "Not assigned yet";
+
+      const { error: inviteRedeemError } = await supabaseClient
+        .from("invite_codes")
+        .update({
+          redeemed_by_parent_user_id: currentUser.id,
+          redeemed_family_id: familyId,
+          redeemed_at: new Date().toISOString(),
+          is_active: false
+        })
+        .eq("id", invite.id);
+
+      if (inviteRedeemError) {
+        throw inviteRedeemError;
+      }
+
+      const { error: assignmentError } = await supabaseClient
+        .from("staff_family_assignments")
+        .upsert({
+          family_id: familyId,
+          staff_user_id: invite.staff_user_id
+        }, { onConflict: "family_id,staff_user_id" });
+
+      if (assignmentError) {
+        throw assignmentError;
+      }
+
+      const { error: profileAgencyError } = await supabaseClient
+        .from("profiles")
+        .update({
+          agency_name: invite.agency_name || "Rooted Parenting Network"
+        })
+        .eq("user_id", currentUser.id);
+
+      if (profileAgencyError) {
+        throw profileAgencyError;
+      }
+
+      inviteStatusBox.innerHTML = `<p>Invite code accepted. Your family is now connected to ${escapeHtml(invite.agency_name || "the assigned agency")}.</p>`;
+      window.localStorage.removeItem(pendingInviteCodeKey);
     }
 
     async function requireParentSession() {
@@ -147,7 +933,13 @@
       }
 
       if (!family) {
+        document.getElementById("setup-invite-code").value = window.localStorage.getItem(pendingInviteCodeKey) || "";
         addChildInput("");
+        await loadFamilySchedule();
+        await loadFamilyDocuments();
+        await loadSharedFamilyPlan();
+        await loadFamilyAssessments();
+        await loadFamilyMessages();
         return;
       }
 
@@ -156,6 +948,7 @@
       document.getElementById("setup-caregiver-name").value = family.caregiver_name || "";
       document.getElementById("setup-primary-client").value = family.primary_client_name || "";
       document.getElementById("setup-case-note").value = family.case_note || "";
+      document.getElementById("setup-invite-code").value = family.invite_code_used || window.localStorage.getItem(pendingInviteCodeKey) || "";
       document.getElementById("setup-assigned-course-display").value =
         currentAssignedCourseSlug
           ? currentAssignedCourseSlug
@@ -178,6 +971,15 @@
       } else {
         addChildInput(family.primary_client_name || "");
       }
+
+      if (family.invite_code_used) {
+        inviteStatusBox.innerHTML = "<p>This family is already connected to an agency invite code.</p>";
+      }
+      await loadFamilySchedule();
+      await loadFamilyDocuments();
+      await loadSharedFamilyPlan();
+      await loadFamilyAssessments();
+      await loadFamilyMessages();
     }
 
     async function saveParentProfile() {
@@ -201,7 +1003,7 @@
           user_id: currentUser.id,
           full_name: caregiverName,
           role: "parent",
-          agency_name: "Rooted Parenting"
+          agency_name: "Rooted Parenting Network"
         });
 
       if (profileError) {
@@ -280,11 +1082,89 @@
         return;
       }
 
-      messageBox.innerHTML = "<p>Family profile saved successfully. You can now use this family record in the parent app and future staff portal assignments.</p>";
+      const sharedGoals = defaultSharedGoals.map((goal, index) => ({
+        title: document.getElementById(`family-goal-title-${index}`).value.trim() || goal.title,
+        progress: Math.max(0, Math.min(100, Number(document.getElementById(`family-goal-progress-${index}`).value || goal.progress))),
+        parentNote: document.getElementById(`family-goal-parent-note-${index}`).value.trim() || "",
+        providerNote: document.getElementById(`family-goal-provider-note-${index}`).value.trim() || ""
+      }));
+
+      const supportPlan = {
+        strengths: document.getElementById("support-plan-strengths").value.trim() || defaultSupportPlan.strengths,
+        triggers: document.getElementById("support-plan-triggers").value.trim() || defaultSupportPlan.triggers,
+        warningSigns: document.getElementById("support-plan-warning-signs").value.trim() || defaultSupportPlan.warningSigns,
+        whatHelps: document.getElementById("support-plan-what-helps").value.trim() || defaultSupportPlan.whatHelps,
+        avoid: document.getElementById("support-plan-avoid").value.trim() || defaultSupportPlan.avoid,
+        repairPlan: document.getElementById("support-plan-repair-plan").value.trim() || defaultSupportPlan.repairPlan,
+        teamCommitments: document.getElementById("support-plan-team-commitments").value.trim() || defaultSupportPlan.teamCommitments,
+        immediateSafety: document.getElementById("support-plan-immediate-safety").value.trim() || defaultSupportPlan.immediateSafety
+      };
+
+      const { error: goalsSaveError } = await supabaseClient
+        .from("family_shared_goals")
+        .upsert({
+          family_id: currentFamilyId,
+          goals: sharedGoals,
+          updated_at: new Date().toISOString()
+        });
+
+      if (goalsSaveError) {
+        const message = String(goalsSaveError.message || "").toLowerCase();
+        if (!(message.includes("family_shared_goals") || message.includes("does not exist") || message.includes("schema cache"))) {
+          messageBox.innerHTML = `<p>${goalsSaveError.message}</p>`;
+          return;
+        }
+      }
+
+      const { error: planSaveError } = await supabaseClient
+        .from("family_support_plans")
+        .upsert({
+          family_id: currentFamilyId,
+          plan: supportPlan,
+          updated_at: new Date().toISOString()
+        });
+
+      if (planSaveError) {
+        const message = String(planSaveError.message || "").toLowerCase();
+        if (!(message.includes("family_support_plans") || message.includes("does not exist") || message.includes("schema cache"))) {
+          messageBox.innerHTML = `<p>${planSaveError.message}</p>`;
+          return;
+        }
+      }
+
+      try {
+        await applyInviteCodeToFamily(currentFamilyId);
+      } catch (inviteError) {
+        const message = String(inviteError.message || "").toLowerCase();
+        if (message.includes("invite_codes") || message.includes("invited_staff_user_id") || message.includes("invite_code_used") || message.includes("does not exist") || message.includes("schema cache")) {
+          inviteStatusBox.innerHTML = "<p>Your family profile saved, but the invite-code connection could not be completed because the newest Supabase database update is not installed yet.</p>";
+          messageBox.innerHTML = "<p>Family profile saved successfully. Run the updated Supabase SQL to activate agency invite-code linking.</p>";
+          return;
+        }
+        messageBox.innerHTML = `<p>${inviteError.message}</p>`;
+        return;
+      }
+
+      messageBox.innerHTML = "<p>Family profile saved successfully. You can now use this family record in the parent app and any connected agency portal assignment.</p>";
+      await loadFamilySchedule();
+      await loadFamilyDocuments();
+      await loadFamilyAssessments();
+      await loadFamilyMessages();
     }
 
     document.getElementById("add-child-button").addEventListener("click", () => addChildInput(""));
     document.getElementById("save-family-button").addEventListener("click", saveParentProfile);
+    document.getElementById("send-parent-message").addEventListener("click", sendParentMessage);
+    document.getElementById("upload-document-button").addEventListener("click", uploadFamilyDocument);
+    document.getElementById("save-assessment-button").addEventListener("click", saveTraumaAssessment);
+    document.getElementById("family-setup-back").addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = "index.html";
+    });
     document.getElementById("parent-signout").addEventListener("click", async () => {
       await supabaseClient.auth.signOut();
       window.location.href = "parent-login.html";

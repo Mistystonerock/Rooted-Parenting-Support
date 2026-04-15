@@ -1,16 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">Rooted Parenting App Icon</title>
-  <desc id="desc">A calm green app icon with a heart, leaves, and home shape representing Rooted Parenting.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f8f5ef"/>
-      <stop offset="100%" stop-color="#dfe7d8"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
-  <circle cx="256" cy="256" r="184" fill="#7f8f79"/>
-  <path d="M256 140c-42 0-78 30-86 71-9 45 19 81 50 106 15 12 28 24 36 38 8-14 21-26 36-38 31-25 59-61 50-106-8-41-44-71-86-71z" fill="#fffdf9"/>
-  <path d="M179 324c28-8 54 1 77 26-30 8-56-1-77-26z" fill="#e8efe2"/>
-  <path d="M333 324c-28-8-54 1-77 26 30 8 56-1 77-26z" fill="#e8efe2"/>
-  <path d="M205 211l51-44 51 44v91h-31v-60h-40v60h-31z" fill="#5f6f5a"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#f5ede3"/>
+  <circle cx="256" cy="256" r="186" fill="#fffaf3"/>
+  <path d="M256 136c-47 0-85 38-85 85 0 21 8 41 22 56h126c14-15 22-35 22-56 0-47-38-85-85-85z" fill="#7f9b7f"/>
+  <circle cx="196" cy="196" r="28" fill="#6f8871"/>
+  <circle cx="256" cy="172" r="34" fill="#91ab8f"/>
+  <circle cx="316" cy="196" r="28" fill="#6f8871"/>
+  <circle cx="215" cy="227" r="18" fill="#f2d8bf"/>
+  <circle cx="297" cy="227" r="18" fill="#f2d8bf"/>
+  <circle cx="256" cy="147" r="18" fill="#f2d8bf"/>
+  <path d="M208 287l48-40 48 40v73h-27v-43h-42v43h-27z" fill="#fffdf9"/>
+  <path d="M256 287v82" stroke="#7d5a47" stroke-linecap="round" stroke-width="16"/>
+  <path d="M256 369c-18 7-34 22-47 44" fill="none" stroke="#7d5a47" stroke-linecap="round" stroke-width="14"/>
+  <path d="M256 369c18 7 34 22 47 44" fill="none" stroke="#7d5a47" stroke-linecap="round" stroke-width="14"/>
+  <path d="M202 415c18-11 36-17 54-17s36 6 54 17" fill="none" stroke="#6f8871" stroke-linecap="round" stroke-width="12"/>
 </svg>

@@ -1,7 +1,7 @@
 const fallbackContent = {
-  appTitle: "Rooted Parenting",
+  appTitle: "Rooted Parenting Network",
   intro:
-    "Support for parents of children with behavioral challenges, centered on safety, connection, and skill-building.",
+    "Trauma-informed support for parents, teachers, and professionals responding to children with trauma history and behavior concerns across systems.",
   behaviors: [
     {
       slug: "anger-outbursts",
@@ -354,6 +354,60 @@ const fallbackContent = {
         "Using fewer words can lower pressure when a child is overwhelmed.",
         "Offering water, a blanket, or a quiet corner can support regulation."
       ]
+    },
+    {
+      slug: "trauma-informed-classroom-responses",
+      title: "Trauma-Informed Classroom Responses",
+      icon: "TC",
+      intro:
+        "Teachers often see the impact of trauma in real time through behavior, attention, transitions, and peer conflict. A trauma-informed classroom response helps children feel safer, protects dignity, and keeps adults from escalating the moment.",
+      bullets: [
+        "Behavior can reflect stress, threat, overload, or shame, not just noncompliance.",
+        "A calm adult response helps the child return to regulation faster.",
+        "Private support is usually more effective than public correction.",
+        "Predictability, relationship, and repair support learning."
+      ],
+      examples: [
+        "A teacher lowers their voice, moves closer, and gives one simple direction instead of correcting across the room.",
+        "A student who refuses may respond better to two safe choices than to a power struggle.",
+        "After the child is calm, the teacher returns to the expectation and helps with repair."
+      ]
+    },
+    {
+      slug: "de-escalation-at-school",
+      title: "De-Escalation in School",
+      icon: "DS",
+      intro:
+        "De-escalation is about reducing threat, not winning. When a child begins to unravel at school, the adult's job is to bring the temperature down so safety, regulation, and learning can come back online.",
+      bullets: [
+        "Use fewer words and one direction at a time.",
+        "Notice early warning signs before the situation gets bigger.",
+        "Avoid public shame, sarcasm, and rapid back-and-forth arguing.",
+        "Offer reset space, clear choices, and a calm path back."
+      ],
+      examples: [
+        "When a child starts yelling, the teacher shortens language and pauses demands instead of escalating volume.",
+        "A student who is refusing can be offered a reset chair, a brief break, or a small first step.",
+        "A calm adult presence can interrupt a chain reaction before the whole class is involved."
+      ]
+    },
+    {
+      slug: "trauma-and-adhd-signals",
+      title: "Trauma and ADHD Signals",
+      icon: "TA",
+      intro:
+        "Trauma and ADHD can overlap in ways that make behavior hard to read. Children may seem impulsive, distracted, oppositional, or emotionally reactive when the real issue is a mix of regulation stress, attention difficulty, and nervous system overload.",
+      bullets: [
+        "Both trauma and ADHD can affect focus, memory, flexibility, and impulse control.",
+        "A child may miss directions because of overload, distraction, or both.",
+        "Support works better when adults scaffold tasks and teach regulation directly.",
+        "The goal is not to excuse behavior. The goal is to respond accurately and effectively."
+      ],
+      examples: [
+        "A student may blurt out or leave their seat more often during stress-heavy parts of the day.",
+        "A child may look defiant when they actually missed the direction or froze under pressure.",
+        "Short steps, visual supports, movement, and calm repetition often help more than lectures."
+      ]
     }
   ],
   learningPath: [
@@ -586,7 +640,7 @@ const fallbackContent = {
   courses: [
     {
       slug: "foundations-of-safe-and-effective-parenting",
-      title: "Rooted Parenting Foundations",
+      title: "Rooted Parenting Network Foundations",
       cpsTitle: "Foundations of Safe and Effective Parenting",
       icon: "FP",
       description:
@@ -719,6 +773,21 @@ const learningTopicLookLikeMap = {
     "A parent notices their child borrowing their calm voice and slower breathing after a few minutes of staying close.",
     "Instead of demanding eye contact, the parent sits nearby and keeps the moment simple and steady.",
     "The child may not calm instantly, but repeated calm support teaches their brain what safety feels like."
+  ],
+  "trauma-informed-classroom-responses": [
+    "A teacher notices a student getting louder during transitions and responds with a calm voice, one direction, and space instead of public correction.",
+    "Rather than arguing in front of the class, the adult offers two safe choices and helps the child re-enter when regulated.",
+    "The goal shifts from winning the moment to restoring safety, dignity, and learning."
+  ],
+  "de-escalation-at-school": [
+    "A child starts refusing work, so the teacher lowers demands, shortens language, and offers a reset before the situation turns into a power struggle.",
+    "Instead of calling out the behavior publicly, the adult moves closer, stays calm, and gives one next step.",
+    "Small early interventions often prevent bigger classroom escalations later."
+  ],
+  "trauma-and-adhd-signals": [
+    "A student may look oppositional when they actually missed the direction because of overload, distraction, or stress.",
+    "A child may fidget, blurt out, or shut down faster when trauma stress and ADHD both affect regulation.",
+    "Support works better when adults slow down, repeat clearly, and teach coping and transition skills directly."
   ]
 };
 
@@ -1407,9 +1476,19 @@ const attendanceTrackerStorageKey = "rooted-parenting-attendance-tracker";
 const assessmentStorageKey = "rooted-parenting-assessment";
 const worksheetStorageKey = "rooted-parenting-worksheets";
 const dailyHabitTrackerStorageKey = "rooted-parenting-daily-habit-tracker";
+const teacherCheckInStorageKey = "rooted-parenting-teacher-checkins";
 const supervisorPortalStorageKey = "rooted-parenting-supervisor-portal";
 const accessStorageKey = "rooted-parenting-access-state";
 const accessMessageStorageKey = "rooted-parenting-access-message";
+const appNoticeStorageKey = "rooted-parenting-app-notice";
+const accountProfileStorageKey = "rooted-parenting-account-profile";
+const teamSettingsStorageKey = "rooted-parenting-team-settings";
+const goalsStorageKey = "rooted-parenting-shared-goals";
+const carePlanStorageKey = "rooted-parenting-child-support-plan";
+const parentReflectionStorageKey = "rooted-parenting-parent-reflection";
+const providerNotesStorageKey = "rooted-parenting-provider-notes";
+const notificationsStorageKey = "rooted-parenting-notifications";
+const settingsStorageKey = "rooted-parenting-settings";
 const quizFeedbackState = {};
 const accessCodeDefinitions = {
   ROOTEDCARE2026: {
@@ -1423,7 +1502,218 @@ const accessCodeDefinitions = {
     professional: true,
     message:
       "Professional access has been unlocked on this device."
+  },
+  ROOTEDOWNER2026: {
+    premiumParent: true,
+    professional: true,
+    message:
+      "Owner test access has been unlocked on this device."
   }
+};
+
+const roleOptions = [
+  "Parent / Caregiver",
+  "Teacher",
+  "School Staff",
+  "Counselor / Therapist",
+  "Psychologist / Psychiatrist",
+  "CPS Worker",
+  "Juvenile Probation",
+  "Court Professional",
+  "Admin"
+];
+
+const checkInBehaviorOptions = [
+  "refusal",
+  "arguing",
+  "anxiety",
+  "withdrawal",
+  "aggression",
+  "emotional upset",
+  "positive day"
+];
+
+const checkInTriggerOptions = [
+  "transition",
+  "school stress",
+  "sibling conflict",
+  "rules",
+  "feeling overwhelmed",
+  "unknown"
+];
+
+const checkInResponseOptions = [
+  "calm tone",
+  "gave space",
+  "redirection",
+  "problem solving",
+  "consequence",
+  "supportive conversation"
+];
+
+const checkInChildResponseOptions = [
+  "calmed down",
+  "needed more time",
+  "escalated",
+  "resolved",
+  "still struggling"
+];
+
+const teacherCheckInBehaviorOptions = [
+  "refusal",
+  "calling out",
+  "shutting down",
+  "peer conflict",
+  "aggression",
+  "anxiety",
+  "positive day"
+];
+
+const teacherCheckInTriggerOptions = [
+  "transition",
+  "academic frustration",
+  "peer issue",
+  "correction",
+  "sensory overload",
+  "unknown"
+];
+
+const teacherCheckInResponseOptions = [
+  "calm tone",
+  "reduced language",
+  "choice offered",
+  "reset space",
+  "co-regulation",
+  "private follow-up"
+];
+
+const teacherCheckInStudentResponseOptions = [
+  "re-engaged",
+  "needed more time",
+  "escalated",
+  "accepted support",
+  "still struggling"
+];
+
+const supportToolOptions = [
+  {
+    slug: "child-refusing-directions",
+    label: "Child refusing directions",
+    steps: [
+      "Pause and regulate yourself before speaking again.",
+      "Use one short direction instead of a longer explanation.",
+      "Avoid a power struggle by repeating the limit once.",
+      "Offer one simple choice that still supports follow-through.",
+      "Allow reset time before returning to the task."
+    ]
+  },
+  {
+    slug: "child-yelling",
+    label: "Child yelling",
+    steps: [
+      "Slow your voice down and lower your volume.",
+      "Use brief phrases and stay near calm, not confrontational.",
+      "Do not match intensity or debate in the moment.",
+      "Give a simple boundary plus a regulated option.",
+      "Come back to problem solving after the body settles."
+    ]
+  },
+  {
+    slug: "child-shutting-down",
+    label: "Child shutting down",
+    steps: [
+      "Pause and reduce questions right away.",
+      "Use calm presence instead of pressure to talk.",
+      "Offer one low-pressure choice such as sitting nearby or taking a break.",
+      "Avoid turning the moment into a correction talk.",
+      "Allow reset time and revisit later when the child is more available."
+    ]
+  },
+  {
+    slug: "child-aggressive",
+    label: "Child aggressive",
+    steps: [
+      "Regulate yourself and focus on safety first.",
+      "Use short directions and move others or objects if needed.",
+      "Avoid arguing, shaming, or threatening in the moment.",
+      "Give one safe choice when possible.",
+      "Allow reset time and return to repair after safety is restored."
+    ]
+  },
+  {
+    slug: "child-anxious",
+    label: "Child anxious",
+    steps: [
+      "Pause and make your body language calmer and slower.",
+      "Use short, reassuring directions one step at a time.",
+      "Avoid too much information or pressure.",
+      "Offer a simple choice that supports regulation.",
+      "Allow reset time and build a tiny next step together."
+    ]
+  }
+];
+
+let supabaseHomeClient = null;
+let currentSupabaseFamilyId = null;
+let currentFamilyScheduleEvents = [];
+
+const teacherTrainingTopics = [
+  {
+    title: "Trauma-Informed Care at School",
+    points: [
+      "Behavior may reflect survival stress, not just defiance or disrespect.",
+      "Predictability, safety, and connection help children stay available for learning.",
+      "A regulated adult response often changes the whole direction of the moment."
+    ]
+  },
+  {
+    title: "How to Respond to Children with Trauma History",
+    points: [
+      "Use a calm voice, fewer words, and one direction at a time.",
+      "Avoid shame, public correction, and power struggles when a child is overwhelmed.",
+      "Offer co-regulation, choice, and a path back into the routine."
+    ]
+  },
+  {
+    title: "How Trauma Affects Children with ADHD",
+    points: [
+      "Trauma and ADHD can both affect impulse control, attention, memory, and flexibility.",
+      "A child may look oppositional when they are overloaded, dysregulated, or confused.",
+      "Support works better when adults reduce pressure, scaffold tasks, and teach regulation skills directly."
+    ]
+  }
+];
+
+const defaultTeamSettings = {
+  inviteEmail: "",
+  inviteCode: "",
+  selectedPermission: "all 3: view progress only, view behavior patterns, view lesson completion",
+  members: [
+    { role: "Parent", permission: "view progress only" },
+    { role: "Teacher", permission: "view behavior patterns" },
+    { role: "Therapist", permission: "view behavior patterns" },
+    { role: "Probation officer", permission: "view lesson completion" },
+    { role: "CPS worker", permission: "view lesson completion" }
+  ]
+};
+
+const defaultGoals = [
+  { id: "goal-1", title: "Improve emotional regulation", progress: 42, parentNote: "", providerNote: "" },
+  { id: "goal-2", title: "Reduce school incidents", progress: 36, parentNote: "", providerNote: "" },
+  { id: "goal-3", title: "Improve communication", progress: 51, parentNote: "", providerNote: "" },
+  { id: "goal-4", title: "Build calmer transitions", progress: 24, parentNote: "", providerNote: "" },
+  { id: "goal-5", title: "Increase positive follow-through", progress: 33, parentNote: "", providerNote: "" }
+];
+
+const defaultCarePlan = {
+  strengths: "Creative, caring, and more successful with calm connection and predictable support.",
+  triggers: "Transitions, correction in front of others, feeling rushed, loud conflict, and feeling overwhelmed.",
+  warningSigns: "Louder voice, refusal, pacing, shutdown, tearfulness, leaving the area, or arguing quickly.",
+  whatHelps: "Calm tone, fewer words, one direction at a time, simple choices, co-regulation, movement or reset space, and private follow-up.",
+  avoid: "Public shame, rapid questions, sarcasm, threats, arguing, raised voices, and power struggles.",
+  repairPlan: "Reconnect after calm, name what happened without shame, repair harm, practice the replacement skill, and reset the relationship.",
+  teamCommitments: "Parents, teachers, and providers will use the same trauma-informed language, focus on safety first, and coordinate around what helps the child regulate.",
+  immediateSafety: "If there is immediate risk of harm, move to safety, reduce stimulation, contact emergency supports if needed, and do not try to teach during crisis."
 };
 
 fallbackContent.learningPath[0].sections = [
@@ -1994,7 +2284,7 @@ function renderPremiumUpgradeCard(options = {}) {
   const title = options.title || "Premium Feature";
   const text =
     options.text ||
-    "This part of Rooted Parenting is part of the premium parent program.";
+    "This part of Rooted Parenting Network is part of the premium parent program.";
   return `
     <section class="section-card">
       <h2>${title}</h2>
@@ -2072,8 +2362,29 @@ function normalizeClientProfile(profile) {
     caregiverName: nextProfile.caregiverName || "",
     caseNote: nextProfile.caseNote || "",
     assignedCourse: nextProfile.assignedCourse || "",
-    children: children.length ? children : [""]
+    children: children.length ? children : [""],
+    strengths: nextProfile.strengths || "",
+    currentConcerns: nextProfile.currentConcerns || "",
+    triggers: nextProfile.triggers || "",
+    copingTools: nextProfile.copingTools || "",
+    behaviorPatterns: nextProfile.behaviorPatterns || "",
+    schoolNotes: nextProfile.schoolNotes || "",
+    careTeamMembers: nextProfile.careTeamMembers || ""
   };
+}
+
+function getAccountRoleType() {
+  const role = getAccountProfile().role || roleOptions[0];
+  if (role === "Admin") {
+    return "admin";
+  }
+  if (role === "Parent / Caregiver") {
+    return "parent";
+  }
+  if (role === "Teacher" || role === "School Staff") {
+    return "school";
+  }
+  return "professional";
 }
 
 function getClientProfile() {
@@ -2090,6 +2401,205 @@ function saveClientProfile(profile) {
     clientProfileStorageKey,
     JSON.stringify(normalizeClientProfile(profile))
   );
+}
+
+function getAccountProfile() {
+  try {
+    const raw = window.localStorage.getItem(accountProfileStorageKey);
+    const profile = raw ? JSON.parse(raw) : {};
+    return {
+      role: roleOptions.includes(profile.role) ? profile.role : roleOptions[0],
+      inviteCode: profile.inviteCode || ""
+    };
+  } catch (error) {
+    return {
+      role: roleOptions[0],
+      inviteCode: ""
+    };
+  }
+}
+
+function saveAccountProfile(profile) {
+  const current = getAccountProfile();
+  window.localStorage.setItem(
+    accountProfileStorageKey,
+    JSON.stringify({
+      role: roleOptions.includes(profile.role) ? profile.role : current.role,
+      inviteCode: profile.inviteCode || current.inviteCode || ""
+    })
+  );
+}
+
+function getTeamSettings() {
+  try {
+    const raw = window.localStorage.getItem(teamSettingsStorageKey);
+    const saved = raw ? JSON.parse(raw) : {};
+    return {
+      inviteEmail: saved.inviteEmail || "",
+      inviteCode: saved.inviteCode || "",
+      selectedPermission:
+        saved.selectedPermission || defaultTeamSettings.selectedPermission,
+      members: Array.isArray(saved.members) && saved.members.length ? saved.members : defaultTeamSettings.members
+    };
+  } catch (error) {
+    return defaultTeamSettings;
+  }
+}
+
+function saveTeamSettings(settings) {
+  window.localStorage.setItem(
+    teamSettingsStorageKey,
+    JSON.stringify({
+      inviteEmail: settings.inviteEmail || "",
+      inviteCode: settings.inviteCode || "",
+      selectedPermission:
+        settings.selectedPermission || defaultTeamSettings.selectedPermission,
+      members: Array.isArray(settings.members) && settings.members.length ? settings.members : defaultTeamSettings.members
+    })
+  );
+}
+
+function getSharedGoals() {
+  const normalizeGoal = (goal, index) => {
+    const fallback = defaultGoals[index] || defaultGoals[defaultGoals.length - 1];
+    return {
+      id: goal?.id || fallback.id,
+      title: goal?.title || fallback.title,
+      progress: Number.isFinite(Number(goal?.progress)) ? Math.max(0, Math.min(100, Number(goal.progress))) : fallback.progress,
+      parentNote: goal?.parentNote || "",
+      providerNote: goal?.providerNote || ""
+    };
+  };
+
+  try {
+    const raw = window.localStorage.getItem(goalsStorageKey);
+    const saved = raw ? JSON.parse(raw) : defaultGoals;
+    if (Array.isArray(saved) && saved.length) {
+      return defaultGoals.map((goal, index) => normalizeGoal(saved[index] || goal, index));
+    }
+    return defaultGoals.map((goal, index) => normalizeGoal(goal, index));
+  } catch (error) {
+    return defaultGoals.map((goal, index) => normalizeGoal(goal, index));
+  }
+}
+
+function saveSharedGoals(goals) {
+  window.localStorage.setItem(goalsStorageKey, JSON.stringify(goals));
+}
+
+function getCarePlan() {
+  try {
+    const raw = window.localStorage.getItem(carePlanStorageKey);
+    const saved = raw ? JSON.parse(raw) : {};
+    return {
+      strengths: saved.strengths || defaultCarePlan.strengths,
+      triggers: saved.triggers || defaultCarePlan.triggers,
+      warningSigns: saved.warningSigns || defaultCarePlan.warningSigns,
+      whatHelps: saved.whatHelps || defaultCarePlan.whatHelps,
+      avoid: saved.avoid || defaultCarePlan.avoid,
+      repairPlan: saved.repairPlan || defaultCarePlan.repairPlan,
+      teamCommitments: saved.teamCommitments || defaultCarePlan.teamCommitments,
+      immediateSafety: saved.immediateSafety || defaultCarePlan.immediateSafety
+    };
+  } catch (error) {
+    return { ...defaultCarePlan };
+  }
+}
+
+function saveCarePlan(plan) {
+  window.localStorage.setItem(carePlanStorageKey, JSON.stringify(plan));
+}
+
+function getParentReflection() {
+  try {
+    const raw = window.localStorage.getItem(parentReflectionStorageKey);
+    return raw
+      ? JSON.parse(raw)
+      : {
+          responseToday: "",
+          didWell: "",
+          doDifferently: "",
+          supportNeeded: "",
+          lessonFit: ""
+        };
+  } catch (error) {
+    return {
+      responseToday: "",
+      didWell: "",
+      doDifferently: "",
+      supportNeeded: "",
+      lessonFit: ""
+    };
+  }
+}
+
+function saveParentReflection(data) {
+  window.localStorage.setItem(parentReflectionStorageKey, JSON.stringify(data));
+}
+
+function getProviderNotes() {
+  try {
+    const raw = window.localStorage.getItem(providerNotesStorageKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveProviderNote(note) {
+  const notes = getProviderNotes();
+  const next = [note, ...notes].slice(0, 20);
+  window.localStorage.setItem(providerNotesStorageKey, JSON.stringify(next));
+}
+
+function getNotificationsData() {
+  try {
+    const raw = window.localStorage.getItem(notificationsStorageKey);
+    return raw
+      ? JSON.parse(raw)
+      : {
+          items: [
+            "Check-in not completed today",
+            "Goal updated",
+            "New lesson ready",
+            "Follow-up may be needed",
+            "Report tools available"
+          ]
+        };
+  } catch (error) {
+    return {
+      items: [
+        "Check-in not completed today",
+        "Goal updated",
+        "New lesson ready",
+        "Follow-up may be needed",
+        "Report tools available"
+      ]
+    };
+  }
+}
+
+function getUserSettings() {
+  try {
+    const raw = window.localStorage.getItem(settingsStorageKey);
+    return raw
+      ? JSON.parse(raw)
+      : {
+          notificationPreference: "Important updates",
+          privacyPreference: "Standard privacy",
+          supportContact: "Use the support and policy links in the app footer."
+        };
+  } catch (error) {
+    return {
+      notificationPreference: "Important updates",
+      privacyPreference: "Standard privacy",
+      supportContact: "Use the support and policy links in the app footer."
+    };
+  }
+}
+
+function saveUserSettings(data) {
+  window.localStorage.setItem(settingsStorageKey, JSON.stringify(data));
 }
 
 function getSupervisorPortalData() {
@@ -2140,6 +2650,21 @@ function saveDailyHabitEntry(entry) {
   const entries = getDailyHabitEntries();
   const next = [entry, ...entries].slice(0, 30);
   window.localStorage.setItem(dailyHabitTrackerStorageKey, JSON.stringify(next));
+}
+
+function getTeacherCheckInEntries() {
+  try {
+    const raw = window.localStorage.getItem(teacherCheckInStorageKey);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveTeacherCheckInEntry(entry) {
+  const entries = getTeacherCheckInEntries();
+  const next = [entry, ...entries].slice(0, 30);
+  window.localStorage.setItem(teacherCheckInStorageKey, JSON.stringify(next));
 }
 
 function getWeekLabelFromSessionTitle(sessionTitle) {
@@ -2248,6 +2773,82 @@ function saveDisciplineEntry(entry) {
   window.localStorage.setItem("rooted-parenting-discipline-tracker", JSON.stringify(next));
 }
 
+function countSelectedValues(entries, fieldName, options) {
+  const counts = Object.fromEntries(options.map((option) => [option, 0]));
+  entries.forEach((entry) => {
+    const values = Array.isArray(entry[fieldName]) ? entry[fieldName] : [];
+    values.forEach((value) => {
+      if (Object.prototype.hasOwnProperty.call(counts, value)) {
+        counts[value] += 1;
+      }
+    });
+  });
+  return counts;
+}
+
+function getTopItems(counts, limit = 2) {
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .filter(([, value]) => value > 0);
+}
+
+function formatPercent(value) {
+  return `${Math.max(0, Math.min(100, Math.round(value)))}%`;
+}
+
+function buildBehaviorInsights(entries) {
+  const totalEntries = entries.length;
+  const triggerCounts = countSelectedValues(entries, "triggers", checkInTriggerOptions);
+  const responseCounts = countSelectedValues(entries, "responses", checkInResponseOptions);
+  const behaviorCounts = countSelectedValues(entries, "behaviors", checkInBehaviorOptions);
+  const calmEntries = entries.filter((entry) => entry.overall === "calm" || (entry.childResponse || []).includes("resolved")).length;
+  const positiveEntries = entries.filter((entry) => (entry.behaviors || []).includes("positive day")).length;
+  const arguingCount = behaviorCounts.arguing || 0;
+  const improvementBase = totalEntries || 1;
+
+  return {
+    totalEntries,
+    topTriggers: getTopItems(triggerCounts),
+    topResponses: getTopItems(responseCounts),
+    topBehaviors: getTopItems(behaviorCounts, 3),
+    improvementAreas: [
+      {
+        label: "Arguing decreased",
+        percent: totalEntries ? Math.max(5, Math.round(((totalEntries - arguingCount) / improvementBase) * 20)) : 20
+      },
+      {
+        label: "Positive behaviors increased",
+        percent: totalEntries ? Math.max(10, Math.round((positiveEntries / improvementBase) * 100)) : 35
+      }
+    ],
+    participation: totalEntries ? Math.min(100, totalEntries * 14) : 18,
+    stressPattern: totalEntries ? Math.round(((behaviorCounts["emotional upset"] || 0) + (behaviorCounts.anxiety || 0)) / improvementBase * 100) : 32,
+    skillImprovement: totalEntries ? Math.round((calmEntries / improvementBase) * 100) : 41
+  };
+}
+
+function checkboxList(name, options, selectedValues = []) {
+  return `
+    <div class="checkbox-grid">
+      ${options
+        .map(
+          (option) => `
+            <label class="checkbox-option">
+              <input type="checkbox" name="${name}" value="${option}" ${selectedValues.includes(option) ? "checked" : ""} />
+              <span>${escapeHtml(option)}</span>
+            </label>
+          `
+        )
+        .join("")}
+    </div>
+  `;
+}
+
+function getCheckedValues(name) {
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map((input) => input.value);
+}
+
 function checkLessonQuiz(slug) {
   const lesson = appContent.learningPath.find((item) => item.slug === slug);
   if (!lesson || !lesson.quiz) {
@@ -2291,6 +2892,118 @@ function hasCompletedOnboarding() {
 
 function completeOnboarding() {
   window.localStorage.setItem(onboardingStorageKey, "true");
+}
+
+function setAppNotice(message) {
+  window.localStorage.setItem(appNoticeStorageKey, message);
+}
+
+function getAppNotice() {
+  try {
+    return window.localStorage.getItem(appNoticeStorageKey) || "";
+  } catch (error) {
+    return "";
+  }
+}
+
+function clearAppNotice() {
+  try {
+    window.localStorage.removeItem(appNoticeStorageKey);
+  } catch (error) {
+    return;
+  }
+}
+
+function formatScheduleDate(dateValue, timeValue = "") {
+  if (!dateValue) {
+    return "No date";
+  }
+
+  try {
+    const dateText = new Date(`${dateValue}T12:00:00`).toLocaleDateString();
+    return timeValue ? `${dateText} at ${timeValue}` : dateText;
+  } catch (error) {
+    return timeValue ? `${dateValue} at ${timeValue}` : dateValue;
+  }
+}
+
+async function initializeHomeSupabase() {
+  if (supabaseHomeClient || !window.supabase || !window.ROOTED_SUPABASE_URL || !window.ROOTED_SUPABASE_ANON_KEY) {
+    return;
+  }
+
+  supabaseHomeClient = window.supabase.createClient(
+    window.ROOTED_SUPABASE_URL,
+    window.ROOTED_SUPABASE_ANON_KEY
+  );
+}
+
+async function loadHomeFamilySchedule() {
+  await initializeHomeSupabase();
+  if (!supabaseHomeClient) {
+    return;
+  }
+
+  try {
+    const { data: sessionData } = await supabaseHomeClient.auth.getSession();
+    const userId = sessionData?.session?.user?.id;
+    if (!userId) {
+      currentSupabaseFamilyId = null;
+      currentFamilyScheduleEvents = [];
+      return;
+    }
+
+    const { data: family, error: familyError } = await supabaseHomeClient
+      .from("families")
+      .select("id")
+      .eq("parent_user_id", userId)
+      .maybeSingle();
+
+    if (familyError || !family?.id) {
+      currentSupabaseFamilyId = null;
+      currentFamilyScheduleEvents = [];
+      return;
+    }
+
+    currentSupabaseFamilyId = family.id;
+
+    const { data: scheduleRows, error: scheduleError } = await supabaseHomeClient
+      .from("family_schedule_events")
+      .select("*")
+      .eq("family_id", family.id)
+      .gte("event_date", new Date().toISOString().slice(0, 10))
+      .order("event_date", { ascending: true });
+
+    if (scheduleError) {
+      const message = String(scheduleError.message || "").toLowerCase();
+      if (message.includes("family_schedule_events") || message.includes("does not exist") || message.includes("schema cache")) {
+        currentFamilyScheduleEvents = [];
+        return;
+      }
+      currentFamilyScheduleEvents = [];
+      return;
+    }
+
+    currentFamilyScheduleEvents = scheduleRows || [];
+  } catch (error) {
+    currentFamilyScheduleEvents = [];
+  }
+}
+
+function renderAppNotice() {
+  const message = getAppNotice();
+  if (!message || !appContentRoot.firstElementChild) {
+    return;
+  }
+
+  const notice = document.createElement("section");
+  notice.className = "app-notice";
+  notice.innerHTML = `
+    <strong>Saved</strong>
+    <p>${escapeHtml(message)}</p>
+  `;
+  appContentRoot.prepend(notice);
+  clearAppNotice();
 }
 
 function findBehavior(slug) {
@@ -2389,94 +3102,169 @@ function courseCard(course) {
 
 // Home screen content, including public resources and court/CPS packet links.
 function renderHome() {
+  const role = getAccountProfile().role || "Parent / Caregiver";
+  const roleType = getAccountRoleType();
   const assignedCourse = getAssignedCourse();
   const accessState = getAccessState();
   const accessMessage = getAccessMessage();
+  const completedLessons = getCompletedLessons();
+  const totalLessons = appContent.learningPath.length;
+  const progressPercent = totalLessons ? Math.round((completedLessons.length / totalLessons) * 100) : 0;
+  const entries = getDailyHabitEntries();
+  const latestEntry = entries[0];
+  const positiveMoments = entries
+    .map((entry) => entry.positiveMoment)
+    .filter(Boolean)
+    .slice(0, 2);
+  const insights = buildBehaviorInsights(entries);
+  const topTrigger = insights.topTriggers[0]?.[0] || "transitions";
+  const nextLesson = appContent.learningPath.find((lesson) => !completedLessons.includes(lesson.slug)) || appContent.learningPath[0];
+  const upcomingItems = currentFamilyScheduleEvents.length
+    ? currentFamilyScheduleEvents.slice(0, 4).map((item) => ({
+        title: item.title || item.event_type || "Upcoming event",
+        detail: `${item.event_type || "Event"} • ${formatScheduleDate(item.event_date, item.event_time)}`
+      }))
+    : [
+        { title: "Appointments", detail: "Shared schedule will show provider-entered events here." },
+        { title: "Meetings", detail: "Court, school, and provider meetings will appear here." },
+        { title: "Court dates", detail: "Upcoming court dates and visits will show here." }
+      ];
   screenTitle.textContent = "Home";
   appContentRoot.innerHTML = `
     <section class="hero">
-      <p class="mini-label">Welcome</p>
-      <h2>Support built around safety and connection</h2>
-      <p>${appContent.intro}</p>
+      <p class="mini-label">Today's check-in reminder</p>
+      <h2>Simple overview of what matters today</h2>
+      <p>${latestEntry ? "Your most recent check-in is saved. Keep building consistency with one small next step today." : "Start with a quick daily reflection, then move into one lesson or one calm response skill."}</p>
       <div class="pill-row">
-        <span class="pill">Trauma-informed</span>
-        <span class="pill">Simple language</span>
-        <span class="pill">Mobile friendly</span>
+        <span class="role-badge">${escapeHtml(getAccountProfile().role)}</span>
+        <span class="pill">${completedLessons.length} of ${totalLessons} lessons complete</span>
+        <span class="pill">${entries.length} daily check-ins saved</span>
       </div>
       <div class="hero-actions">
-        <button class="primary-button" type="button" data-route-link="tools">Help Me Right Now</button>
-        <button class="secondary-button" type="button" data-route-link="behaviors">Open Behavior Guides</button>
+        <button class="primary-button" type="button" data-route-link="checkin">Open Today's Check-In</button>
+        <button class="secondary-button" type="button" data-route-link="support">Open Real-Time Help</button>
       </div>
-    </section>
-
-    <section class="hero-actions hero-actions--stacked">
-      <button class="button-card" type="button" data-route-link="behaviors">
-        <strong>Behavior Guides</strong>
-        <span>Get calm, supportive guidance for hard moments and next steps.</span>
-      </button>
-      <button class="button-card" type="button" data-route-link="learning">
-        <strong>Learn</strong>
-        <span>Learn how trauma can shape behavior, stress responses, and healing.</span>
-      </button>
-      <button class="button-card" type="button" data-route-link="tools">
-        <strong>Tools</strong>
-        <span>Short tools to help you slow down, stay grounded, and reconnect.</span>
-      </button>
-      <button class="button-card" type="button" data-route-link="courses">
-        <strong>Courses</strong>
-        <span>Open CPS-friendly course tracks, completion standards, and certificate options.</span>
-      </button>
-      ${
-        hasProfessionalAccess()
-          ? `
-            <button class="button-card" type="button" data-route-link="supervisor">
-              <strong>Supervisor Portal</strong>
-              <span>View assigned tracks, weekly summaries, and CPS-friendly progress snapshots.</span>
-            </button>
-          `
-          : ""
-      }
-      <button class="button-card" type="button" data-route-link="${hasPremiumAccess() ? "progress" : "home"}">
-        <strong>Progress Tracker</strong>
-        <span>${hasPremiumAccess() ? "Check completed lessons, next steps, and parenting program documents." : "Premium feature for lesson progress, workbook tools, and certificate tracking."}</span>
-      </button>
-      <button class="button-card" type="button" data-route-link="${hasPremiumAccess() ? "worksheets" : "home"}">
-        <strong>Worksheets</strong>
-        <span>${hasPremiumAccess() ? "Fillable pages for reflection, planning, and support." : "Premium feature for fillable worksheets and saved parenting forms."}</span>
-      </button>
-      <button class="button-card" type="button" data-route-link="school">
-        <strong>School Support</strong>
-        <span>Get teacher email help, meeting prep, and school support ideas.</span>
-      </button>
     </section>
 
     <section class="section-card">
-      <div class="section-card__header">
-        <h2>Start here if today feels hard</h2>
+      <h2>${
+        roleType === "admin"
+          ? "Admin dashboard"
+          : roleType === "professional"
+            ? "Professional dashboard"
+            : roleType === "school"
+              ? "School support dashboard"
+              : "Parent dashboard"
+      }</h2>
+      <p>${
+        roleType === "admin"
+          ? "Manage users, review role approval needs, monitor reports, and keep content and permissions organized."
+          : roleType === "professional"
+            ? "Review assigned family progress, child profiles, check-ins, goals, recommendations, and shared documentation."
+            : roleType === "school"
+              ? "Use approved school supports, classroom response tools, shared plans, and documentation for student needs."
+              : "Use daily check-ins, child profile, goals, lessons, progress tools, and worksheets to stay steady and organized."
+      }</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="child-profile">Open Child Profile</button>
+        ${
+          roleType === "admin"
+            ? '<button class="secondary-button" type="button" data-route-link="admin">Open Admin Dashboard</button>'
+            : roleType === "professional"
+              ? '<button class="secondary-button" type="button" data-route-link="professional">Open Professional Dashboard</button>'
+              : roleType === "school"
+                ? '<button class="secondary-button" type="button" data-route-link="teacher">Open School Support</button>'
+                : '<button class="secondary-button" type="button" data-route-link="goals">View Goals</button>'
+        }
       </div>
-      <ul class="support-list">
-        <li>Start with safety and a calm body before problem-solving.</li>
-        <li>Choose one behavior guide to understand what your child may be communicating.</li>
-        <li>Use the Tools tab when you need grounding prompts or fewer-word scripts.</li>
-        <li>Use Learn and Worksheets to support the next step, not just the hard moment.</li>
-      </ul>
+    </section>
+
+    <section class="section-card">
+      <h2>Progress snapshot</h2>
+      <p>Weekly progress bar</p>
+      <div class="progress-meter" aria-hidden="true"><span style="width:${progressPercent}%"></span></div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <strong>Today's focus</strong>
+          <p>${escapeHtml(nextLesson.title)}</p>
+          <button class="secondary-button" type="button" data-path-lesson="${nextLesson.slug}">Open suggested skill</button>
+        </div>
+        <div class="metric-card">
+          <strong>Most common trigger</strong>
+          <p>${escapeHtml(topTrigger)}</p>
+          <button class="secondary-button" type="button" data-route-link="progress">View behavior patterns</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Shared child support plan</h2>
+      <p>Keep one trauma-informed plan that tells every adult what helps this child feel safe, what to avoid, and how to respond across home, school, and services.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-route-link="care-plan">Open Child Support Plan</button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Quick actions</h2>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="checkin">Start Check-In</button>
+        <button class="secondary-button" type="button" data-route-link="goals">View Goals</button>
+        <button class="secondary-button" type="button" data-route-link="learning">Open Lessons</button>
+        <button class="secondary-button" type="button" data-route-link="support">Ask for Help</button>
+        <button class="secondary-button" type="button" data-route-link="team">View Team</button>
+        <a class="secondary-button" href="parent-setup.html">Open Messages and Family Hub</a>
+        ${
+          hasProfessionalAccess()
+            ? '<a class="secondary-button" href="staff-portal.html">Open Provider Schedule Portal</a>'
+            : ""
+        }
+        <button class="secondary-button" type="button" data-route-link="report">Open Attendance and Progress Report</button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Family supports</h2>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="reflection">Parent Self-Reflection</button>
+        <button class="secondary-button" type="button" data-route-link="resources">Resources</button>
+        <button class="secondary-button" type="button" data-route-link="notifications">Notifications</button>
+        <button class="secondary-button" type="button" data-route-link="settings">Settings</button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Messages and shared schedule</h2>
+      <p>Use the Family Hub for parent messages and shared documents. Use the Staff Portal to enter provider visits, court dates, appointments, and teacher-parent meetings with dates and times.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <a class="primary-button" href="parent-setup.html">Open Family Hub</a>
+        ${
+          hasProfessionalAccess()
+            ? '<a class="secondary-button" href="staff-portal.html">Open Staff Portal</a>'
+            : ""
+        }
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Next best step</h2>
+      <p>${
+        role === "Teacher"
+          ? "Start with Teacher Check-In, then open the Child Support Plan so classroom responses stay aligned with the family and provider team."
+          : "Start with today's Check-In, then update the Child Support Plan or Shared Goals so every adult stays consistent."
+      }</p>
     </section>
 
     ${
       assignedCourse
         ? `
           <section class="section-card">
-            <h2>Assigned course track</h2>
+            <h2>Assigned track</h2>
             <p><strong>${assignedCourse.title}</strong></p>
             <p>${assignedCourse.cpsTitle}</p>
-            <p>${assignedCourse.description}</p>
             <div class="hero-actions hero-actions--stacked">
-              <button class="primary-button" type="button" data-course="${assignedCourse.slug}">Open Assigned Track</button>
-              ${
-                hasProfessionalAccess()
-                  ? '<button class="secondary-button" type="button" data-route-link="supervisor">Open Supervisor Portal</button>'
-                  : ""
-              }
+              <button class="primary-button" type="button" data-course="${assignedCourse.slug}">Open assigned track</button>
+              <button class="secondary-button" type="button" data-route-link="team">Open team access</button>
             </div>
           </section>
         `
@@ -2484,17 +3272,34 @@ function renderHome() {
     }
 
     <section class="section-card">
-      <h2>About Rooted Parenting</h2>
-      <p>Rooted Parenting is a trauma-informed parenting support program designed to help caregivers understand behavior, respond with calm, and build emotional safety at home.</p>
-      <p>The program includes lessons, behavior response guidance, reflection tools, and printable worksheets that support parents in navigating emotional and behavioral challenges.</p>
-      <h3>Program Goals</h3>
-      ${bulletList([
-        "increase parent confidence",
-        "reduce power struggles",
-        "support emotional regulation",
-        "improve parent-child connection",
-        "provide real-time guidance during difficult moments"
-      ])}
+      <h2>Recent positives</h2>
+      <div class="positive-list">
+        ${
+          positiveMoments.length
+            ? positiveMoments.map((moment) => `<div class="positive-item">${escapeHtml(moment)}</div>`).join("")
+            : `
+              <div class="positive-item">Used calm voice during conflict</div>
+              <div class="positive-item">Completed homework without escalation</div>
+            `
+        }
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Upcoming</h2>
+      <p>Add court dates, appointments, provider visits, and teacher-parent meetings in the Family Hub or Staff Portal. They will show here after they are saved.</p>
+      <div class="upcoming-list">
+        ${upcomingItems.map((item) => `<div class="upcoming-item"><strong>${escapeHtml(item.title)}</strong><br />${escapeHtml(item.detail)}</div>`).join("")}
+      </div>
+      <div class="hero-actions hero-actions--stacked">
+        <a class="secondary-button" href="parent-setup.html">Open Family Hub</a>
+        ${
+          hasProfessionalAccess()
+            ? '<a class="secondary-button" href="staff-portal.html">Add Dates and Times in Staff Portal</a>'
+            : ""
+        }
+        <button class="secondary-button" type="button" data-route-link="report">Open Attendance and Progress Report</button>
+      </div>
     </section>
 
     <section class="section-card">
@@ -2528,11 +3333,11 @@ function renderHome() {
     </section>
 
     <section class="section-card">
-      <h2>Resources</h2>
-      <p>Open printable and facilitator resources from the Home screen.</p>
+      <h2>Resources and plans</h2>
+      <p>Everything below stays connected to the same payment plan, policy, terms, and professional materials already in the app.</p>
       <div class="hero-actions hero-actions--stacked">
         <a class="resource-link" href="parent-login.html" target="_blank" rel="noopener noreferrer">Parent Sign In</a>
-        <a class="resource-link" href="parent-setup.html" target="_blank" rel="noopener noreferrer">Family Setup</a>
+        <a class="resource-link" href="parent-setup.html">Family Setup, Messages, and Schedule</a>
         ${
           hasPremiumAccess()
             ? `<a class="resource-link" href="rooted-parenting-workbook.html" target="_blank" rel="noopener noreferrer">Open Parent Workbook</a>`
@@ -2550,18 +3355,8 @@ function renderHome() {
     </section>
 
     <section class="section-card">
-      <h2>Install on Your Phone</h2>
-      <p>You can save Rooted Parenting to your phone home screen so it opens like an app even before it is in the app stores.</p>
-      ${bulletList([
-        "On iPhone: open the site in Safari, tap Share, then choose Add to Home Screen.",
-        "On Android: open the site in Chrome, tap the menu, then choose Install App or Add to Home Screen.",
-        "Once installed, the app opens in full-screen mode and can keep core pages available offline."
-      ])}
-    </section>
-
-    <section class="section-card">
       <h2>Choose Your Access</h2>
-      <p>Rooted Parenting offers free support tools for families, with affordable premium options for full course access, workbook tools, trackers, and professional features.</p>
+      <p>Rooted Parenting Network offers trauma-informed tools for families, teachers, and professionals, with affordable premium options for full course access, workbook tools, trackers, and professional features.</p>
       <div class="hero-actions hero-actions--stacked">
         <div class="detail-card">
           <h3>Free Access</h3>
@@ -2592,38 +3387,6 @@ function renderHome() {
         <p>You can offer scholarship or sponsored access codes to parents who cannot afford premium access.</p>
       </div>
     </section>
-
-    <section class="section-card">
-      <h2>For Courts and Agencies</h2>
-      <p>Use these printable tools to present Rooted Parenting as a structured caregiver intervention for juvenile court, CPS, school family support, diversion, and community-based parent education.</p>
-      <div class="hero-actions hero-actions--stacked">
-        <button class="resource-link" type="button" data-route-link="courses">Open Course Catalog</button>
-        <a class="resource-link" href="parent-login.html" target="_blank" rel="noopener noreferrer">Parent Login and Family Setup</a>
-        ${
-          hasProfessionalAccess()
-            ? `
-              <button class="resource-link" type="button" data-route-link="supervisor">Open Supervisor Portal</button>
-              <a class="resource-link" href="staff-login.html" target="_blank" rel="noopener noreferrer">Supabase Staff Login</a>
-              <a class="resource-link" href="staff-portal.html" target="_blank" rel="noopener noreferrer">Read-Only CPS Portal</a>
-            `
-            : `
-              <div class="note-box">
-                <strong>Professional tools</strong>
-                <p>Staff portal, assigned tracks, and oversight tools are included with professional access.</p>
-                <a class="primary-button" href="https://buy.stripe.com/14A28reC065w1KOcwf4ko02" target="_blank" rel="noopener noreferrer">Get Professional Access</a>
-              </div>
-            `
-        }
-        <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
-        <a class="resource-link" href="rooted-parenting-release-of-information.html" target="_blank" rel="noopener noreferrer">Release of Information</a>
-        <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
-        <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
-        <a class="resource-link" href="rooted-parenting-pre-post-assessment.html">Pre/Post Parenting Assessment</a>
-        <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
-        <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
-        <a class="resource-link" href="supabase-cps-portal-schema.sql" target="_blank" rel="noopener noreferrer">Supabase Staff Portal SQL</a>
-      </div>
-    </section>
   `;
 }
 
@@ -2633,7 +3396,7 @@ function renderCoursesList() {
   appContentRoot.innerHTML = `
     <section class="hero">
       <h2>Course catalog</h2>
-      <p>These five CPS-friendly course tracks help position Rooted Parenting as a structured parent education program with clear completion standards and certificate options.</p>
+      <p>These five CPS-friendly course tracks help position Rooted Parenting Network as a structured, trauma-informed parent education program with clear completion standards and certificate options.</p>
       <div class="pill-row">
         <span class="pill">${appContent.courses.length} course tracks</span>
         <span class="pill">CPS-friendly titles</span>
@@ -2782,31 +3545,78 @@ function renderCourseDetail(slug) {
 }
 
 function renderOnboarding() {
+  const account = getAccountProfile();
   screenTitle.textContent = "Welcome";
   appContentRoot.innerHTML = `
     <section class="onboarding-card">
-      <p class="mini-label">Welcome to Rooted Parenting</p>
-      <h2>Support for hard moments and steady growth</h2>
-      <p>Rooted Parenting helps parents respond to children with behavioral challenges using trauma-informed, non-judgmental, supportive guidance.</p>
-      <p>This app is designed to help you slow down, understand behavior with more compassion, and build skills that support safety, connection, and emotional growth.</p>
-      ${bulletList([
-        "Find behavior guides for common parenting concerns.",
-        "Learn step by step through the Rooted Parenting Program.",
-        "Use calming tools and printable worksheets when you need support."
-      ])}
-      <button class="primary-button" type="button" data-finish-onboarding="true">Open Rooted Parenting</button>
+      <p class="mini-label">Welcome / account type</p>
+      <h2>Rooted Parenting Network</h2>
+      <p>A trauma-informed parenting and child-support platform that helps parents, courts, CPS, counselors, schools, and support teams stay informed, organized, and consistent around a child’s needs.</p>
+      <div class="pill-row">
+        <span class="pill">Safe</span>
+        <span class="pill">Calm</span>
+        <span class="pill">Trauma-informed</span>
+        <span class="pill">Cross-system</span>
+      </div>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-finish-onboarding="true">Get Started</button>
+        <a class="secondary-button" href="parent-login.html">Parent Access</a>
+        <a class="secondary-button" href="staff-login.html">Professional Access</a>
+        <a class="secondary-button" href="rooted-parenting-network-feature-map.html">Learn More</a>
+      </div>
+      <div class="note-box">
+        <strong>Choose your path</strong>
+        <p>Parent accounts can access daily check-ins, lessons, goals, progress tracking, resources, and worksheets. Professional accounts are intended for counselors, CPS, courts, caseworkers, mentors, behavioral health workers, and approved school staff. Admin accounts are for platform management and oversight.</p>
+      </div>
+      <div class="note-box">
+        <strong>Why it helps families</strong>
+        <p>Families can keep check-ins, goals, lessons, support plans, reflections, and resources in one calm, organized place.</p>
+      </div>
+      <div class="note-box">
+        <strong>Why it helps professionals</strong>
+        <p>Professionals can review progress, see patterns, support shared goals, document recommendations, and stay aligned across systems.</p>
+      </div>
+      <div class="note-box">
+        <strong>Privacy and trust</strong>
+        <p>Rooted Parenting Network is being shaped around role-based access, confidentiality, shared care planning, and family-centered trauma-informed support.</p>
+      </div>
+      <div class="choice-grid">
+        ${roleOptions
+          .map(
+            (role) => `
+              <label class="choice-card">
+                <input type="radio" name="account-role" value="${role}" ${account.role === role ? "checked" : ""} />
+                <span>${escapeHtml(role)}</span>
+              </label>
+            `
+          )
+          .join("")}
+      </div>
+      <label class="tracker-field">
+        <span>Join a family team</span>
+        <input id="invite-code-input" type="text" value="${escapeHtml(account.inviteCode)}" placeholder="Enter invite code" />
+      </label>
+      <div class="note-box">
+        <strong>Professional approval</strong>
+        <p>Professional and school-based accounts should include agency name, role, and work email in the secure portal setup. Approval and assigned-family access remain the long-term production model.</p>
+      </div>
+      <div class="note-box">
+        <strong>Contact and support</strong>
+        <p>For support, professional access requests, or implementation questions, use the support and policy information linked throughout the app materials.</p>
+      </div>
+      <button class="primary-button" type="button" data-finish-onboarding="true">Create Account</button>
     </section>
   `;
 }
 
 function renderLearningList() {
-  screenTitle.textContent = "Learn";
+  screenTitle.textContent = "Lessons";
   const completedCount = getCompletedLessons().length;
   const totalCount = appContent.learningPath.length;
   appContentRoot.innerHTML = `
     <section class="section-card">
       <h2>Learn</h2>
-      <p>These short lessons help explain how stress and trauma can affect a child’s behavior, feelings, and ability to cope.</p>
+      <p>These short lessons help parents, teachers, and professionals understand how stress and trauma can affect a child's behavior, feelings, attention, and ability to cope.</p>
     </section>
     <section class="section-card">
       <div class="section-card__header">
@@ -2819,9 +3629,9 @@ function renderLearningList() {
     </section>
     <section class="section-card">
       <div class="section-card__header">
-        <h2>21-Day Learning Path</h2>
+        <h2>Lesson Path</h2>
       </div>
-      <p>Follow these 21 daily sessions in order for a step-by-step parenting habit-building sequence.</p>
+      <p>Each lesson gives a simple explanation, one example, and one action step for today.</p>
       ${
         hasPremiumAccess()
           ? ""
@@ -2833,11 +3643,11 @@ function renderLearningList() {
           `
       }
       <div class="note-box">
-        <strong>3-week structure</strong>
+        <strong>Build order</strong>
         ${bulletList([
-          "Week 1: Safety and Regulation",
-          "Week 2: Connection and Follow-Through",
-          "Week 3: Habit Building and Long-Term Change"
+          "Phase 1: Core app",
+          "Phase 2: Collaboration",
+          "Phase 3: Advanced support"
         ])}
       </div>
       <div class="pill-row">
@@ -2946,7 +3756,6 @@ function renderPathLesson(slug) {
 
   const total = appContent.learningPath.length;
   const percent = Math.round(((index + 1) / total) * 100);
-  const feedback = quizFeedbackState[lesson.slug];
   const previousLesson = index > 0 ? appContent.learningPath[index - 1] : null;
   const nextLesson = index < total - 1 ? appContent.learningPath[index + 1] : null;
 
@@ -2968,83 +3777,31 @@ function renderPathLesson(slug) {
       <p>${lesson.explanation}</p>
       <div class="completion-row">
         <span class="status-pill ${isLessonComplete(lesson.slug) ? "is-complete" : ""}">
-          ${isLessonComplete(lesson.slug) ? "Lesson completed" : "Quiz not passed yet"}
+          ${isLessonComplete(lesson.slug) ? "Marked complete" : "Ready for today's action"}
         </span>
       </div>
     </section>
-    ${
-      lesson.sections
-        ? lesson.sections
-            .map(
-              (section) => `
-                <section class="detail-card lesson-section">
-                  <h3>${section.heading}</h3>
-                  ${bulletList(section.points)}
-                </section>
-              `
-            )
-            .join("")
-        : ""
-    }
     <section class="detail-card">
-      <h3>Key points</h3>
-      ${bulletList(lesson.bullets)}
+      <h3>Simple explanation</h3>
+      <p>${lesson.intro || lesson.explanation}</p>
     </section>
     <section class="detail-card">
-      <h3>Practical examples</h3>
-      <p>These are everyday parenting moments many families can relate to:</p>
-      ${bulletList(lesson.examples)}
+      <h3>Example</h3>
+      ${bulletList(lesson.examples.slice(0, 2))}
     </section>
     <section class="detail-card">
-      <h3>Action step</h3>
+      <h3>One action step today</h3>
       <div class="action-box">
-        <strong>Try this next</strong>
+        <strong>Practice this</strong>
         <p>${lesson.actionStep}</p>
       </div>
     </section>
     <section class="detail-card">
-      <h3>Reflection questions</h3>
+      <h3>What to remember</h3>
       <div class="note-box">
-        ${bulletList(lesson.reflectionQuestions)}
+        ${bulletList((lesson.bullets || []).slice(0, 4))}
       </div>
     </section>
-    ${
-      lesson.quiz
-        ? `
-          <section class="detail-card">
-            <h3>Lesson quiz</h3>
-            <p>${lesson.quiz.question}</p>
-            <div class="detail-stack">
-              ${lesson.quiz.options
-                .map(
-                  (option, optionIndex) => `
-                    <label class="list-card">
-                      <input type="radio" name="quiz-${lesson.slug}" value="${optionIndex}" ${isLessonComplete(lesson.slug) && optionIndex === lesson.quiz.answerIndex ? "checked" : ""} />
-                      <span>${option}</span>
-                    </label>
-                  `
-                )
-                .join("")}
-            </div>
-            <div class="hero-actions hero-actions--stacked">
-              <button class="primary-button" type="button" data-check-quiz="${lesson.slug}">
-                ${isLessonComplete(lesson.slug) ? "Retake Quiz" : "Check Quiz"}
-              </button>
-            </div>
-            ${
-              feedback
-                ? `
-                  <div class="${feedback.isCorrect ? "action-box" : "note-box"}">
-                    <strong>${feedback.isCorrect ? "Quiz passed" : "Try again"}</strong>
-                    <p>${feedback.message}</p>
-                  </div>
-                `
-                : ""
-            }
-          </section>
-        `
-        : ""
-    }
     <section class="detail-card">
       <h3>Keep going</h3>
       <div class="hero-actions hero-actions--stacked">
@@ -3056,8 +3813,9 @@ function renderPathLesson(slug) {
         ${
           nextLesson
             ? `<button class="primary-button" type="button" data-path-lesson="${nextLesson.slug}">Next Lesson</button>`
-            : `<button class="primary-button" type="button" data-route-link="progress">Go to Progress Tracker</button>`
+            : `<button class="primary-button" type="button" data-route-link="progress">Go to Progress</button>`
         }
+        <button class="secondary-button" type="button" data-complete-lesson="${lesson.slug}">${isLessonComplete(lesson.slug) ? "Mark Incomplete" : "Mark Complete"}</button>
       </div>
     </section>
   `;
@@ -3180,66 +3938,1021 @@ function renderBehaviorDetail(slug) {
 }
 
 function renderTools() {
-  screenTitle.textContent = "Tools";
+  screenTitle.textContent = "Support";
   appContentRoot.innerHTML = `
     <section class="section-card">
-      <h2>Parent Calm Tools</h2>
-      <p>These short tools are here to support your nervous system first, so you can respond with steadiness and care.</p>
-    </section>
-    <section class="detail-stack">
-      ${appContent.calmTools
-        .map(
-          (tool) => `
-            <article class="detail-card">
-              <h3>${tool.title}</h3>
-              <p>${tool.text}</p>
-            </article>
-          `
-        )
-        .join("")}
+      <h2>Support tool</h2>
+      <p>Real-time help for the moments when a parent, teacher, or professional needs a trauma-informed way to respond.</p>
     </section>
     <section class="section-card">
-      <h2>Grounding prompts</h2>
-      ${bulletList([
-        "What does my child need most right now: safety, space, connection, or help calming?",
-        "Can I make my voice slower and softer?",
-        "What is one short sentence I can use instead of a long explanation?",
-        "What can wait until later, when both of us are calmer?"
-      ])}
+      <h2>Child support plan</h2>
+      <p>Open the shared plan for strengths, triggers, warning signs, calming supports, and team response patterns.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="primary-button" type="button" data-route-link="care-plan">Open Child Support Plan</button>
+      </div>
     </section>
     <section class="section-card">
-      <h2>Breathing tools</h2>
-      ${bulletList([
-        "Breathe in for 4 and out for 6, three times.",
-        "Put one hand on your chest and one on your belly while breathing slowly.",
-        "Exhale longer than you inhale to help your body settle.",
-        "If breathing feels hard, focus on relaxing your jaw and shoulders first."
-      ])}
-    </section>
-    <section class="section-card">
-      <h2>School support</h2>
-      <p>If school stress is part of the picture, you can also open school planning and communication support.</p>
-      <button class="button-card" type="button" data-route-link="school">
-        <strong>Open School Support</strong>
-        <span>Teacher email help, meeting prep, and documentation support.</span>
-      </button>
-    </section>
-    <section class="section-card">
-      <h2>Track your progress</h2>
-      <p>See completed lessons, next steps, and program documentation in one place.</p>
-      <button class="button-card" type="button" data-route-link="progress">
-        <strong>Open Progress Tracker</strong>
-        <span>Lesson completion, assessment access, and documentation tools.</span>
-      </button>
+      <h2>What is happening right now?</h2>
+      <div class="hero-actions hero-actions--stacked">
+        ${supportToolOptions
+          .map(
+            (tool) => `
+              <button class="button-card" type="button" data-support-tool="${tool.slug}">
+                <strong>${escapeHtml(tool.label)}</strong>
+                <span>Open quick steps for this moment.</span>
+              </button>
+            `
+          )
+          .join("")}
+      </div>
     </section>
     <section class="section-card">
       <h2>Self-regulation reminders</h2>
       ${bulletList([
-        "My child is having a hard time, not trying to be hard.",
-        "I can hold a limit and still stay kind.",
-        "Connection helps change happen.",
-        "I do not need to solve everything in this moment."
+        "Pause and regulate yourself first.",
+        "Use short directions.",
+        "Avoid a power struggle.",
+        "Give a simple choice.",
+        "Allow reset time."
       ])}
+    </section>
+    <section class="section-card">
+      <h2>Immediate safety</h2>
+      <p>If there is immediate danger to the child or others, move to safety first and contact crisis or emergency support as needed. This app is not a substitute for emergency care.</p>
+    </section>
+  `;
+}
+
+function renderSupportToolDetail(slug) {
+  const tool = supportToolOptions.find((item) => item.slug === slug);
+  if (!tool) {
+    renderTools();
+    return;
+  }
+
+  screenTitle.textContent = "Support";
+  appContentRoot.innerHTML = `
+    <section class="detail-card">
+      <div class="detail-card__header">
+        <span class="behavior-tag">Real-Time Help</span>
+        <button class="back-link" type="button" data-route-link="support">Back</button>
+      </div>
+      <h2>${escapeHtml(tool.label)}</h2>
+      <p>Use these quick steps to stay steady and avoid escalating the moment.</p>
+    </section>
+    <section class="section-card">
+      <div class="support-steps">
+        ${tool.steps.map((step) => `<div class="step-card">${escapeHtml(step)}</div>`).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderCheckIn() {
+  const role = (getAccountProfile().role || "").toLowerCase();
+  const isTeacherView = role === "teacher";
+  const latestEntry = (isTeacherView ? getTeacherCheckInEntries() : getDailyHabitEntries())[0] || {};
+  screenTitle.textContent = "Check-In";
+  appContentRoot.innerHTML = isTeacherView
+    ? `
+      <section class="section-card">
+        <h2>Teacher check-in</h2>
+        <p>Quick classroom reflection for behavior, response patterns, and trauma-informed support.</p>
+      </section>
+      <section class="detail-card">
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>How was the school day overall?</span>
+            <select id="teacher-checkin-overall">
+              <option value="calm" ${latestEntry.overall === "calm" ? "selected" : ""}>Calm</option>
+              <option value="mixed" ${latestEntry.overall === "mixed" ? "selected" : ""}>Mixed</option>
+              <option value="stressful" ${latestEntry.overall === "stressful" ? "selected" : ""}>Stressful</option>
+            </select>
+          </label>
+          <div class="tracker-field">
+            <span>What behaviors showed up today?</span>
+            ${checkboxList("teacher-checkin-behaviors", teacherCheckInBehaviorOptions, latestEntry.behaviors || [])}
+          </div>
+          <div class="tracker-field">
+            <span>What seemed to trigger it?</span>
+            ${checkboxList("teacher-checkin-triggers", teacherCheckInTriggerOptions, latestEntry.triggers || [])}
+          </div>
+          <div class="tracker-field">
+            <span>How did you respond?</span>
+            ${checkboxList("teacher-checkin-responses", teacherCheckInResponseOptions, latestEntry.responses || [])}
+          </div>
+          <div class="tracker-field">
+            <span>How did the student respond?</span>
+            ${checkboxList("teacher-checkin-student-response", teacherCheckInStudentResponseOptions, latestEntry.studentResponse || [])}
+          </div>
+          <label class="tracker-field">
+            <span>What support helped most today?</span>
+            <textarea id="teacher-checkin-support" rows="3" placeholder="Short entry">${escapeHtml(latestEntry.supportThatHelped || "")}</textarea>
+          </label>
+          <label class="tracker-field">
+            <span>Positive moment or small win</span>
+            <textarea id="teacher-checkin-positive-moment" rows="3" placeholder="Short entry">${escapeHtml(latestEntry.positiveMoment || "")}</textarea>
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" data-save-teacher-checkin="true">Save Teacher Check-In</button>
+          </div>
+        </div>
+      </section>
+      <section class="detail-card">
+        <h3>Recent teacher check-ins</h3>
+        ${
+          getTeacherCheckInEntries().length
+            ? getTeacherCheckInEntries()
+                .slice(0, 5)
+                .map(
+                  (entry) => `
+                    <div class="tracker-entry">
+                      <strong>${escapeHtml(entry.date || "No date")} - ${escapeHtml(entry.overall || "mixed")}</strong>
+                      <p><strong>Behaviors:</strong> ${escapeHtml((entry.behaviors || []).join(", ") || "None entered")}</p>
+                      <p><strong>Triggers:</strong> ${escapeHtml((entry.triggers || []).join(", ") || "None entered")}</p>
+                      <p><strong>Response used:</strong> ${escapeHtml((entry.responses || []).join(", ") || "None entered")}</p>
+                      <p><strong>Student response:</strong> ${escapeHtml((entry.studentResponse || []).join(", ") || "None entered")}</p>
+                      <p><strong>Helpful support:</strong> ${escapeHtml(entry.supportThatHelped || "Not entered")}</p>
+                      <p><strong>Positive moment:</strong> ${escapeHtml(entry.positiveMoment || "Not entered")}</p>
+                    </div>
+                  `
+                )
+                .join("")
+            : "<p>No teacher check-ins saved yet. Save one above to start tracking classroom patterns.</p>"
+        }
+      </section>
+    `
+    : `
+      <section class="section-card">
+        <h2>Daily check-in</h2>
+        <p>Quick daily reflection in about one to two minutes.</p>
+      </section>
+      <section class="detail-card">
+        <div class="tracker-form">
+          <label class="tracker-field">
+            <span>How was today overall?</span>
+            <select id="checkin-overall">
+              <option value="calm" ${latestEntry.overall === "calm" ? "selected" : ""}>Calm</option>
+              <option value="mixed" ${latestEntry.overall === "mixed" ? "selected" : ""}>Mixed</option>
+              <option value="stressful" ${latestEntry.overall === "stressful" ? "selected" : ""}>Stressful</option>
+            </select>
+          </label>
+          <div class="tracker-field">
+            <span>What behaviors happened today?</span>
+            ${checkboxList("checkin-behaviors", checkInBehaviorOptions, latestEntry.behaviors || [])}
+          </div>
+          <div class="tracker-field">
+            <span>What triggered the behavior?</span>
+            ${checkboxList("checkin-triggers", checkInTriggerOptions, latestEntry.triggers || [])}
+          </div>
+          <div class="tracker-field">
+            <span>How did you respond?</span>
+            ${checkboxList("checkin-responses", checkInResponseOptions, latestEntry.responses || [])}
+          </div>
+          <div class="tracker-field">
+            <span>How did the child respond?</span>
+            ${checkboxList("checkin-child-response", checkInChildResponseOptions, latestEntry.childResponse || [])}
+          </div>
+          <label class="tracker-field">
+            <span>Positive moment today</span>
+            <textarea id="checkin-positive-moment" rows="3" placeholder="Short entry">${escapeHtml(latestEntry.positiveMoment || "")}</textarea>
+          </label>
+          <div class="hero-actions hero-actions--stacked">
+            <button class="primary-button" type="button" data-save-checkin="true">Submit</button>
+          </div>
+        </div>
+      </section>
+    `;
+}
+
+function renderTeam() {
+  const team = getTeamSettings();
+  const insights = buildBehaviorInsights(getDailyHabitEntries());
+  const permissionOptions = [
+    "all 3: view progress only, view behavior patterns, view lesson completion",
+    "view progress only",
+    "view behavior patterns",
+    "view lesson completion"
+  ];
+  screenTitle.textContent = "Team";
+  appContentRoot.innerHTML = `
+    <section class="section-card">
+      <h2>Team access</h2>
+      <p>Invite professionals and define how much of the family view they can see so response patterns stay trauma-informed across systems.</p>
+    </section>
+    <section class="detail-card">
+      <h3>Family team members</h3>
+      <div class="insight-list">
+        ${team.members
+          .map(
+            (member) => `
+              <div class="insight-item">
+                <strong>${escapeHtml(member.role)}</strong>
+                <p>${escapeHtml(member.permission)}</p>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Invite member</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Email or contact</span>
+          <input id="team-invite-email" type="text" value="${escapeHtml(team.inviteEmail)}" placeholder="name@example.com" />
+        </label>
+        <label class="tracker-field">
+          <span>Invite code</span>
+          <input id="team-invite-code" type="text" value="${escapeHtml(team.inviteCode)}" placeholder="TEAM-2026" />
+        </label>
+        <div class="tracker-field">
+          <span>Permission options</span>
+          <div class="permission-grid">
+            ${permissionOptions
+              .map((permission) => {
+                const label = permission.startsWith("all 3") ? "All 3" : permission.charAt(0).toUpperCase() + permission.slice(1);
+                return `<button class="permission-button ${team.selectedPermission === permission ? "is-active" : ""}" type="button" data-select-team-permission="${escapeHtml(permission)}">${escapeHtml(label)}</button>`;
+              })
+              .join("")}
+          </div>
+        </div>
+        <div class="note-box" id="team-message">
+          <p>Selected permission: ${escapeHtml(team.selectedPermission)}</p>
+        </div>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-team-settings="true">Invite member</button>
+        </div>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Professional dashboard</h3>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <strong>Participation level</strong>
+          <p>${formatPercent(insights.participation)}</p>
+        </div>
+        <div class="metric-card">
+          <strong>Stress patterns</strong>
+          <p>${formatPercent(insights.stressPattern)}</p>
+        </div>
+        <div class="metric-card">
+          <strong>Skill improvement</strong>
+          <p>${formatPercent(insights.skillImprovement)}</p>
+        </div>
+        <div class="metric-card">
+          <strong>Example insight</strong>
+          <p>Child responds well to calm redirection and low-pressure support.</p>
+        </div>
+      </div>
+      ${
+        hasProfessionalAccess()
+          ? '<div class="hero-actions hero-actions--stacked"><button class="secondary-button" type="button" data-route-link="supervisor">Open full professional view</button></div>'
+          : '<div class="hero-actions hero-actions--stacked"><a class="primary-button" href="https://buy.stripe.com/14A28reC065w1KOcwf4ko02" target="_blank" rel="noopener noreferrer">Get Professional Access</a></div>'
+      }
+    </section>
+    <section class="detail-card">
+      <h3>Team quick access</h3>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="care-plan">Open Child Support Plan</button>
+        <button class="secondary-button" type="button" data-route-link="goals">Open Shared Goals</button>
+        <a class="secondary-button" href="parent-setup.html">Open Parent Messages and Shared Schedule</a>
+        ${
+          hasProfessionalAccess()
+            ? '<a class="secondary-button" href="staff-portal.html">Open Staff Portal for Dates and Times</a>'
+            : ""
+        }
+        <button class="secondary-button" type="button" data-route-link="report">Open Attendance and Progress Report</button>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Shared response plan</h3>
+      <p>Keep one child-centered plan so parents, teachers, and providers respond with the same trauma-informed pattern instead of mixed messages.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="care-plan">Open Child Support Plan</button>
+      </div>
+    </section>
+    <section class="detail-card">
+      <h3>Where to enter dates, times, and messages</h3>
+      <p>The live message thread and shared schedule entry are in the Family Hub and Staff Portal. Use those pages to add provider visits, court dates, meetings, and back-and-forth messages.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <a class="secondary-button" href="parent-setup.html">Open Family Hub</a>
+        ${
+          hasProfessionalAccess()
+            ? '<a class="secondary-button" href="staff-portal.html">Open Staff Portal</a>'
+            : ""
+        }
+      </div>
+    </section>
+  `;
+}
+
+function renderChildProfile() {
+  const clientProfile = getClientProfile();
+  screenTitle.textContent = "Child Profile";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Child profile</h2>
+      <p>Keep one child-centered profile with strengths, concerns, triggers, coping tools, behavior patterns, school notes, and care team members so adults can respond consistently.</p>
+      <div class="pill-row">
+        <span class="pill">Family-centered</span>
+        <span class="pill">Cross-system</span>
+        <span class="pill">Trauma-informed</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Child first name or initials</span>
+          <input id="child-profile-name" type="text" value="${escapeHtml(clientProfile.clientName || "")}" placeholder="Child first name or initials" />
+        </label>
+        <label class="tracker-field">
+          <span>Caregiver name</span>
+          <input id="child-profile-caregiver" type="text" value="${escapeHtml(clientProfile.caregiverName || "")}" placeholder="Parent or caregiver" />
+        </label>
+        <label class="tracker-field">
+          <span>Strengths</span>
+          <textarea id="child-profile-strengths" rows="3" placeholder="What strengths should the team keep seeing?">${escapeHtml(clientProfile.strengths || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Current concerns</span>
+          <textarea id="child-profile-concerns" rows="3" placeholder="Behavior, emotional, school, or family concerns">${escapeHtml(clientProfile.currentConcerns || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Triggers</span>
+          <textarea id="child-profile-triggers" rows="3" placeholder="Transitions, stressors, correction, conflict, overwhelm">${escapeHtml(clientProfile.triggers || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Coping tools and what helps</span>
+          <textarea id="child-profile-coping" rows="3" placeholder="Breaks, movement, calm voice, choices, sensory supports">${escapeHtml(clientProfile.copingTools || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Behavior patterns</span>
+          <textarea id="child-profile-patterns" rows="3" placeholder="What patterns does the team keep noticing?">${escapeHtml(clientProfile.behaviorPatterns || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>School notes</span>
+          <textarea id="child-profile-school" rows="3" placeholder="Teacher notes, school concerns, classroom supports">${escapeHtml(clientProfile.schoolNotes || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Care team members</span>
+          <textarea id="child-profile-team" rows="3" placeholder="Parent, therapist, caseworker, CPS, mentor, school contact, court contact">${escapeHtml(clientProfile.careTeamMembers || "")}</textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-child-profile="true">Save Child Profile</button>
+          <button class="secondary-button" type="button" data-route-link="care-plan">Open Child Support Plan</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderProfessionalDashboard() {
+  if (!hasProfessionalAccess()) {
+    screenTitle.textContent = "Professional Dashboard";
+    appContentRoot.innerHTML = renderProfessionalUpgradeCard({
+      title: "Professional Dashboard is Professional",
+      text: "Professional access includes assigned family review, progress oversight, recommendations, shared documentation, and agency-facing tools."
+    });
+    return;
+  }
+
+  const clientProfile = getClientProfile();
+  const dailyHabitEntries = getDailyHabitEntries();
+  const goals = getSharedGoals();
+  const weeklyReports = buildWeeklySummaryReports(dailyHabitEntries);
+  const insights = buildBehaviorInsights(dailyHabitEntries);
+  screenTitle.textContent = "Professional Dashboard";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Professional dashboard</h2>
+      <p>Review assigned family progress, check-ins, goals, child profile details, recent updates, shared plans, and professional next steps.</p>
+      <div class="pill-row">
+        <span class="pill">${dailyHabitEntries.length} check-ins</span>
+        <span class="pill">${goals.length} goals</span>
+        <span class="pill">${weeklyReports.filter((week) => week.entryCount > 0).length} active weekly summaries</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Assigned family snapshot</h3>
+      <p><strong>Child:</strong> ${escapeHtml(clientProfile.clientName || "Not entered")}</p>
+      <p><strong>Caregiver:</strong> ${escapeHtml(clientProfile.caregiverName || "Not entered")}</p>
+      <p><strong>Current concerns:</strong> ${escapeHtml(clientProfile.currentConcerns || clientProfile.caseNote || "Not entered")}</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="child-profile">Open Child Profile</button>
+        <button class="secondary-button" type="button" data-route-link="supervisor">Open Professional Review</button>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Recent updates and flags</h3>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <strong>Recent updates</strong>
+          <p>${dailyHabitEntries.length ? "Parent check-ins are saving and available for review." : "No check-ins saved yet."}</p>
+        </div>
+        <div class="metric-card">
+          <strong>Flags or concerns</strong>
+          <p>${escapeHtml(insights.topBehaviors[0]?.[0] || "No major behavior pattern flagged yet")}</p>
+        </div>
+        <div class="metric-card">
+          <strong>Shared goals</strong>
+          <p>${goals.filter((goal) => Number(goal.progress || 0) < 100).length} active goals in progress</p>
+        </div>
+        <div class="metric-card">
+          <strong>Recommended intervention</strong>
+          <p>Continue calm redirection, shorter directions, and shared follow-through across systems.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Meeting and documentation tools</h3>
+      <div class="hero-actions hero-actions--stacked">
+        <a class="secondary-button" href="staff-portal.html">Open Staff Portal</a>
+        <button class="secondary-button" type="button" data-route-link="goals">Open Shared Goals</button>
+        <button class="secondary-button" type="button" data-route-link="notes">Add Recommendation</button>
+        <button class="secondary-button" type="button" data-route-link="report">Open Reports</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderAdminDashboard() {
+  screenTitle.textContent = "Admin";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Admin dashboard</h2>
+      <p>Admin tools keep Rooted Parenting Network organized, safe, and professional through user management, role approval, content oversight, and report review.</p>
+      <div class="pill-row">
+        <span class="pill">Users</span>
+        <span class="pill">Approvals</span>
+        <span class="pill">Content</span>
+        <span class="pill">Reports</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>User management</h3>
+      ${bulletList([
+        "Approve or deny professional and school-based accounts.",
+        "Review role type, agency name, and work email requirements.",
+        "Manage who has parent, professional, school, or admin access."
+      ])}
+    </section>
+
+    <section class="detail-card">
+      <h3>Content management</h3>
+      ${bulletList([
+        "Update lessons, worksheets, and printable materials.",
+        "Review trauma-informed wording and agency-safe language.",
+        "Maintain branding, policy links, and support information."
+      ])}
+    </section>
+
+    <section class="detail-card">
+      <h3>Reports and safety oversight</h3>
+      ${bulletList([
+        "Review overall engagement and saved progress patterns.",
+        "Monitor reporting tools and documentation quality.",
+        "Keep confidentiality, permissions, and role-based access organized."
+      ])}
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="professional">Open Professional Dashboard</button>
+        <button class="secondary-button" type="button" data-route-link="report">Open Reports</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderParentReflection() {
+  const reflection = getParentReflection();
+  screenTitle.textContent = "Parent Reflection";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Parent self-reflection</h2>
+      <p>This screen helps the parent reflect without shame, notice growth, and choose the next right support step.</p>
+    </section>
+
+    <section class="detail-card">
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>How did I respond today?</span>
+          <textarea id="reflection-response-today" rows="3">${escapeHtml(reflection.responseToday || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What did I do well?</span>
+          <textarea id="reflection-did-well" rows="3">${escapeHtml(reflection.didWell || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What do I want to do differently tomorrow?</span>
+          <textarea id="reflection-do-differently" rows="3">${escapeHtml(reflection.doDifferently || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What support do I need?</span>
+          <textarea id="reflection-support-needed" rows="3">${escapeHtml(reflection.supportNeeded || "")}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What lesson fits what happened today?</span>
+          <textarea id="reflection-lesson-fit" rows="3">${escapeHtml(reflection.lessonFit || "")}</textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-parent-reflection="true">Save Reflection</button>
+          <button class="secondary-button" type="button" data-route-link="learning">Open Lessons</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderResources() {
+  screenTitle.textContent = "Resources";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Resources</h2>
+      <p>Connect families to real help, practical reminders, and printable tools across home, school, behavior, court, mental health, trauma, and parenting stress.</p>
+      <div class="pill-row">
+        <span class="pill">Home</span>
+        <span class="pill">School</span>
+        <span class="pill">Behavior</span>
+        <span class="pill">Court</span>
+        <span class="pill">Mental health</span>
+        <span class="pill">Trauma</span>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Immediate support</h2>
+      ${bulletList([
+        "Crisis resources and local emergency support information",
+        "Safety planning reminders for high-stress situations",
+        "School advocacy tips and meeting prep",
+        "Counseling, support group, and family service connections"
+      ])}
+    </section>
+
+    <section class="section-card">
+      <h2>Helpful printables and guides</h2>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="resource-link" type="button" data-route-link="worksheets">Open Worksheets</button>
+        <button class="resource-link" type="button" data-route-link="school">Open School Support</button>
+        <button class="resource-link" type="button" data-route-link="support">Open Real-Time Help</button>
+      </div>
+    </section>
+  `;
+}
+
+function renderNotesRecommendations() {
+  const notes = getProviderNotes();
+  screenTitle.textContent = "Notes";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Notes and recommendations</h2>
+      <p>Use structured notes for concerns, recommendations, follow-up steps, supportive response ideas, and school or court coordination.</p>
+    </section>
+
+    <section class="detail-card">
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Concern noted</span>
+          <textarea id="provider-note-concern" rows="3"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Recommendation</span>
+          <textarea id="provider-note-recommendation" rows="3"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Follow-up step</span>
+          <textarea id="provider-note-followup" rows="3"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Supportive response ideas</span>
+          <textarea id="provider-note-support" rows="3"></textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-provider-note="true">Save Recommendation Note</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved professional notes</h3>
+      ${
+        notes.length
+          ? notes
+              .map(
+                (note) => `
+                  <div class="tracker-entry">
+                    <p><strong>Concern:</strong> ${escapeHtml(note.concern || "Not entered")}</p>
+                    <p><strong>Recommendation:</strong> ${escapeHtml(note.recommendation || "Not entered")}</p>
+                    <p><strong>Follow-up:</strong> ${escapeHtml(note.followUp || "Not entered")}</p>
+                    <p><strong>Support ideas:</strong> ${escapeHtml(note.supportIdeas || "Not entered")}</p>
+                    <p><small>${escapeHtml(note.date || "")}</small></p>
+                  </div>
+                `
+              )
+              .join("")
+          : "<p>No professional notes saved yet.</p>"
+      }
+    </section>
+  `;
+}
+
+function renderNotifications() {
+  const notifications = getNotificationsData();
+  screenTitle.textContent = "Notifications";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Notifications and alerts</h2>
+      <p>Keep users informed about check-ins, goals, lessons, follow-up needs, flagged concerns, and reports.</p>
+    </section>
+
+    <section class="detail-card">
+      <h3>Current alerts</h3>
+      ${
+        notifications.items.length
+          ? notifications.items.map((item) => `<div class="tracker-entry"><p>${escapeHtml(item)}</p></div>`).join("")
+          : "<p>No alerts yet.</p>"
+      }
+    </section>
+  `;
+}
+
+function renderSettings() {
+  const settings = getUserSettings();
+  screenTitle.textContent = "Settings";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Settings</h2>
+      <p>Manage profile-related preferences, privacy language, notification choices, support access, and account controls.</p>
+    </section>
+
+    <section class="detail-card">
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Notification settings</span>
+          <input id="settings-notifications" type="text" value="${escapeHtml(settings.notificationPreference || "")}" />
+        </label>
+        <label class="tracker-field">
+          <span>Privacy settings</span>
+          <input id="settings-privacy" type="text" value="${escapeHtml(settings.privacyPreference || "")}" />
+        </label>
+        <label class="tracker-field">
+          <span>Support / help</span>
+          <textarea id="settings-support" rows="3">${escapeHtml(settings.supportContact || "")}</textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-settings="true">Save Settings</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderGoals() {
+  if (!hasPremiumAccess()) {
+    screenTitle.textContent = "Goals";
+    appContentRoot.innerHTML = renderPremiumUpgradeCard({
+      title: "Goals is Premium",
+      text: "The shared goals tab, reward tracking, attendance report, and fuller documentation tools are included with premium parent access."
+    });
+    return;
+  }
+
+  const goals = getSharedGoals();
+  const rewardEntries = getParentTrackerEntries();
+  screenTitle.textContent = "Goals";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Shared goals</h2>
+      <p>Use this tab for parents and providers to track five shared goals, update progress, and keep notes in one place inside the app.</p>
+      <div class="pill-row">
+        <span class="pill">5 shared goals</span>
+        <span class="pill">Parent + provider notes</span>
+        <span class="pill">Reward tracking</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Family and provider goals</h3>
+      <div class="tracker-form">
+        ${goals
+          .map(
+            (goal, index) => `
+              <div class="goal-card">
+                <label class="tracker-field">
+                  <span>Goal ${index + 1}</span>
+                  <input id="goal-title-${index}" type="text" value="${escapeHtml(goal.title || "")}" placeholder="Enter shared goal" />
+                </label>
+                <label class="tracker-field">
+                  <span>Progress percent</span>
+                  <input id="goal-progress-${index}" type="number" min="0" max="100" value="${escapeHtml(String(goal.progress ?? 0))}" />
+                </label>
+                <div class="progress-meter" aria-hidden="true"><span style="width:${goal.progress}%"></span></div>
+                <label class="tracker-field">
+                  <span>Parent note</span>
+                  <textarea id="goal-parent-note-${index}" rows="3" placeholder="What the parent is seeing or working on">${escapeHtml(goal.parentNote || "")}</textarea>
+                </label>
+                <label class="tracker-field">
+                  <span>Provider note</span>
+                  <textarea id="goal-provider-note-${index}" rows="3" placeholder="What the provider wants to track or support">${escapeHtml(goal.providerNote || "")}</textarea>
+                </label>
+              </div>
+            `
+          )
+          .join("")}
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-goals="true">Save Goals</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Reward system</h3>
+      <p>Use rewards and positive reinforcement here when a child completes a goal, tries a skill, or makes progress on a hard task.</p>
+      <div class="note-box">
+        <strong>No-cost reward ideas</strong>
+        ${bulletList([
+          "Extra one-on-one time with a parent or caregiver",
+          "Choice time for a favorite game or activity at home",
+          "Pick the family movie, story, or music for the evening",
+          "Stay up 10 extra minutes for reading or quiet time when appropriate",
+          "Choose dinner, snack, or family activity from approved options",
+          "Special helper job or leadership role",
+          "Extra playground, outside, dance, or movement time",
+          "A handwritten note, praise card, or encouragement coupon",
+          "Blanket fort, board game, or art time with a parent",
+          "Pick the bedtime story or choose the order of the bedtime routine"
+        ])}
+      </div>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Date</span>
+          <input id="tracker-date" type="date" />
+        </label>
+        <label class="tracker-field">
+          <span>Goal or task completed</span>
+          <input id="tracker-task" type="text" placeholder="Example: used calm words, completed homework, asked for a break" />
+        </label>
+        <label class="tracker-field">
+          <span>Reward or praise used</span>
+          <input id="tracker-reward" type="text" placeholder="Example: praise, sticker, extra time together, choice time" />
+        </label>
+        <label class="tracker-field">
+          <span>Calm follow-through if needed</span>
+          <input id="tracker-consequence" type="text" placeholder="Example: redo, repair step, brief reset, none needed" />
+        </label>
+        <label class="tracker-field">
+          <span>Notes</span>
+          <textarea id="tracker-notes" rows="3" placeholder="What worked, what helped, or what you want to repeat"></textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-parent-tracker="true">Save Reward Entry</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved reward entries</h3>
+      ${
+        rewardEntries.length
+          ? rewardEntries
+              .map(
+                (entry) => `
+                  <div class="tracker-entry">
+                    <strong>${escapeHtml(entry.date || "No date")}</strong>
+                    <p><strong>Goal or task:</strong> ${escapeHtml(entry.task || "Not entered")}</p>
+                    <p><strong>Reward:</strong> ${escapeHtml(entry.reward || "Not entered")}</p>
+                    <p><strong>Follow-through:</strong> ${escapeHtml(entry.consequence || "Not entered")}</p>
+                    <p><strong>Notes:</strong> ${escapeHtml(entry.notes || "Not entered")}</p>
+                  </div>
+                `
+              )
+              .join("")
+          : "<p>No reward entries saved yet. Add one above when a child reaches a goal or makes progress.</p>"
+      }
+    </section>
+  `;
+}
+
+function renderCarePlan() {
+  const carePlan = getCarePlan();
+  screenTitle.textContent = "Care Plan";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Child support plan</h2>
+      <p>This is the shared trauma-informed plan for how adults will understand, support, and respond to this child across home, school, therapy, CPS, court, and community settings.</p>
+      <div class="pill-row">
+        <span class="pill">Strengths-based</span>
+        <span class="pill">Safety first</span>
+        <span class="pill">Cross-system</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Strengths and protective factors</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>What strengths do adults need to keep seeing?</span>
+          <textarea id="care-plan-strengths" rows="3">${escapeHtml(carePlan.strengths)}</textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Triggers and warning signs</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>What tends to trigger behavior or overwhelm?</span>
+          <textarea id="care-plan-triggers" rows="3">${escapeHtml(carePlan.triggers)}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What are early warning signs before things get bigger?</span>
+          <textarea id="care-plan-warning-signs" rows="3">${escapeHtml(carePlan.warningSigns)}</textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>What helps and what to avoid</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>What helps this child regulate and re-engage?</span>
+          <textarea id="care-plan-what-helps" rows="4">${escapeHtml(carePlan.whatHelps)}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What responses usually make things worse?</span>
+          <textarea id="care-plan-avoid" rows="4">${escapeHtml(carePlan.avoid)}</textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Repair and team response</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>How should adults repair after a hard moment?</span>
+          <textarea id="care-plan-repair" rows="3">${escapeHtml(carePlan.repairPlan)}</textarea>
+        </label>
+        <label class="tracker-field">
+          <span>What shared commitments should the team follow?</span>
+          <textarea id="care-plan-team" rows="3">${escapeHtml(carePlan.teamCommitments)}</textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Immediate safety plan</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>What should adults do first if behavior becomes unsafe?</span>
+          <textarea id="care-plan-safety" rows="3">${escapeHtml(carePlan.immediateSafety)}</textarea>
+        </label>
+        <div class="action-box">
+          <strong>Important</strong>
+          <p>Use this app for planning and support, not as a replacement for emergency care. If there is immediate danger, use crisis or emergency services right away.</p>
+        </div>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-care-plan="true">Save Child Support Plan</button>
+          <button class="secondary-button" type="button" data-route-link="support">Back to Support</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderAttendanceProgressReport() {
+  if (!hasPremiumAccess()) {
+    screenTitle.textContent = "Attendance Report";
+    appContentRoot.innerHTML = renderPremiumUpgradeCard({
+      title: "Attendance and Progress Report is Premium",
+      text: "The in-app attendance report, progress summary, and documentation tools are included with premium parent access."
+    });
+    return;
+  }
+
+  const clientProfile = getClientProfile();
+  const attendanceEntries = getAttendanceEntries();
+  const completedLessons = getCompletedLessons();
+  const totalLessons = appContent.learningPath.length;
+  const dailyHabitEntries = getDailyHabitEntries();
+  const trackerEntries = getParentTrackerEntries();
+  const disciplineEntries = getDisciplineEntries();
+  const percent = totalLessons ? Math.round((completedLessons.length / totalLessons) * 100) : 0;
+
+  screenTitle.textContent = "Attendance Report";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Attendance and progress report</h2>
+      <p>This report now stays inside the app so parent, provider, CPS, school, and court notes can stay in one place.</p>
+      <div class="pill-row">
+        <span class="pill">${completedLessons.length} of ${totalLessons} lessons complete</span>
+        <span class="pill">${attendanceEntries.length} attendance entries</span>
+        <span class="pill">${percent}% course progress</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Summary</h3>
+      <p><strong>Primary client name:</strong> ${escapeHtml(clientProfile.clientName || "Not entered")}</p>
+      <p><strong>Caregiver name:</strong> ${escapeHtml(clientProfile.caregiverName || "Not entered")}</p>
+      <p><strong>Children on case:</strong> ${escapeHtml(clientProfile.children.filter(Boolean).join(", ") || "Not entered")}</p>
+      <p><strong>Case note:</strong> ${escapeHtml(clientProfile.caseNote || "Not entered")}</p>
+      <p><strong>Course progress:</strong> ${completedLessons.length} of ${totalLessons} lessons completed (${percent}%)</p>
+    </section>
+
+    <section class="detail-card">
+      <h3>Attendance and progress entry</h3>
+      <div class="tracker-form">
+        <label class="tracker-field">
+          <span>Session or course title</span>
+          <input id="attendance-session" type="text" placeholder="Example: Session 2 - Positive Discipline and Follow-Through" />
+        </label>
+        <label class="tracker-field">
+          <span>Date</span>
+          <input id="attendance-date" type="date" />
+        </label>
+        <label class="tracker-field">
+          <span>Status</span>
+          <select id="attendance-status">
+            <option value="Attended">Attended</option>
+            <option value="Missed">Missed</option>
+            <option value="Rescheduled">Rescheduled</option>
+          </select>
+        </label>
+        <label class="tracker-field">
+          <span>What was learned or practiced</span>
+          <textarea id="attendance-learned" rows="3" placeholder="Add progress, skills practiced, barriers, or strengths"></textarea>
+        </label>
+        <label class="tracker-field">
+          <span>Notes</span>
+          <textarea id="attendance-notes" rows="3" placeholder="Add service note, school note, or follow-up"></textarea>
+        </label>
+        <div class="hero-actions hero-actions--stacked">
+          <button class="primary-button" type="button" data-save-attendance="true">Save Attendance Report Entry</button>
+          <button class="secondary-button" type="button" data-route-link="progress">Back to Progress</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Saved attendance and progress entries</h3>
+      ${
+        attendanceEntries.length
+          ? attendanceEntries
+              .map(
+                (entry) => `
+                  <div class="tracker-entry">
+                    <strong>${escapeHtml(entry.sessionTitle || "Session not entered")}</strong>
+                    <p><strong>Date:</strong> ${escapeHtml(entry.date || "No date")}</p>
+                    <p><strong>Status:</strong> ${escapeHtml(entry.status || "Not entered")}</p>
+                    <p><strong>Learned:</strong> ${escapeHtml(entry.learned || "Not entered")}</p>
+                    <p><strong>Notes:</strong> ${escapeHtml(entry.notes || "Not entered")}</p>
+                  </div>
+                `
+              )
+              .join("")
+          : "<p>No attendance or progress entries saved yet.</p>"
+      }
+    </section>
+
+    <section class="detail-card">
+      <h3>Recent rewards and discipline notes</h3>
+      <div class="note-box">
+        <strong>Rewards</strong>
+        ${
+          trackerEntries.length
+            ? trackerEntries
+                .slice(0, 3)
+                .map((entry) => `<p>${escapeHtml(entry.date || "No date")}: ${escapeHtml(entry.task || "No task")} - ${escapeHtml(entry.reward || "No reward")}</p>`)
+                .join("")
+            : "<p>No reward entries yet.</p>"
+        }
+      </div>
+      <div class="note-box">
+        <strong>Discipline follow-up</strong>
+        ${
+          disciplineEntries.length
+            ? disciplineEntries
+                .slice(0, 3)
+                .map((entry) => `<p>${escapeHtml(entry.date || "No date")}: ${escapeHtml(entry.type || "No entry")} - ${escapeHtml(entry.followup || "No follow-up")}</p>`)
+                .join("")
+            : "<p>No discipline entries yet.</p>"
+        }
+      </div>
+      <div class="note-box">
+        <strong>Recent daily check-ins</strong>
+        ${
+          dailyHabitEntries.length
+            ? dailyHabitEntries
+                .slice(0, 3)
+                .map((entry) => `<p>${escapeHtml(entry.date || "No date")}: ${escapeHtml(entry.whatHappened || entry.positiveMoment || "No note entered")}</p>`)
+                .join("")
+            : "<p>No daily check-ins yet.</p>"
+        }
+      </div>
     </section>
   `;
 }
@@ -3261,6 +4974,8 @@ function renderProgressTracker() {
   const dailyHabitEntries = getDailyHabitEntries();
   const disciplineEntries = getDisciplineEntries();
   const assignedCourse = getAssignedCourse();
+  const goals = getSharedGoals();
+  const insights = buildBehaviorInsights(dailyHabitEntries);
   const totalLessons = appContent.learningPath.length;
   const completedCount = completedLessons.length;
   const remainingCount = Math.max(totalLessons - completedCount, 0);
@@ -3269,15 +4984,66 @@ function renderProgressTracker() {
     .filter((lesson) => !completedLessons.includes(lesson.slug))
     .slice(0, 3);
 
-  screenTitle.textContent = "Progress Tracker";
+  screenTitle.textContent = "Progress";
   appContentRoot.innerHTML = `
     <section class="hero">
-      <h2>Your progress</h2>
-      <p>Track completed lessons, see what is left, and keep moving through the Rooted Parenting learning path one step at a time.</p>
+      <h2>Behavior patterns</h2>
+      <p>This week overview shows trends visually while keeping the fuller tracker and documentation tools underneath for trauma-informed coordination across systems.</p>
       <div class="pill-row">
         <span class="pill">${completedCount} completed</span>
         <span class="pill">${remainingCount} remaining</span>
         <span class="pill">${percent}% finished</span>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>This week overview</h3>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <strong>Most common triggers</strong>
+          <p>${escapeHtml((insights.topTriggers[0]?.[0] || "transitions"))}</p>
+          <p>${escapeHtml((insights.topTriggers[1]?.[0] || "homework frustration"))}</p>
+        </div>
+        <div class="metric-card">
+          <strong>Most successful responses</strong>
+          <p>${escapeHtml((insights.topResponses[0]?.[0] || "calm tone"))}</p>
+          <p>${escapeHtml((insights.topResponses[1]?.[0] || "break option"))}</p>
+        </div>
+      </div>
+      <div class="detail-stack">
+        ${insights.improvementAreas
+          .map(
+            (item) => `
+              <div class="trend-bar">
+                <div class="trend-meta">
+                  <strong>${escapeHtml(item.label)}</strong>
+                  <span>${formatPercent(item.percent)}</span>
+                </div>
+                <div class="trend-bar__rail" aria-hidden="true"><span style="width:${item.percent}%"></span></div>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h3>Goals</h3>
+      <div class="goals-grid">
+        ${goals
+          .map(
+            (goal) => `
+              <div class="goal-card">
+                <strong>${escapeHtml(goal.title)}</strong>
+                <div class="progress-meter" aria-hidden="true"><span style="width:${goal.progress}%"></span></div>
+                <p>${formatPercent(goal.progress)}</p>
+              </div>
+            `
+          )
+          .join("")}
+      </div>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="secondary-button" type="button" data-route-link="goals">Open Shared Goals Tab</button>
       </div>
     </section>
 
@@ -3487,7 +5253,7 @@ function renderProgressTracker() {
           : `<p>Finish all lessons to unlock the completion certificate inside the tracker.</p>`
       }
       <div class="hero-actions hero-actions--stacked">
-        <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
+        <button class="resource-link" type="button" data-route-link="report">Attendance and Progress Report</button>
         ${
           completedCount === totalLessons && totalLessons > 0
             ? `<a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Open Auto-Filled Certificate</a>`
@@ -3998,14 +5764,14 @@ function renderWorksheets() {
     </section>
     <section class="section-card">
       <h2>Professional Packet</h2>
-      <p>These printable materials help present Rooted Parenting as a referral-ready parent education program for juvenile courts, CPS, schools, and family service agencies.</p>
+      <p>These printable materials help present Rooted Parenting Network as a referral-ready, trauma-informed parent education program for juvenile courts, CPS, schools, therapy settings, and family service agencies.</p>
       <div class="hero-actions hero-actions--stacked">
         <a class="resource-link" href="rooted-parenting-court-cps-referral-packet.html" target="_blank" rel="noopener noreferrer">Court / CPS Referral Packet</a>
         <a class="resource-link" href="rooted-parenting-release-of-information.html" target="_blank" rel="noopener noreferrer">Release of Information</a>
         <a class="resource-link" href="rooted-parenting-court-order-language.html" target="_blank" rel="noopener noreferrer">Sample Court Order Language</a>
         <a class="resource-link" href="rooted-parenting-program-manual.html" target="_blank" rel="noopener noreferrer">Program Manual</a>
         <a class="resource-link" href="rooted-parenting-pre-post-assessment.html">Pre/Post Parenting Assessment</a>
-        <a class="resource-link" href="rooted-parenting-attendance-progress-report.html" target="_blank" rel="noopener noreferrer">Attendance and Progress Report</a>
+        <button class="resource-link" type="button" data-route-link="report">Attendance and Progress Report</button>
         <a class="resource-link" href="rooted-parenting-completion-certificate.html" target="_blank" rel="noopener noreferrer">Completion Certificate Template</a>
       </div>
     </section>
@@ -4118,6 +5884,9 @@ function renderRoute() {
     case "home":
       renderHome();
       break;
+    case "checkin":
+      renderCheckIn();
+      break;
     case "behaviors":
       renderBehaviors();
       break;
@@ -4142,11 +5911,57 @@ function renderRoute() {
     case "tools":
       renderTools();
       break;
+    case "support":
+      if (slug) {
+        renderSupportToolDetail(slug);
+      } else {
+        renderTools();
+      }
+      break;
     case "assessment":
       renderAssessment();
       break;
     case "progress":
       renderProgressTracker();
+      break;
+    case "goals":
+      renderGoals();
+      break;
+    case "child-profile":
+      renderChildProfile();
+      break;
+    case "professional":
+      renderProfessionalDashboard();
+      break;
+    case "admin":
+      renderAdminDashboard();
+      break;
+    case "reflection":
+      renderParentReflection();
+      break;
+    case "resources":
+      renderResources();
+      break;
+    case "notes":
+      renderNotesRecommendations();
+      break;
+    case "notifications":
+      renderNotifications();
+      break;
+    case "settings":
+      renderSettings();
+      break;
+    case "care-plan":
+      renderCarePlan();
+      break;
+    case "report":
+      renderAttendanceProgressReport();
+      break;
+    case "teacher":
+      renderTeacher();
+      break;
+    case "team":
+      renderTeam();
       break;
     case "supervisor":
       renderSupervisorPortal();
@@ -4162,6 +5977,7 @@ function renderRoute() {
       break;
   }
 
+  renderAppNotice();
   updateTabState(section);
 }
 
@@ -4229,6 +6045,119 @@ Thank you,
   `;
 }
 
+function renderTeacher() {
+  screenTitle.textContent = "Teacher";
+  appContentRoot.innerHTML = `
+    <section class="hero">
+      <h2>Teacher support and training</h2>
+      <p>This tab gives teachers the same practical help tools as parents, along with trauma-informed classroom training for responding to children with trauma history, behavior concerns, and cross-system needs.</p>
+      <div class="pill-row">
+        <span class="pill">Trauma-informed</span>
+        <span class="pill">Classroom ready</span>
+        <span class="pill">Behavior support</span>
+        <span class="pill">Cross-system care</span>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Same practical help</h2>
+      <p>Teachers can use the same response tools parents use so children experience calmer, more predictable support across home, school, and services.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="button-card" type="button" data-route-link="support">
+          <strong>Real-Time Help</strong>
+          <span>Use calm steps during refusal, yelling, shutdown, aggression, or anxiety.</span>
+        </button>
+        <button class="button-card" type="button" data-route-link="checkin">
+          <strong>Teacher Check-In</strong>
+          <span>Log classroom patterns, triggers, responses, and small wins.</span>
+        </button>
+        <button class="button-card" type="button" data-route-link="learning">
+          <strong>Lessons</strong>
+          <span>Open the same trauma-informed lessons used across the app.</span>
+        </button>
+        <button class="button-card" type="button" data-route-link="school">
+          <strong>School Support</strong>
+          <span>See school planning, meeting prep, and practical classroom supports.</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Teacher training lessons</h2>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="button-card" type="button" data-learning="trauma-informed-classroom-responses">
+          <strong>Trauma-Informed Classroom Responses</strong>
+          <span>Learn how to respond without shame, public escalation, or power struggles.</span>
+        </button>
+        <button class="button-card" type="button" data-learning="de-escalation-at-school">
+          <strong>De-Escalation in School</strong>
+          <span>Use calmer steps when behavior starts rising in the classroom.</span>
+        </button>
+        <button class="button-card" type="button" data-learning="trauma-and-adhd-signals">
+          <strong>Trauma and ADHD Signals</strong>
+          <span>Understand overlap in attention, stress responses, impulsivity, and regulation.</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Shared child support plan</h2>
+      <p>Teachers can open the same child support plan used by parents and providers so classroom responses stay aligned with the child's needs and regulation supports.</p>
+      <div class="hero-actions hero-actions--stacked">
+        <button class="button-card" type="button" data-route-link="care-plan">
+          <strong>Open Child Support Plan</strong>
+          <span>See triggers, warning signs, calming supports, and shared team commitments.</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="detail-stack">
+      ${teacherTrainingTopics
+        .map(
+          (topic) => `
+            <section class="detail-card">
+              <h3>${topic.title}</h3>
+              ${bulletList(topic.points)}
+            </section>
+          `
+        )
+        .join("")}
+    </section>
+
+    <section class="section-card">
+      <h2>Teacher response patterns</h2>
+      ${bulletList([
+        "Connect before correcting whenever possible.",
+        "Give one direction at a time and reduce extra language.",
+        "Offer regulated choices instead of escalating a power struggle.",
+        "Use private support and repair more than public correction.",
+        "Coordinate across home, school, therapy, CPS, and court systems with the same trauma-informed language."
+      ])}
+    </section>
+
+    <section class="section-card">
+      <h2>When trauma and ADHD overlap</h2>
+      ${bulletList([
+        "Break work into smaller steps with visual support.",
+        "Use movement breaks and calm reset options before behavior becomes bigger.",
+        "Check whether the child missed the direction because of overload, distraction, or stress.",
+        "Teach replacement skills directly and repeat them often.",
+        "Notice effort, recovery, and re-entry, not only mistakes."
+      ])}
+    </section>
+
+    <section class="section-card">
+      <h2>Training focus</h2>
+      ${bulletList([
+        "How trauma changes behavior, attention, memory, and flexibility in the classroom.",
+        "How to respond to children with trauma history without shame, power struggles, or public escalation.",
+        "How trauma-informed adult regulation helps children return to safety and learning faster.",
+        "How to use shared response patterns so parents, teachers, and providers are not working against each other."
+      ])}
+    </section>
+  `;
+}
+
 function updateTabState(section) {
   const activeMap = {
     behavior: "behaviors",
@@ -4236,8 +6165,23 @@ function updateTabState(section) {
     courses: "learning",
     course: "learning",
     path: "learning",
-    progress: "learning",
-    supervisor: "home",
+    progress: "progress",
+    report: "progress",
+    goals: "goals",
+    "child-profile": "home",
+    professional: "team",
+    admin: "team",
+    reflection: "checkin",
+    resources: "support",
+    notes: "team",
+    notifications: "home",
+    settings: "home",
+    "care-plan": "support",
+    supervisor: "team",
+    support: "support",
+    checkin: "checkin",
+    teacher: "teacher",
+    team: "team",
     onboarding: "home"
   };
   const active = activeMap[section] || section || "home";
@@ -4283,6 +6227,151 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const supportToolButton = event.target.closest("[data-support-tool]");
+  if (supportToolButton) {
+    setRoute(`support/${supportToolButton.dataset.supportTool}`);
+    return;
+  }
+
+  const permissionButton = event.target.closest("[data-select-team-permission]");
+  if (permissionButton) {
+    const team = getTeamSettings();
+    saveTeamSettings({
+      ...team,
+      selectedPermission: permissionButton.dataset.selectTeamPermission
+    });
+    renderRoute();
+    return;
+  }
+
+  const checkInButton = event.target.closest("[data-save-checkin]");
+  if (checkInButton) {
+    const positiveMoment = document.getElementById("checkin-positive-moment")?.value.trim() || "";
+    saveDailyHabitEntry({
+      date: new Date().toISOString().slice(0, 10),
+      overall: document.getElementById("checkin-overall")?.value || "mixed",
+      behaviors: getCheckedValues("checkin-behaviors"),
+      triggers: getCheckedValues("checkin-triggers"),
+      responses: getCheckedValues("checkin-responses"),
+      childResponse: getCheckedValues("checkin-child-response"),
+      positiveMoment
+    });
+    setAppNotice("Parent check-in saved.");
+    renderRoute();
+    return;
+  }
+
+  const teacherCheckInButton = event.target.closest("[data-save-teacher-checkin]");
+  if (teacherCheckInButton) {
+    const positiveMoment = document.getElementById("teacher-checkin-positive-moment")?.value.trim() || "";
+    const supportThatHelped = document.getElementById("teacher-checkin-support")?.value.trim() || "";
+    saveTeacherCheckInEntry({
+      date: new Date().toISOString().slice(0, 10),
+      overall: document.getElementById("teacher-checkin-overall")?.value || "mixed",
+      behaviors: getCheckedValues("teacher-checkin-behaviors"),
+      triggers: getCheckedValues("teacher-checkin-triggers"),
+      responses: getCheckedValues("teacher-checkin-responses"),
+      studentResponse: getCheckedValues("teacher-checkin-student-response"),
+      supportThatHelped,
+      positiveMoment
+    });
+    setAppNotice("Teacher check-in saved.");
+    renderRoute();
+    return;
+  }
+
+  const saveGoalsButton = event.target.closest("[data-save-goals]");
+  if (saveGoalsButton) {
+    const nextGoals = defaultGoals.map((goal, index) => ({
+      id: goal.id,
+      title: document.getElementById(`goal-title-${index}`)?.value.trim() || goal.title,
+      progress: Math.max(0, Math.min(100, Number(document.getElementById(`goal-progress-${index}`)?.value || goal.progress))),
+      parentNote: document.getElementById(`goal-parent-note-${index}`)?.value.trim() || "",
+      providerNote: document.getElementById(`goal-provider-note-${index}`)?.value.trim() || ""
+    }));
+    saveSharedGoals(nextGoals);
+    setAppNotice("Shared goals updated.");
+    renderRoute();
+    return;
+  }
+
+  const saveChildProfileButton = event.target.closest("[data-save-child-profile]");
+  if (saveChildProfileButton) {
+    const currentProfile = getClientProfile();
+    saveClientProfile({
+      ...currentProfile,
+      clientName: document.getElementById("child-profile-name")?.value.trim() || "",
+      caregiverName: document.getElementById("child-profile-caregiver")?.value.trim() || "",
+      strengths: document.getElementById("child-profile-strengths")?.value.trim() || "",
+      currentConcerns: document.getElementById("child-profile-concerns")?.value.trim() || "",
+      triggers: document.getElementById("child-profile-triggers")?.value.trim() || "",
+      copingTools: document.getElementById("child-profile-coping")?.value.trim() || "",
+      behaviorPatterns: document.getElementById("child-profile-patterns")?.value.trim() || "",
+      schoolNotes: document.getElementById("child-profile-school")?.value.trim() || "",
+      careTeamMembers: document.getElementById("child-profile-team")?.value.trim() || ""
+    });
+    setAppNotice("Child profile saved.");
+    renderRoute();
+    return;
+  }
+
+  const saveParentReflectionButton = event.target.closest("[data-save-parent-reflection]");
+  if (saveParentReflectionButton) {
+    saveParentReflection({
+      responseToday: document.getElementById("reflection-response-today")?.value.trim() || "",
+      didWell: document.getElementById("reflection-did-well")?.value.trim() || "",
+      doDifferently: document.getElementById("reflection-do-differently")?.value.trim() || "",
+      supportNeeded: document.getElementById("reflection-support-needed")?.value.trim() || "",
+      lessonFit: document.getElementById("reflection-lesson-fit")?.value.trim() || ""
+    });
+    setAppNotice("Parent reflection saved.");
+    renderRoute();
+    return;
+  }
+
+  const saveProviderNoteButton = event.target.closest("[data-save-provider-note]");
+  if (saveProviderNoteButton) {
+    saveProviderNote({
+      concern: document.getElementById("provider-note-concern")?.value.trim() || "",
+      recommendation: document.getElementById("provider-note-recommendation")?.value.trim() || "",
+      followUp: document.getElementById("provider-note-followup")?.value.trim() || "",
+      supportIdeas: document.getElementById("provider-note-support")?.value.trim() || "",
+      date: new Date().toLocaleString()
+    });
+    setAppNotice("Recommendation note saved.");
+    renderRoute();
+    return;
+  }
+
+  const saveSettingsButton = event.target.closest("[data-save-settings]");
+  if (saveSettingsButton) {
+    saveUserSettings({
+      notificationPreference: document.getElementById("settings-notifications")?.value.trim() || "",
+      privacyPreference: document.getElementById("settings-privacy")?.value.trim() || "",
+      supportContact: document.getElementById("settings-support")?.value.trim() || ""
+    });
+    setAppNotice("Settings updated.");
+    renderRoute();
+    return;
+  }
+
+  const saveCarePlanButton = event.target.closest("[data-save-care-plan]");
+  if (saveCarePlanButton) {
+    saveCarePlan({
+      strengths: document.getElementById("care-plan-strengths")?.value.trim() || defaultCarePlan.strengths,
+      triggers: document.getElementById("care-plan-triggers")?.value.trim() || defaultCarePlan.triggers,
+      warningSigns: document.getElementById("care-plan-warning-signs")?.value.trim() || defaultCarePlan.warningSigns,
+      whatHelps: document.getElementById("care-plan-what-helps")?.value.trim() || defaultCarePlan.whatHelps,
+      avoid: document.getElementById("care-plan-avoid")?.value.trim() || defaultCarePlan.avoid,
+      repairPlan: document.getElementById("care-plan-repair")?.value.trim() || defaultCarePlan.repairPlan,
+      teamCommitments: document.getElementById("care-plan-team")?.value.trim() || defaultCarePlan.teamCommitments,
+      immediateSafety: document.getElementById("care-plan-safety")?.value.trim() || defaultCarePlan.immediateSafety
+    });
+    setAppNotice("Child support plan saved.");
+    renderRoute();
+    return;
+  }
+
   const trackerSaveButton = event.target.closest("[data-save-parent-tracker]");
   if (trackerSaveButton) {
     const dateValue = document.getElementById("tracker-date")?.value || "";
@@ -4303,6 +6392,7 @@ document.addEventListener("click", (event) => {
       consequence: consequenceValue,
       notes: notesValue
     });
+    setAppNotice("Reward entry saved.");
     renderRoute();
     return;
   }
@@ -4333,6 +6423,7 @@ document.addEventListener("click", (event) => {
       learned,
       tomorrowFocus
     });
+    setAppNotice("21-day daily check-in saved.");
     renderRoute();
     return;
   }
@@ -4351,6 +6442,7 @@ document.addEventListener("click", (event) => {
       growthArea: document.getElementById("assessment-growth")?.value.trim() || "",
       familyChange: document.getElementById("assessment-change")?.value.trim() || ""
     });
+    setAppNotice("Assessment saved.");
     renderRoute();
     return;
   }
@@ -4384,12 +6476,14 @@ document.addEventListener("click", (event) => {
         resetPlan: document.getElementById("ws-parent-reset")?.value.trim() || ""
       }
     });
+    setAppNotice("Worksheet answers saved.");
     renderRoute();
     return;
   }
 
   const clientProfileButton = event.target.closest("[data-save-client-profile]");
   if (clientProfileButton) {
+    const currentProfile = getClientProfile();
     const clientName = document.getElementById("client-name")?.value.trim() || "";
     const caregiverName = document.getElementById("caregiver-name")?.value.trim() || "";
     const caseNote = document.getElementById("case-note")?.value.trim() || "";
@@ -4399,18 +6493,21 @@ document.addEventListener("click", (event) => {
       .filter(Boolean);
 
     saveClientProfile({
+      ...currentProfile,
       clientName,
       caregiverName,
       caseNote,
       assignedCourse,
       children: children.length ? children : [clientName].filter(Boolean)
     });
+    setAppNotice("Client profile saved.");
     renderRoute();
     return;
   }
 
   const addChildButton = event.target.closest("[data-add-child-profile]");
   if (addChildButton) {
+    const currentProfile = getClientProfile();
     const clientName = document.getElementById("client-name")?.value.trim() || "";
     const caregiverName = document.getElementById("caregiver-name")?.value.trim() || "";
     const caseNote = document.getElementById("case-note")?.value.trim() || "";
@@ -4418,6 +6515,7 @@ document.addEventListener("click", (event) => {
       .map((input) => input.value.trim());
 
     saveClientProfile({
+      ...currentProfile,
       clientName,
       caregiverName,
       caseNote,
@@ -4458,6 +6556,36 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const teamSettingsButton = event.target.closest("[data-save-team-settings]");
+  if (teamSettingsButton) {
+    const team = getTeamSettings();
+    const permission = team.selectedPermission || "view progress only";
+    const inviteEmail = document.getElementById("team-invite-email")?.value.trim() || "";
+    const inviteCode = document.getElementById("team-invite-code")?.value.trim() || "";
+    const teamMessage = document.getElementById("team-message");
+    if (!inviteEmail) {
+      if (teamMessage) {
+        teamMessage.innerHTML = "<p>Enter an email or contact before inviting a member.</p>";
+      }
+      return;
+    }
+    const nextMembers = inviteEmail
+      ? [...team.members, { role: inviteEmail, permission }]
+      : team.members;
+    saveTeamSettings({
+      inviteEmail,
+      inviteCode,
+      selectedPermission: permission,
+      members: nextMembers
+    });
+    if (teamMessage) {
+      teamMessage.innerHTML = `<p>Added ${escapeHtml(inviteEmail)} with ${escapeHtml(permission)}.</p>`;
+    }
+    setAppNotice("Team settings updated.");
+    renderRoute();
+    return;
+  }
+
   const attendanceButton = event.target.closest("[data-save-attendance]");
   if (attendanceButton) {
     const sessionTitle = document.getElementById("attendance-session")?.value.trim() || "";
@@ -4478,6 +6606,7 @@ document.addEventListener("click", (event) => {
       learned,
       notes
     });
+    setAppNotice("Attendance and progress entry saved.");
     renderRoute();
     return;
   }
@@ -4502,6 +6631,7 @@ document.addEventListener("click", (event) => {
       reaction,
       followup
     });
+    setAppNotice("Discipline entry saved.");
     renderRoute();
     return;
   }
@@ -4521,7 +6651,14 @@ document.addEventListener("click", (event) => {
 
   const onboardingButton = event.target.closest("[data-finish-onboarding]");
   if (onboardingButton) {
+    const selectedRole = document.querySelector('input[name="account-role"]:checked')?.value || roleOptions[0];
+    const inviteCode = document.getElementById("invite-code-input")?.value.trim() || "";
+    saveAccountProfile({
+      role: selectedRole,
+      inviteCode
+    });
     completeOnboarding();
+    setAppNotice("Account setup saved.");
     setRoute("home");
   }
 });
@@ -4533,15 +6670,20 @@ tabButtons.forEach((button) => {
 });
 
 topAction.addEventListener("click", () => {
-  setRoute("tools");
+  setRoute("support");
 });
 
 window.addEventListener("hashchange", renderRoute);
+window.addEventListener("focus", async () => {
+  await loadHomeFamilySchedule();
+  renderRoute();
+});
 
 async function loadAppContent() {
   applyAccessFromQuery();
 
   try {
+    await loadHomeFamilySchedule();
     const response = await fetch("parenting-support-app-content.json");
     if (!response.ok) {
       throw new Error(`Unable to load content: ${response.status}`);
@@ -4549,7 +6691,7 @@ async function loadAppContent() {
 
     const json = await response.json();
     appContent = {
-      appTitle: "Rooted Parenting",
+      appTitle: "Rooted Parenting Network",
       intro:
         "This app helps parents respond to children with behavioral challenges using trauma-informed, non-judgmental, supportive guidance.",
       learningPages: fallbackContent.learningPages,
@@ -4582,6 +6724,7 @@ async function loadAppContent() {
       ...behavior
     }));
   } catch (error) {
+    await loadHomeFamilySchedule();
     appContent = fallbackContent;
   }
 

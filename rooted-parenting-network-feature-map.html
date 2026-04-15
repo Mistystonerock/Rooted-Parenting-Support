@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rooted Parenting Network Feature Map</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.55in;
+    }
+
+    :root {
+      --ink: #283238;
+      --muted: #5f6b70;
+      --accent: #657460;
+      --accent-soft: #e5ece2;
+      --line: #d7d1c8;
+      --soft: #f5f1ea;
+      --surface: #fffdfa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      font-size: 10.5pt;
+      line-height: 1.38;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 25pt;
+      line-height: 1.05;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 11pt;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 5px;
+      margin-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 11pt;
+      margin-bottom: 6px;
+    }
+
+    p,
+    li {
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 5px;
+    }
+
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: rgba(255, 253, 250, 0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--accent);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .page {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #fffdf9 0%, #f3eee6 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .subtitle {
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 9.5pt;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--surface);
+      break-inside: avoid;
+    }
+
+    .soft-card {
+      background: var(--soft);
+    }
+
+    .quote {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      display: grid;
+      gap: 5px;
+      text-align: center;
+      font-size: 9.5pt;
+    }
+
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .controls {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <button class="btn btn--primary" type="button" onclick="window.print()">Download / Save as PDF</button>
+    <button class="btn" type="button" onclick="goBack()">Back</button>
+  </div>
+
+  <main class="page">
+    <section class="hero">
+      <h1>Rooted Parenting Network</h1>
+      <p class="subtitle">Professional Feature Map and App Blueprint</p>
+      <p>Rooted Parenting Network is a trauma-informed parenting and child-support platform designed to help parents, courts, CPS, counselors, schools, and support teams stay informed, organized, and consistent around a child's needs.</p>
+      <div class="pill-row">
+        <span class="pill">Trauma-informed</span>
+        <span class="pill">Parent + provider aligned</span>
+        <span class="pill">Agency ready</span>
+        <span class="pill">Mobile-first</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Main Goal</h2>
+      <p>Create one shared support platform where families and professionals can document progress, respond consistently, track goals, communicate clearly, and build safer, more regulated support around a child across home, school, therapy, CPS, and court systems.</p>
+    </section>
+
+    <section class="grid">
+      <div class="stack">
+        <article class="card">
+          <h2>User Roles</h2>
+          <h3>Parent / Caregiver</h3>
+          <ul>
+            <li>Daily check-ins</li>
+            <li>Lessons and parenting guidance</li>
+            <li>Goals and progress tracking</li>
+            <li>Resources and printable worksheets</li>
+            <li>Shared documents, support plans, and family updates</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Professional</h3>
+          <ul>
+            <li>Counselor</li>
+            <li>Caseworker</li>
+            <li>CPS worker</li>
+            <li>Court staff</li>
+            <li>Mentor</li>
+            <li>Behavioral health worker</li>
+            <li>School staff if approved</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Admin</h3>
+          <ul>
+            <li>Manage users and role approval</li>
+            <li>Approve professionals</li>
+            <li>Manage content and lessons</li>
+            <li>Review reports and system activity</li>
+          </ul>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Professional Requirements</h2>
+          <ul>
+            <li>Separate professional login path</li>
+            <li>Approval workflow before access is active</li>
+            <li>Agency or organization name</li>
+            <li>Professional role selection</li>
+            <li>Work email when possible</li>
+            <li>Role-based permissions and assigned-family access only</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>What Makes It Professional</h2>
+          <ul>
+            <li>Soft but clean and trustworthy design</li>
+            <li>Same logo and visual language everywhere</li>
+            <li>Clear navigation with less clutter</li>
+            <li>Consistent fonts, polished icons, and mobile-first layout</li>
+            <li>Agency-safe wording for CPS, courts, schools, and providers</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="card">
+          <h2>Version 1 Core Screens</h2>
+          <ul>
+            <li>Welcome / Landing Screen</li>
+            <li>Sign Up / Login</li>
+            <li>Parent Dashboard</li>
+            <li>Professional Dashboard</li>
+            <li>Child Profile</li>
+            <li>Check-In Screen</li>
+            <li>Lessons / Courses</li>
+            <li>Goals Screen</li>
+            <li>Team / Support Circle</li>
+            <li>Reports / Printables</li>
+          </ul>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Best Screen Flow</h2>
+          <h3>Parent Flow</h3>
+          <p>Welcome → Parent Login → Child Profile → Daily Check-In → Dashboard → Lessons → Goals → Resources</p>
+          <h3 style="margin-top: 12px;">Professional Flow</h3>
+          <p>Welcome → Professional Login → Approval → Dashboard → Assigned Families → Child Profile → Progress / Reports → Notes / Recommendations</p>
+          <h3 style="margin-top: 12px;">Admin Flow</h3>
+          <p>Admin Login → User Management → Role Approval → Content Management → Reports</p>
+        </article>
+
+        <article class="card">
+          <h2>Technology Direction</h2>
+          <ul>
+            <li>Frontend based on the visual model already built</li>
+            <li>Backend for user accounts, saved data, roles, and permissions</li>
+            <li>Database for users, family profiles, child profiles, check-ins, goals, lessons, and notes</li>
+            <li>Real hosting and production-ready deployment</li>
+            <li>Professional domain such as rootedparentingnetwork.com</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="stack">
+        <article class="card">
+          <h2>Parent Screens</h2>
+          <h3>Welcome / Landing</h3>
+          <ul>
+            <li>App name and logo</li>
+            <li>Short mission statement</li>
+            <li>Parent Login and Professional Login buttons</li>
+            <li>Why this app matters</li>
+            <li>Safe, calm, trustworthy design</li>
+            <li>Contact and support information</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Parent Dashboard</h3>
+          <ul>
+            <li>Today's check-in</li>
+            <li>Current parenting goal</li>
+            <li>Child behavior tracker</li>
+            <li>Lesson progress</li>
+            <li>Recent notes</li>
+            <li>Quick support buttons</li>
+            <li>Printable worksheets</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Check-In Screen</h3>
+          <ul>
+            <li>Child mood</li>
+            <li>Parent stress level</li>
+            <li>Behaviors seen today</li>
+            <li>What helped</li>
+            <li>What was hard</li>
+            <li>Wins today</li>
+            <li>Support needed</li>
+          </ul>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Goals and Resources</h2>
+          <h3>Goals Screen</h3>
+          <ul>
+            <li>Current goals</li>
+            <li>Progress level</li>
+            <li>Barriers</li>
+            <li>Next steps</li>
+            <li>Who is helping</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Lessons / Courses</h3>
+          <ul>
+            <li>Lesson title</li>
+            <li>Short reading or video</li>
+            <li>Saved progress</li>
+            <li>Printable worksheet</li>
+            <li>Completion status</li>
+            <li>Trauma-informed parenting tips</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="card">
+          <h2>Professional Screens</h2>
+          <h3>Professional Dashboard</h3>
+          <ul>
+            <li>Assigned families</li>
+            <li>Recent updates</li>
+            <li>Flags or concerns</li>
+            <li>Shared goals</li>
+            <li>Child progress snapshots</li>
+            <li>Recommended interventions</li>
+            <li>Meeting and appointment reminders</li>
+            <li>Document section</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Child Profile</h3>
+          <ul>
+            <li>First name or initials</li>
+            <li>Strengths</li>
+            <li>Current concerns</li>
+            <li>Triggers</li>
+            <li>Coping tools</li>
+            <li>Behavior patterns</li>
+            <li>School notes</li>
+            <li>Care team members</li>
+          </ul>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Team and Reports</h2>
+          <h3>Team / Support Circle</h3>
+          <ul>
+            <li>Parent</li>
+            <li>Therapist</li>
+            <li>Caseworker</li>
+            <li>CPS</li>
+            <li>Mentor</li>
+            <li>School contact</li>
+            <li>Court contact</li>
+          </ul>
+          <p style="margin-top: 10px;">Each person only sees what they are allowed to see.</p>
+          <h3 style="margin-top: 12px;">Reports / Printables</h3>
+          <ul>
+            <li>Progress summary</li>
+            <li>Attendance and engagement</li>
+            <li>Behavior trends</li>
+            <li>Goal completion</li>
+            <li>Printable worksheets</li>
+            <li>Export-friendly summaries</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="stack">
+        <article class="card">
+          <h2>Must-Have Now</h2>
+          <ul>
+            <li>Secure login</li>
+            <li>User roles</li>
+            <li>Parent dashboard</li>
+            <li>Professional dashboard</li>
+            <li>Child profile</li>
+            <li>Saved check-ins</li>
+            <li>Saved goals</li>
+            <li>Lesson tracking</li>
+            <li>Basic reports</li>
+            <li>Mobile-friendly design</li>
+          </ul>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Later Features</h2>
+          <ul>
+            <li>In-app messaging</li>
+            <li>Court reminders</li>
+            <li>Document uploads</li>
+            <li>Signatures</li>
+            <li>Push notifications</li>
+            <li>Appointment calendar</li>
+            <li>AI summaries</li>
+            <li>Telehealth or video support</li>
+            <li>Shared case conferencing tools</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="stack">
+        <article class="card">
+          <h2>Best MVP</h2>
+          <h3>Parent Side</h3>
+          <ul>
+            <li>Login</li>
+            <li>Child profile</li>
+            <li>Daily check-in</li>
+            <li>Goals</li>
+            <li>Lessons</li>
+            <li>Progress</li>
+          </ul>
+          <h3 style="margin-top: 12px;">Professional Side</h3>
+          <ul>
+            <li>Login</li>
+            <li>Assigned family list</li>
+            <li>Child profile summary</li>
+            <li>Check-in review</li>
+            <li>Progress notes</li>
+            <li>Recommendations</li>
+          </ul>
+          <p style="margin-top: 10px;">That first version alone is strong enough to show agencies.</p>
+        </article>
+
+        <article class="card soft-card">
+          <h2>Agency / Builder Pitch</h2>
+          <p class="quote">Rooted Parenting Network is a trauma-informed support app designed to help parents and professionals work together around a child’s needs through structured check-ins, parenting lessons, shared goals, and progress tracking.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Smart Next Move</h2>
+      <p>Turn this blueprint into a development plan with parent screens, professional screens, admin screens, must-have features, and future features so builders and agencies can quickly understand scope, priorities, and rollout phases.</p>
+    </section>
+
+    <section class="footer">
+      <p>Rooted Parenting Network</p>
+      <p>Professional Feature Map and App Blueprint</p>
+      <p>Created by Misty Stonerock | Community Behavioral Health Worker | Parent Advocate</p>
+    </section>
+  </main>
+
+  <script>
+    function goBack() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
