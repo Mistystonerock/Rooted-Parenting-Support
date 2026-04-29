@@ -331,6 +331,22 @@ button {
   color: var(--text);
 }
 
+.section-box {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-soft);
+  padding: 14px;
+}
+
+.section-box h3,
+.section-box p {
+  margin-bottom: 6px;
+}
+
+.section-box p:last-child {
+  margin-bottom: 0;
+}
+
 .app-notice {
   border: 1px solid #cfd9c8;
   background: #f4f8f0;

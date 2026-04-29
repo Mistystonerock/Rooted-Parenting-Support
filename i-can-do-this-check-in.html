@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Can Do This Check-In</title>
+  <style>
+    @page {
+      size: Letter;
+      margin: 0.55in;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Calibri, Arial, sans-serif;
+      color: #2f3538;
+      background: #fffdfa;
+      line-height: 1.45;
+    }
+
+    .page {
+      page-break-after: always;
+      padding: 0.1in 0;
+    }
+
+    .page:last-child {
+      page-break-after: auto;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      color: #5f6f5a;
+      font-size: 24pt;
+    }
+
+    h2 {
+      margin: 18px 0 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ddd6ca;
+      color: #5f6f5a;
+      font-size: 14pt;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      color: #5f6f5a;
+      font-size: 12pt;
+    }
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    .intro {
+      color: #667177;
+      max-width: 7.2in;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .box,
+    .summary-box {
+      border: 1px solid #ddd6ca;
+      border-radius: 10px;
+      padding: 11px;
+      background: #fff;
+    }
+
+    .summary-box {
+      background: #f5f1ea;
+    }
+
+    .choices {
+      display: grid;
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      min-height: 24px;
+    }
+
+    .choice input {
+      width: 15px;
+      height: 15px;
+      margin-top: 3px;
+      flex: 0 0 auto;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #cfc8bd;
+      border-radius: 8px;
+      padding: 8px;
+      background: #fff;
+      color: #2f3538;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 56px;
+      resize: vertical;
+    }
+
+    .line {
+      min-height: 24px;
+      border-bottom: 1px solid #cfc8bd;
+      margin: 8px 0;
+    }
+
+    .small-line {
+      min-height: 18px;
+      border-bottom: 1px solid #cfc8bd;
+      margin-top: 6px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .score-cell {
+      min-height: 40px;
+      border: 1px solid #cfc8bd;
+      border-radius: 8px;
+      padding: 8px;
+      background: #fff;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <h1>I Can Do This Check-In</h1>
+    <p class="intro">This fillable check-in helps kids notice their strengths, confidence, readiness, and motivation for change. It is not about being perfect. It is about helping them see they can grow with support.</p>
+
+    <div class="grid">
+      <div class="box"><label><strong>Name</strong><input type="text" name="child-name" /></label></div>
+      <div class="box"><label><strong>Date</strong><input type="text" name="date" /></label></div>
+    </div>
+
+    <h2>1. Belief in Myself</h2>
+    <div class="grid">
+      <div class="box">
+        <h3>Do you feel like you can handle hard situations?</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="handle-hard" value="yes" /><span>Yes</span></label>
+          <label class="choice"><input type="radio" name="handle-hard" value="sometimes" /><span>Sometimes</span></label>
+          <label class="choice"><input type="radio" name="handle-hard" value="not-right-now" /><span>Not right now</span></label>
+        </div>
+      </div>
+      <div class="box">
+        <h3>When something is hard, I feel like I can...</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="hard-feeling" value="figure-it-out" /><span>Figure it out</span></label>
+          <label class="choice"><input type="radio" name="hard-feeling" value="try-but-struggle" /><span>Try but struggle</span></label>
+          <label class="choice"><input type="radio" name="hard-feeling" value="give-up" /><span>Give up</span></label>
+        </div>
+      </div>
+    </div>
+
+    <h2>2. My Strengths</h2>
+    <div class="box">
+      <h3>What is something you are good at?</h3>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" name="strengths" value="helping-others" /><span>Helping others</span></label>
+        <label class="choice"><input type="checkbox" name="strengths" value="creating" /><span>Drawing or creating</span></label>
+        <label class="choice"><input type="checkbox" name="strengths" value="movement" /><span>Sports or moving my body</span></label>
+        <label class="choice"><input type="checkbox" name="strengths" value="humor" /><span>Making people laugh</span></label>
+        <label class="choice"><input type="checkbox" name="strengths" value="problem-solving" /><span>Solving problems</span></label>
+        <label class="choice"><input type="checkbox" name="strengths" value="family" /><span>Caring about family</span></label>
+      </div>
+      <p style="margin-top:10px;"><strong>My own words:</strong></p>
+      <input type="text" name="strength-own-words" />
+    </div>
+
+    <div class="box" style="margin-top:12px;">
+      <h3>When things get hard, what helps you?</h3>
+      <div class="choices">
+        <label class="choice"><input type="checkbox" name="helps" value="talking" /><span>Talking to someone</span></label>
+        <label class="choice"><input type="checkbox" name="helps" value="break" /><span>Taking a break</span></label>
+        <label class="choice"><input type="checkbox" name="helps" value="music-phone" /><span>Music or phone</span></label>
+        <label class="choice"><input type="checkbox" name="helps" value="breathing" /><span>Breathing</span></label>
+        <label class="choice"><input type="checkbox" name="helps" value="walk-away" /><span>Walking away</span></label>
+        <label class="choice"><input type="checkbox" name="helps" value="unknown" /><span>I don't know yet</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="page">
+    <h1>I Can Do This Check-In</h1>
+
+    <h2>3. One Small Step</h2>
+    <div class="grid">
+      <div class="box">
+        <h3>What is one small thing you could try today?</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="small-step" value="stay-calm" /><span>Stay calm</span></label>
+          <label class="choice"><input type="radio" name="small-step" value="walk-away" /><span>Walk away</span></label>
+          <label class="choice"><input type="radio" name="small-step" value="ask-help" /><span>Ask for help</span></label>
+          <label class="choice"><input type="radio" name="small-step" value="try-again" /><span>Try again</span></label>
+          <label class="choice"><input type="radio" name="small-step" value="use-words" /><span>Use my words</span></label>
+        </div>
+      </div>
+      <div class="box">
+        <h3>Do you think you can try that?</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="can-try" value="yes" /><span>Yes</span></label>
+          <label class="choice"><input type="radio" name="can-try" value="maybe" /><span>Maybe</span></label>
+          <label class="choice"><input type="radio" name="can-try" value="not-yet" /><span>Not yet</span></label>
+        </div>
+      </div>
+    </div>
+
+    <h2>4. Is This Change Worth It?</h2>
+    <div class="grid">
+      <div class="box">
+        <h3>If you make a good choice, what could happen?</h3>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="good-choice" value="out-of-trouble" /><span>I stay out of trouble</span></label>
+          <label class="choice"><input type="checkbox" name="good-choice" value="trust" /><span>People trust me</span></label>
+          <label class="choice"><input type="checkbox" name="good-choice" value="proud" /><span>I feel proud</span></label>
+          <label class="choice"><input type="checkbox" name="good-choice" value="calmer" /><span>Things get calmer</span></label>
+        </div>
+      </div>
+      <div class="box">
+        <h3>If nothing changes, what could happen?</h3>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="no-change" value="trouble" /><span>I get in trouble again</span></label>
+          <label class="choice"><input type="checkbox" name="no-change" value="upset" /><span>People stay upset</span></label>
+          <label class="choice"><input type="checkbox" name="no-change" value="not-better" /><span>Things don't get better</span></label>
+          <label class="choice"><input type="checkbox" name="no-change" value="stuck" /><span>I feel stuck</span></label>
+        </div>
+      </div>
+    </div>
+
+    <h2>5. Readiness and Motivation</h2>
+    <p class="intro">Motivation comes from what makes change feel important and what makes staying the same feel easier. Both matter.</p>
+    <div class="grid">
+      <div class="box">
+        <h3>Are you ready to try one small change?</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="ready-change" value="yes" /><span>Yes</span></label>
+          <label class="choice"><input type="radio" name="ready-change" value="maybe" /><span>Maybe</span></label>
+          <label class="choice"><input type="radio" name="ready-change" value="not-yet" /><span>Not yet</span></label>
+        </div>
+      </div>
+      <div class="box">
+        <h3>How much is this problem bothering you?</h3>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="problem-discomfort" value="not-big" /><span>Not a big problem</span></label>
+          <label class="choice"><input type="radio" name="problem-discomfort" value="little" /><span>A little problem</span></label>
+          <label class="choice"><input type="radio" name="problem-discomfort" value="big" /><span>A big problem</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:12px;">
+      <div class="box">
+        <h3>What makes you want things to change?</h3>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="motivation" value="fewer-problems" /><span>I want fewer problems</span></label>
+          <label class="choice"><input type="checkbox" name="motivation" value="trust" /><span>I want people to trust me</span></label>
+          <label class="choice"><input type="checkbox" name="motivation" value="proud" /><span>I want to feel proud</span></label>
+          <label class="choice"><input type="checkbox" name="motivation" value="calmer" /><span>I want things to be calmer</span></label>
+          <label class="choice"><input type="checkbox" name="motivation" value="freedom" /><span>I want more freedom</span></label>
+        </div>
+      </div>
+      <div class="box">
+        <h3>What keeps things the same?</h3>
+        <div class="choices">
+          <label class="choice"><input type="checkbox" name="status-quo" value="hard" /><span>Changing feels hard</span></label>
+          <label class="choice"><input type="checkbox" name="status-quo" value="unknown" /><span>I don't know what to do yet</span></label>
+          <label class="choice"><input type="checkbox" name="status-quo" value="attention" /><span>I get attention this way</span></label>
+          <label class="choice"><input type="checkbox" name="status-quo" value="mad-hurt" /><span>I feel too mad or hurt</span></label>
+          <label class="choice"><input type="checkbox" name="status-quo" value="wont-work" /><span>I don't think it will work</span></label>
+        </div>
+      </div>
+    </div>
+
+    <h2>6. How I Feel About Myself</h2>
+    <div class="box">
+      <h3>How do you feel about yourself today?</h3>
+      <div class="choices">
+        <label class="choice"><input type="radio" name="self-feeling" value="good" /><span>Good about myself</span></label>
+        <label class="choice"><input type="radio" name="self-feeling" value="sometimes" /><span>Sometimes okay</span></label>
+        <label class="choice"><input type="radio" name="self-feeling" value="hard" /><span>Hard to like myself</span></label>
+      </div>
+      <p style="margin-top:10px;"><strong>One kind thing I can say about me:</strong></p>
+      <textarea name="kind-words"></textarea>
+    </div>
+
+    <h2>Parent / Worker Summary</h2>
+    <div class="summary-box">
+      <div class="score-row">
+        <div class="score-cell"><strong>Confidence</strong><br /><select name="summary-confidence"><option></option><option>Low</option><option>Medium</option><option>High</option></select></div>
+        <div class="score-cell"><strong>Readiness</strong><br /><select name="summary-readiness"><option></option><option>Not ready yet</option><option>Unsure</option><option>Ready</option></select></div>
+        <div class="score-cell"><strong>Motivation</strong><br /><select name="summary-motivation"><option></option><option>Low</option><option>Medium</option><option>High</option></select></div>
+        <div class="score-cell"><strong>Support flag</strong><br /><select name="summary-support"><option></option><option>Yes</option><option>No</option></select></div>
+      </div>
+      <p style="margin-top:12px;"><strong>Encouraging message to send or say:</strong></p>
+      <textarea name="encouraging-message"></textarea>
+      <p><strong>Small goal we can help set:</strong></p>
+      <textarea name="small-goal"></textarea>
+      <p><strong>What supports motivation and what keeps the status quo?</strong></p>
+      <textarea name="motivation-summary"></textarea>
+      <p><strong>Extra support needed if confidence, motivation, or self-worth is very low:</strong></p>
+      <textarea name="extra-support"></textarea>
+    </div>
+  </section>
+</body>
+</html>

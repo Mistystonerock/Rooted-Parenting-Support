@@ -1559,6 +1559,67 @@ const checkInChildResponseOptions = [
   "still struggling"
 ];
 
+const selfEfficacyStrengthOptions = [
+  "Helping others",
+  "Drawing or creating",
+  "Sports or moving my body",
+  "Making people laugh",
+  "Solving problems",
+  "Caring about family",
+  "Being brave",
+  "Learning new things",
+  "Something else"
+];
+
+const selfEfficacyHelpOptions = [
+  "Talking to someone",
+  "Taking a break",
+  "Music or phone",
+  "Breathing",
+  "Walking away",
+  "I don't know yet"
+];
+
+const selfEfficacySmallStepOptions = [
+  "Stay calm",
+  "Walk away",
+  "Ask for help",
+  "Try again",
+  "Use my words"
+];
+
+const selfEfficacyGoodChoiceOptions = [
+  "I stay out of trouble",
+  "People trust me",
+  "I feel proud",
+  "Things get calmer"
+];
+
+const selfEfficacyNoChangeOptions = [
+  "I get in trouble again",
+  "People stay upset",
+  "Things don't get better",
+  "I feel stuck"
+];
+
+const selfEfficacyMotivationOptions = [
+  "I want fewer problems",
+  "I want people to trust me",
+  "I want to feel proud",
+  "I want things to be calmer",
+  "I want more freedom",
+  "Someone important wants me to try"
+];
+
+const selfEfficacyStatusQuoOptions = [
+  "Changing feels hard",
+  "I don't know what to do yet",
+  "I get attention this way",
+  "I feel too mad or hurt",
+  "I don't think it will work",
+  "Things feel normal this way"
+];
+
 const teacherCheckInBehaviorOptions = [
   "refusal",
   "calling out",
@@ -2845,8 +2906,73 @@ function checkboxList(name, options, selectedValues = []) {
   `;
 }
 
+function radioList(name, options, selectedValue = "") {
+  return `
+    <div class="checkbox-grid">
+      ${options
+        .map((option) => {
+          const value = typeof option === "string" ? option : option.value;
+          const label = typeof option === "string" ? option : option.label;
+          return `
+            <label class="checkbox-option">
+              <input type="radio" name="${name}" value="${escapeHtml(value)}" ${selectedValue === value ? "checked" : ""} />
+              <span>${escapeHtml(label)}</span>
+            </label>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
 function getCheckedValues(name) {
   return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map((input) => input.value);
+}
+
+function getRadioValue(name) {
+  return document.querySelector(`input[name="${name}"]:checked`)?.value || "";
+}
+
+function getSelfEfficacySummary(selfEfficacy = {}) {
+  const scoreMap = {
+    yes: 2,
+    sometimes: 1,
+    "not-right-now": 0,
+    "figure-it-out": 2,
+    "try-but-struggle": 1,
+    "give-up": 0,
+    maybe: 1,
+    "not-yet": 0
+  };
+  const discomfortMap = {
+    "not-a-big-problem": 0,
+    "a-little-problem": 1,
+    "a-big-problem": 2
+  };
+  const score =
+    (scoreMap[selfEfficacy.handleHardSituations] ?? 0) +
+    (scoreMap[selfEfficacy.hardFeeling] ?? 0) +
+    (scoreMap[selfEfficacy.canTrySmallStep] ?? 0);
+  const readinessScore = scoreMap[selfEfficacy.readyToChange] ?? 0;
+  const motivationScore =
+    (selfEfficacy.motivationReasons || []).length +
+    (discomfortMap[selfEfficacy.problemDiscomfort] ?? 0) -
+    Math.min(2, (selfEfficacy.statusQuoReasons || []).length);
+  const confidenceLevel = score >= 5 ? "high" : score >= 3 ? "medium" : "low";
+  const readinessLevel = readinessScore >= 2 ? "ready" : readinessScore === 1 ? "unsure" : "not ready yet";
+  const motivationLevel = motivationScore >= 3 ? "high" : motivationScore >= 1 ? "medium" : "low";
+  const seesBenefit = (selfEfficacy.goodChoiceOutcomes || []).length > 0;
+  const seesRisk = (selfEfficacy.noChangeOutcomes || []).length > 0;
+  const changeAwareness = seesBenefit && seesRisk ? "clear" : seesBenefit || seesRisk ? "building" : "needs support";
+
+  return {
+    score,
+    confidenceLevel,
+    readinessLevel,
+    motivationLevel,
+    changeAwareness,
+    supportFlag: confidenceLevel === "low" || motivationLevel === "low" || selfEfficacy.selfFeeling === "hard-to-like-myself"
+  };
 }
 
 function checkLessonQuiz(slug) {
@@ -4012,6 +4138,8 @@ function renderCheckIn() {
   const role = (getAccountProfile().role || "").toLowerCase();
   const isTeacherView = role === "teacher";
   const latestEntry = (isTeacherView ? getTeacherCheckInEntries() : getDailyHabitEntries())[0] || {};
+  const latestSelfEfficacy = latestEntry.selfEfficacy || {};
+  const selfEfficacySummary = getSelfEfficacySummary(latestSelfEfficacy);
   screenTitle.textContent = "Check-In";
   appContentRoot.innerHTML = isTeacherView
     ? `
@@ -4117,9 +4245,178 @@ function renderCheckIn() {
             <span>Positive moment today</span>
             <textarea id="checkin-positive-moment" rows="3" placeholder="Short entry">${escapeHtml(latestEntry.positiveMoment || "")}</textarea>
           </label>
+          <div class="section-box">
+            <h3>I Can Do This check-in</h3>
+            <p>These questions help the child notice strengths, confidence, and one small step toward change.</p>
+          </div>
+          <div class="tracker-field">
+            <span>Do you feel like you can handle hard situations?</span>
+            ${radioList(
+              "self-handle-hard",
+              [
+                { value: "yes", label: "Yes" },
+                { value: "sometimes", label: "Sometimes" },
+                { value: "not-right-now", label: "Not right now" }
+              ],
+              latestSelfEfficacy.handleHardSituations || ""
+            )}
+          </div>
+          <div class="tracker-field">
+            <span>When something is hard, I feel like I can...</span>
+            ${radioList(
+              "self-hard-feeling",
+              [
+                { value: "figure-it-out", label: "Figure it out" },
+                { value: "try-but-struggle", label: "Try but struggle" },
+                { value: "give-up", label: "Give up" }
+              ],
+              latestSelfEfficacy.hardFeeling || ""
+            )}
+          </div>
+          <label class="tracker-field">
+            <span>What is something you are good at?</span>
+            <select id="self-strength">
+              <option value="">Choose one</option>
+              ${selfEfficacyStrengthOptions
+                .map((option) => `<option value="${escapeHtml(option)}" ${latestSelfEfficacy.strength === option ? "selected" : ""}>${escapeHtml(option)}</option>`)
+                .join("")}
+            </select>
+          </label>
+          <label class="tracker-field">
+            <span>My own words</span>
+            <input id="self-strength-other" type="text" value="${escapeHtml(latestSelfEfficacy.strengthOther || "")}" placeholder="I am good at..." />
+          </label>
+          <div class="tracker-field">
+            <span>When things get hard, what helps you?</span>
+            ${checkboxList("self-helps", selfEfficacyHelpOptions, latestSelfEfficacy.helpsWhenHard || [])}
+          </div>
+          <div class="tracker-field">
+            <span>What is one small thing you could try today?</span>
+            ${radioList("self-small-step", selfEfficacySmallStepOptions, latestSelfEfficacy.smallStep || "")}
+          </div>
+          <div class="tracker-field">
+            <span>Do you think you can try that?</span>
+            ${radioList(
+              "self-can-try",
+              [
+                { value: "yes", label: "Yes" },
+                { value: "maybe", label: "Maybe" },
+                { value: "not-yet", label: "Not yet" }
+              ],
+              latestSelfEfficacy.canTrySmallStep || ""
+            )}
+          </div>
+          <div class="tracker-field">
+            <span>If you make a good choice, what could happen?</span>
+            ${checkboxList("self-good-choice", selfEfficacyGoodChoiceOptions, latestSelfEfficacy.goodChoiceOutcomes || [])}
+          </div>
+          <div class="tracker-field">
+            <span>If nothing changes, what could happen?</span>
+            ${checkboxList("self-no-change", selfEfficacyNoChangeOptions, latestSelfEfficacy.noChangeOutcomes || [])}
+          </div>
+          <div class="section-box">
+            <h3>Readiness and motivation</h3>
+            <p>This looks at whether the child feels ready to try and what makes change feel worth it.</p>
+          </div>
+          <div class="tracker-field">
+            <span>Are you ready to try one small change?</span>
+            ${radioList(
+              "self-ready-change",
+              [
+                { value: "yes", label: "Yes" },
+                { value: "maybe", label: "Maybe" },
+                { value: "not-yet", label: "Not yet" }
+              ],
+              latestSelfEfficacy.readyToChange || ""
+            )}
+          </div>
+          <div class="tracker-field">
+            <span>What makes you want things to change?</span>
+            ${checkboxList("self-motivation", selfEfficacyMotivationOptions, latestSelfEfficacy.motivationReasons || [])}
+          </div>
+          <div class="tracker-field">
+            <span>What makes it hard to change or keeps things the same?</span>
+            ${checkboxList("self-status-quo", selfEfficacyStatusQuoOptions, latestSelfEfficacy.statusQuoReasons || [])}
+          </div>
+          <div class="tracker-field">
+            <span>How much is this problem bothering you right now?</span>
+            ${radioList(
+              "self-discomfort",
+              [
+                { value: "not-a-big-problem", label: "Not a big problem" },
+                { value: "a-little-problem", label: "A little problem" },
+                { value: "a-big-problem", label: "A big problem" }
+              ],
+              latestSelfEfficacy.problemDiscomfort || ""
+            )}
+          </div>
+          <div class="tracker-field">
+            <span>How do you feel about yourself today?</span>
+            ${radioList(
+              "self-feeling",
+              [
+                { value: "good-about-myself", label: "Good about myself" },
+                { value: "sometimes-okay", label: "Sometimes okay" },
+                { value: "hard-to-like-myself", label: "Hard to like myself" }
+              ],
+              latestSelfEfficacy.selfFeeling || ""
+            )}
+          </div>
+          <label class="tracker-field">
+            <span>One kind thing I can say about me</span>
+            <textarea id="self-kind-words" rows="3" placeholder="I can...">${escapeHtml(latestSelfEfficacy.kindWords || "")}</textarea>
+          </label>
           <div class="hero-actions hero-actions--stacked">
             <button class="primary-button" type="button" data-save-checkin="true">Submit</button>
           </div>
+        </div>
+      </section>
+      <section class="detail-card">
+        <h3>Parent / worker summary</h3>
+        ${
+          latestEntry.selfEfficacy
+            ? `
+              <div class="metric-grid">
+                <div class="metric-card">
+                  <strong>Confidence level</strong>
+                  <p>${escapeHtml(selfEfficacySummary.confidenceLevel)} (${selfEfficacySummary.score}/6)</p>
+                </div>
+                <div class="metric-card">
+                  <strong>Change awareness</strong>
+                  <p>${escapeHtml(selfEfficacySummary.changeAwareness)}</p>
+                </div>
+                <div class="metric-card">
+                  <strong>Readiness</strong>
+                  <p>${escapeHtml(selfEfficacySummary.readinessLevel)}</p>
+                </div>
+                <div class="metric-card">
+                  <strong>Motivation</strong>
+                  <p>${escapeHtml(selfEfficacySummary.motivationLevel)}</p>
+                </div>
+                <div class="metric-card">
+                  <strong>Strength noticed</strong>
+                  <p>${escapeHtml(latestSelfEfficacy.strengthOther || latestSelfEfficacy.strength || "Not entered")}</p>
+                </div>
+                <div class="metric-card">
+                  <strong>Small step</strong>
+                  <p>${escapeHtml(latestSelfEfficacy.smallStep || "Not chosen")}</p>
+                </div>
+              </div>
+              <div class="tracker-entry">
+                <p><strong>What helps:</strong> ${escapeHtml((latestSelfEfficacy.helpsWhenHard || []).join(", ") || "Not entered")}</p>
+                <p><strong>Believes they can change:</strong> ${escapeHtml(latestSelfEfficacy.canTrySmallStep || "Not answered")}</p>
+                <p><strong>Reasons to change:</strong> ${escapeHtml((latestSelfEfficacy.motivationReasons || []).join(", ") || "Not entered")}</p>
+                <p><strong>Reasons things may stay the same:</strong> ${escapeHtml((latestSelfEfficacy.statusQuoReasons || []).join(", ") || "Not entered")}</p>
+                <p><strong>Problem discomfort:</strong> ${escapeHtml(latestSelfEfficacy.problemDiscomfort || "Not answered")}</p>
+                <p><strong>Support flag:</strong> ${selfEfficacySummary.supportFlag ? "Confidence, motivation, or self-worth needs support. Encourage, co-regulate, and help set a tiny goal." : "Keep encouraging effort, strengths, and follow-through."}</p>
+              </div>
+            `
+            : "<p>No child self-efficacy check-in saved yet. Submit one above to see the summary.</p>"
+        }
+        <div class="insight-list">
+          <div class="insight-item"><strong>Approve and encourage</strong><p>I see you trying. I am proud of the effort you are making.</p></div>
+          <div class="insight-item"><strong>Help set a small goal</strong><p>Pick one tiny step the child believes they might be able to try today.</p></div>
+          <div class="insight-item"><strong>Flag for support</strong><p>Use extra support when confidence is low, self-talk is very negative, or the child cannot name any help yet.</p></div>
         </div>
       </section>
     `;
@@ -6254,9 +6551,26 @@ document.addEventListener("click", (event) => {
       triggers: getCheckedValues("checkin-triggers"),
       responses: getCheckedValues("checkin-responses"),
       childResponse: getCheckedValues("checkin-child-response"),
-      positiveMoment
+      positiveMoment,
+      selfEfficacy: {
+        handleHardSituations: getRadioValue("self-handle-hard"),
+        hardFeeling: getRadioValue("self-hard-feeling"),
+        strength: document.getElementById("self-strength")?.value || "",
+        strengthOther: document.getElementById("self-strength-other")?.value.trim() || "",
+        helpsWhenHard: getCheckedValues("self-helps"),
+        smallStep: getRadioValue("self-small-step"),
+        canTrySmallStep: getRadioValue("self-can-try"),
+        goodChoiceOutcomes: getCheckedValues("self-good-choice"),
+        noChangeOutcomes: getCheckedValues("self-no-change"),
+        readyToChange: getRadioValue("self-ready-change"),
+        motivationReasons: getCheckedValues("self-motivation"),
+        statusQuoReasons: getCheckedValues("self-status-quo"),
+        problemDiscomfort: getRadioValue("self-discomfort"),
+        selfFeeling: getRadioValue("self-feeling"),
+        kindWords: document.getElementById("self-kind-words")?.value.trim() || ""
+      }
     });
-    setAppNotice("Parent check-in saved.");
+    setAppNotice("Check-in saved. The parent / worker summary is ready.");
     renderRoute();
     return;
   }
